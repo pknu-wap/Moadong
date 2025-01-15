@@ -34,6 +34,11 @@ jobs:
     - name: make application-prod.properties
       run: |
         pwd
+        ls
+        cd ./backend
+        ls
+        cd /src
+        
         cd ./backend/src/main/resources
         touch ./application-prod.properties
         echo "${{ secrets.APPLICATION_PROD }}" > ./application-prod.properties
