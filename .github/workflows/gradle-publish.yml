@@ -9,7 +9,7 @@ name: Java CD with Gradle
 
 on:
   push:
-    branches: ["develop/be", "main"]
+    branches: ["develop/be", "main", "CICD/#9-apply_cicd"]
     paths: ["backend/**"]
 
 jobs:
