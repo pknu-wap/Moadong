@@ -44,3 +44,4 @@ jobs:
       run: |
         cd Server/banchango
         ./gradlew clean build -x test
+        
