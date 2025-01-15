@@ -37,7 +37,12 @@ jobs:
         ls
         cd ./backend
         ls
-        cd /src
+        cd ./src
+        ls
+        cd ./main
+        ls
+        cd ./resources
+        ls
         
         cd ./backend/src/main/resources
         touch ./application-prod.properties
