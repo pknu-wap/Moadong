@@ -42,7 +42,13 @@ jobs:
 
     - name: Build with Gradle
       run: |
-        cd Server/banchango
+        cd backend
         ./gradlew clean build -x test
 
-        
+    - name: Docker build
+      run: |
+        cd backend
+        docker login -u ${{ secrets.SERVER_DOCKER_USERNAME }} -p ${{ secrets.SERVER_DOCKER_PASSWORD }}
+        docker build -t app .
+        docker tag app ${{ secrets.SERVER_DOCKER_USERNAME }}/moadong_be:latest
+        docker push ${{ secrets.SERVER_DOCKER_USERNAME }}/moadong_be:latest
