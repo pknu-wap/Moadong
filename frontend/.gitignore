@@ -1,0 +1,15 @@
+# Node.js dependencies, large and unnecessary for version control.
+node_modules
+
+# Build artifacts, compiled files not needed in version control.
+dist
+
+### Environment Variable ###
+.env
+.env.*
+
+# Security certificates and keys, sensitive files to exclude.
+*.pem
+*.crt
+*.key
+*.csr
