@@ -31,10 +31,11 @@ out/
 /nbbuild/
 /dist/
 /nbdist/
-/.nb-gradle/
+/.nb-gradle/f
 
 ### VS Code ###
 .vscode/
 
 
 application.properties
+f
