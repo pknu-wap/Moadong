@@ -32,18 +32,7 @@ jobs:
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
     - name: make application-prod.properties
-      run: |
-        pwd
-        ls
-        cd ./backend
-        ls
-        cd ./src
-        ls
-        cd ./main
-        ls
-        cd ./resources
-        ls
-        
+      run: | 
         cd ./backend/src/main/resources
         touch ./application-prod.properties
         echo "${{ secrets.APPLICATION_PROD }}" > ./application-prod.properties
