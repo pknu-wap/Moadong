@@ -59,11 +59,18 @@ jobs:
         service_account_key: ./gce_sa_key.json
         project_id: ${{ secrets.GCE_PROJECT }}
         
-    # Docker 이미지 빌드 및 GCR 업로드
+    # Docker 인증
     - name: Authenticate Docker to Google Cloud Container Registry (GCR)
       run: |
         gcloud auth activate-service-account --key-file=./gce_sa_key.json
         gcloud auth configure-docker gcr.io
+
+   # Docker 이미지 빌드 및 GCR 업로드
+    - name: Build and Push Docker Image
+      run: |
+        cd backend
+        docker build -t ${{ secrets.DOCKER_IMAGE }} .
+        docker push ${{ secrets.DOCKER_IMAGE }}
 
     # VM에서 컨테이너 업데이트
     - name: Update Container on VM
