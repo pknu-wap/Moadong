@@ -83,7 +83,7 @@ jobs:
         docker pull ${{ secrets.DOCKER_IMAGE }} &&
         docker stop ${{ secrets.DOCKER_IMAGE }} || true &&
         docker rm ${{ secrets.DOCKER_IMAGE }} || true &&
-        docker run -d --name ${{ secrets.DOCKER_IMAGE }} -p 8080:8080 ${{ secrets.DOCKER_IMAGE }}"
+        docker run -d --name moadong -p 8080:8080 ${{ secrets.DOCKER_IMAGE }}"
 
 #     - name: Docker build
 #       run: |
