@@ -52,20 +52,20 @@ jobs:
         service_account_key: ${{ secrets.GCE_SA_KEY }}
         project_id: ${{ secrets.GCE_PROJECT }}
 
-    # 3. Docker 이미지 빌드 및 GCR 업로드
+    # Docker 이미지 빌드 및 GCR 업로드
     - name: Build and Push Docker Image
       run: |
         docker build -t ${{ secrets.DOCKER_IMAGE }} .
         docker push ${{ secrets.DOCKER_IMAGE }}
 
-    # 4. Cloud Run 배포
-    - name: Deploy to Cloud Run
+    # VM에서 컨테이너 업데이트
+    - name: Update Container on VM
       run: |
-        gcloud run deploy spring-app \
-          --image ${{ secrets.DOCKER_IMAGE }} \
-          --platform managed \
-          --region ${{ secrets.GCP_REGION }} \
-          --allow-unauthenticated
+        gcloud compute ssh container-vm --zone=${{ secrets.GCP_REGION }} --command="
+        docker pull ${{ secrets.DOCKER_IMAGE }} &&
+        docker stop current-container || true &&
+        docker rm current-container || true &&
+        docker run -d --name current-container -p 8080:8080 ${{ secrets.DOCKER_IMAGE }}"
 
 #     - name: Docker build
 #       run: |
