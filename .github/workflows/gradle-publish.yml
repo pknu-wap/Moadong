@@ -57,6 +57,7 @@ jobs:
       run: |
         cd backend
         docker build -t ${{ secrets.DOCKER_IMAGE }} .
+        gcloud projects get-iam-policy ${{ secrets.GCE_PROJECT }}
         docker push ${{ secrets.DOCKER_IMAGE }}
 
     # VM에서 컨테이너 업데이트
@@ -64,9 +65,9 @@ jobs:
       run: |
         gcloud compute ssh ${{ secrets.GCE_INSTANCE }} --zone=${{ secrets.GCP_REGION }} --command="
         docker pull ${{ secrets.DOCKER_IMAGE }} &&
-        docker stop current-container || true &&
-        docker rm current-container || true &&
-        docker run -d --name current-container -p 8080:8080 ${{ secrets.DOCKER_IMAGE }}"
+        docker stop ${{ secrets.DOCKER_IMAGE }} || true &&
+        docker rm ${{ secrets.DOCKER_IMAGE }} || true &&
+        docker run -d --name ${{ secrets.DOCKER_IMAGE }} -p 8080:8080 ${{ secrets.DOCKER_IMAGE }}"
 
 #     - name: Docker build
 #       run: |
