@@ -60,12 +60,11 @@ jobs:
         gcloud auth configure-docker gcr.io
 
     # Docker 이미지 빌드 및 GCR 업로드
-    - name: Build and Push Docker Image
+    - name: Authenticate Docker to Google Cloud Container Registry (GCR)
       run: |
-        cd backend
-        docker build -t ${{ secrets.DOCKER_IMAGE }} .
-        gcloud projects get-iam-policy ${{ secrets.GCE_PROJECT }}
-        docker push ${{ secrets.DOCKER_IMAGE }}
+        echo "${{ secrets.GCE_SA_KEY }}" | base64 --decode > /tmp/gcloud-key.json
+        gcloud auth activate-service-account --key-file=/tmp/gcloud-key.json
+        gcloud auth configure-docker gcr.io
 
     # VM에서 컨테이너 업데이트
     - name: Update Container on VM
