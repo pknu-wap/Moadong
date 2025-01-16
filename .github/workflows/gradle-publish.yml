@@ -79,7 +79,7 @@ jobs:
         sudo usermod -aG docker $USER
         newgrp docker
         gcloud auth configure-docker
-        gcloud auth activate-service-account --key-file=./gce_sa_key.json
+        gcloud auth activate-service-account --key-file=/home/wabi241202/gce_sa_key.json
         docker pull ${{ secrets.DOCKER_IMAGE }} &&
         docker stop ${{ secrets.DOCKER_IMAGE }} || true &&
         docker rm ${{ secrets.DOCKER_IMAGE }} || true &&
