@@ -45,19 +45,24 @@ jobs:
     #     cd backend
     #     ./gradlew clean build -x test
 
+    - name: create-json
+      id: create-json
+      uses: jsdaniell/create-json@v1.2.2
+      with:
+        name: "gce_sa_key.json"
+        json: ${{ secrets.GCE_SA_KEY }}
+
     # Google Cloud CLI 설정
     - name: Set up Google Cloud SDK
       uses: google-github-actions/setup-gcloud@v1
       with:
-        service_account_key: ${{ secrets.GCE_SA_KEY }}
+        service_account_key: ./gce_sa_key.json
         project_id: ${{ secrets.GCE_PROJECT }}
         
     # Docker 이미지 빌드 및 GCR 업로드
     - name: Authenticate Docker to Google Cloud Container Registry (GCR)
       run: |
-        echo "${{ secrets.GCE_SA_KEY }}" | jq . > /tmp/gcloud-key.json
-        cat /tmp/gcloud-key.json
-        gcloud auth activate-service-account --key-file=/tmp/gcloud-key.json
+        gcloud auth activate-service-account --key-file=./gce_sa_key.json
         gcloud auth configure-docker gcr.io
 
     # VM에서 컨테이너 업데이트
