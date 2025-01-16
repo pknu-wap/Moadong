@@ -55,7 +55,8 @@ jobs:
     # Google Docker 인증
     - name: Authenticate Docker to Google Cloud Container Registry (GCR)
       run: |
-        echo ${{ secrets.GCE_SA_KEY }} | gcloud auth activate-service-account --key-file=-
+        echo "${{ secrets.GCE_SA_KEY }}" > /tmp/gcloud-key.json
+        gcloud auth activate-service-account --key-file=/tmp/gcloud-key.json
         gcloud auth configure-docker gcr.io
 
     # Docker 이미지 빌드 및 GCR 업로드
