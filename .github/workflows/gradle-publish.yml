@@ -31,19 +31,19 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
-    # - name: make application-prod.properties
-    #   run: | 
-    #     cd ./backend/src/main/resources
-    #     touch ./application-prod.properties
-    #     echo "${{ secrets.APPLICATION_PROD }}" > ./application-prod.properties
+    - name: make application-prod.properties
+      run: | 
+        cd ./backend/src/main/resources
+        touch ./application-prod.properties
+        echo "${{ secrets.APPLICATION_PROD }}" > ./application-prod.properties
 
-    # - name: Grant execute permission for gradlew
-    #   run: chmod +x ./backend/gradlew
+    - name: Grant execute permission for gradlew
+      run: chmod +x ./backend/gradlew
 
-    # - name: Build with Gradle
-    #   run: |
-    #     cd backend
-    #     ./gradlew clean build -x test
+    - name: Build with Gradle
+      run: |
+        cd backend
+        ./gradlew clean build -x test
 
     - name: create-json
       id: create-json
