@@ -55,6 +55,7 @@ jobs:
     # Docker 이미지 빌드 및 GCR 업로드
     - name: Build and Push Docker Image
       run: |
+        cd backend
         docker build -t ${{ secrets.DOCKER_IMAGE }} .
         docker push ${{ secrets.DOCKER_IMAGE }}
 
