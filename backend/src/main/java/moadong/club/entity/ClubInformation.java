@@ -1,22 +1,25 @@
 package moadong.club.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 import moadong.club.enums.ClubState;
 import moadong.global.RegexConstants;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDate;
-
-@Entity
+@Document("club_information")
 @Getter
 @Setter
 public class ClubInformation {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @NotNull
     @Column(unique = true, nullable = false)
