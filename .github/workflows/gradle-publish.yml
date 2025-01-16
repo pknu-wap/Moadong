@@ -61,7 +61,7 @@ jobs:
     # VM에서 컨테이너 업데이트
     - name: Update Container on VM
       run: |
-        gcloud compute ssh container-vm --zone=${{ secrets.GCP_REGION }} --command="
+        gcloud compute ssh ${{ secrets.GCE_INSTANCE }} --zone=${{ secrets.GCP_REGION }} --command="
         docker pull ${{ secrets.DOCKER_IMAGE }} &&
         docker stop current-container || true &&
         docker rm current-container || true &&
