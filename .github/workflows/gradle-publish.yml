@@ -76,6 +76,7 @@ jobs:
     - name: Update Container on VM
       run: |
         gcloud compute ssh ${{ secrets.GCE_INSTANCE }} --zone=${{ secrets.GCP_REGION }} --command="
+        sudo usermod -aG docker $USER
         docker pull ${{ secrets.DOCKER_IMAGE }} &&
         docker stop ${{ secrets.DOCKER_IMAGE }} || true &&
         docker rm ${{ secrets.DOCKER_IMAGE }} || true &&
