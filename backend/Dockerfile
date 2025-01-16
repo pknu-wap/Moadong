@@ -2,7 +2,7 @@
 FROM openjdk:17-alpine
 
 #도커 이미지 내의 작업 디렉토리 정의
-WORKDIR /moadong/
+WORKDIR /moadong/backend
 
 #빌드 인자 기본값 정의
 ARG JAR_FILE=/build/libs/moadong-0.0.1-SNAPSHOT.jar
