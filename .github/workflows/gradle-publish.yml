@@ -80,8 +80,11 @@ jobs:
         newgrp docker
         gcloud auth configure-docker
         gcloud auth activate-service-account --key-file=/home/wabi241202/gce_sa_key.json
-        docker stop moadong &&
-        docker rm moadong &&
+        if docker ps -q --filter "name=moadong"; then
+          docker stop moadong &&
+          docker rm moadong
+        fi
+        
         docker pull ${{ secrets.DOCKER_IMAGE }} &&
         docker run -d --name moadong -p 8080:8080 ${{ secrets.DOCKER_IMAGE }}"
 
