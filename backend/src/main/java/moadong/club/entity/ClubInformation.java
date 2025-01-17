@@ -1,21 +1,20 @@
 package moadong.club.entity;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
-import moadong.club.enums.ClubState;
 import moadong.global.RegexConstants;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("club_information")
+@AllArgsConstructor
 @Getter
-@Setter
+@Builder
 public class ClubInformation {
 
     @Id
