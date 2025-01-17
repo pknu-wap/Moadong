@@ -10,6 +10,7 @@ import moadong.club.repository.ClubFeedImageRepository;
 import moadong.club.repository.ClubInformationRepository;
 import moadong.club.repository.ClubRepository;
 import moadong.club.repository.ClubTagRepository;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,19 +24,20 @@ public class ClubDetailedPageService {
     private final ClubTagRepository clubTagRepository;
 
     public ClubDetailedPageResponse getClubDetailedPage(String clubId) {
-        Club club = clubRepository.findById(clubId)
+        ObjectId objectId = new ObjectId(clubId);
+        Club club = clubRepository.findClubById(objectId)
                 .orElseThrow(() -> new IllegalArgumentException("Club not found with ID: " + clubId));
 
         ClubInformation clubInformation = clubInformationRepository.findByClubId(clubId)
 
-                .orElseThrow(() -> new IllegalArgumentException("Club not found with ID: " + clubId));
+                .orElseThrow(() -> new IllegalArgumentException("ClubInformation not found with ID: " + clubId));
 
-        List<String> clubFeedImages = clubFeedImageRepository.findAllByClubId(club.getId())
+        List<String> clubFeedImages = clubFeedImageRepository.findAllByClubId(clubId)
                 .stream()
                 .map(ClubFeedImageProjection::getImage)
                 .toList();
 
-        List<String> clubTags = clubTagRepository.findAllByClubId(club.getId())
+        List<String> clubTags = clubTagRepository.findAllByClubId(clubId)
                 .stream()
                 .map(ClubTagProjection::getTag)
                 .toList();
