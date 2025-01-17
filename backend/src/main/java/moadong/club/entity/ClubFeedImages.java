@@ -16,7 +16,7 @@ public class ClubFeedImages {
     private String id;
 
     @NotNull
-    private Long clubId;
+    private String clubId;
 
     @Column(length = 1024)
     private String image;

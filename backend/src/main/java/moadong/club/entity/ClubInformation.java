@@ -23,7 +23,7 @@ public class ClubInformation {
 
     @NotNull
     @Column(unique = true, nullable = false)
-    private Long clubId;
+    private String clubId;
 
     @Column(length = 1024)
     private String thumbnail;

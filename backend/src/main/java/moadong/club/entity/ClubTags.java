@@ -16,7 +16,7 @@ public class ClubTags {
     private String id;
 
     @NotNull
-    private Long clubId;
+    private String clubId;
 
     @Column(length = 8)
     private String tag;
