@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import moadong.club.dto.ClubUpdateRequest;
 import moadong.global.RegexConstants;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -43,4 +44,14 @@ public class ClubInformation {
     private LocalDate recruitmentStart;
 
     private LocalDate recruitmentEnd;
+
+    public void update(ClubUpdateRequest request) {
+        this.thumbnail = request.thumbnail();
+        this.introduction = request.introduction();
+        this.description = request.description();
+        this.clubPresidentName = request.clubPresidentName();
+        this.telephoneNumber = request.telephoneNumber();
+        this.recruitmentStart = request.recruitmentStart();
+        this.recruitmentEnd = request.recruitmentEnd();
+    }
 }

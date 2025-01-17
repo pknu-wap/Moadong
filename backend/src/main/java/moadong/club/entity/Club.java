@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import moadong.club.dto.ClubUpdateRequest;
 import moadong.club.enums.ClubState;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -35,4 +36,11 @@ public class Club {
     @Enumerated(EnumType.STRING)
     @NotNull
     private ClubState state;
+
+    public void update(ClubUpdateRequest request) {
+        this.name = request.name();
+        this.classification = request.classification();
+        this.division = request.division();
+        this.state = ClubState.AVAILABLE;
+    }
 }
