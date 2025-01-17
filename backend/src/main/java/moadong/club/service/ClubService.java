@@ -1,8 +1,8 @@
 package moadong.club.service;
 
 import lombok.AllArgsConstructor;
-import moadong.club.dto.ClubCreateRequest;
-import moadong.club.dto.ClubUpdateRequest;
+import moadong.club.payload.request.ClubCreateRequest;
+import moadong.club.payload.request.ClubUpdateRequest;
 import moadong.club.entity.Club;
 import moadong.club.entity.ClubInformation;
 import moadong.club.enums.ClubState;
@@ -48,4 +48,5 @@ public class ClubService {
 
         return club.getId();
     }
+
 }

@@ -1,4 +1,4 @@
-package moadong.club.dto;
+package moadong.club.payload.request;
 
 import java.time.LocalDate;
 import org.springframework.cglib.core.Local;
