@@ -30,6 +30,9 @@ public class ClubInformation {
     @Column(length = 30)
     private String introduction;
 
+    @Column(length = 20000)
+    private String description;
+
     @Column(length = 5)
     private String clubPresidentName;
 
