@@ -25,10 +25,6 @@ public class ClubInformation {
     @Column(unique = true, nullable = false)
     private Long clubId;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private ClubState state;
-
     @Column(length = 1024)
     private String thumbnail;
 
