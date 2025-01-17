@@ -1,5 +1,6 @@
 package moadong.club.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
@@ -20,12 +21,15 @@ public class Club {
     private String id;
 
     @NotNull
+    @Column(length = 20)
     private String name;
 
     @NotNull
+    @Column(length = 20)
     private String classification;
 
     @NotNull
+    @Column(length = 20)
     private String division;
 
     @Enumerated(EnumType.STRING)
