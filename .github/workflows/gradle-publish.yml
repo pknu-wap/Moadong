@@ -82,7 +82,8 @@ jobs:
         gcloud auth activate-service-account --key-file=/home/wabi241202/gce_sa_key.json
         if docker ps -q --filter "name=moadong"; then
           docker stop moadong &&
-          docker rm moadong
+          docker rm moadong &&
+          docker rmi ${{ secrets.DOCKER_IMAGE }}
         fi
         
         docker pull ${{ secrets.DOCKER_IMAGE }} &&
