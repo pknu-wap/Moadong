@@ -8,12 +8,11 @@ import moadong.club.entity.ClubInformation;
 import moadong.club.enums.ClubState;
 import moadong.club.repository.ClubInformationRepository;
 import moadong.club.repository.ClubRepository;
-import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class ClubService {
+public class ClubCommandService {
 
     private final ClubRepository clubRepository;
     private final ClubInformationRepository clubInformationRepository;
