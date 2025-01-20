@@ -1,0 +1,10 @@
+package moadong.global.exception;
+
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
+public class RestApiException extends RuntimeException {
+    private ErrorCode errorCode;
+}
