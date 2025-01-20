@@ -1,21 +1,21 @@
 package moadong.club.entity;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
-import moadong.club.enums.ClubState;
+import moadong.club.payload.request.ClubUpdateRequest;
 import moadong.global.RegexConstants;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("club_information")
+@AllArgsConstructor
 @Getter
-@Setter
+@Builder
 public class ClubInformation {
 
     @Id
@@ -23,17 +23,16 @@ public class ClubInformation {
 
     @NotNull
     @Column(unique = true, nullable = false)
-    private Long clubId;
-
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private ClubState state;
+    private String clubId;
 
     @Column(length = 1024)
     private String thumbnail;
 
     @Column(length = 30)
     private String introduction;
+
+    @Column(length = 20000)
+    private String description;
 
     @Column(length = 5)
     private String clubPresidentName;
@@ -45,4 +44,14 @@ public class ClubInformation {
     private LocalDate recruitmentStart;
 
     private LocalDate recruitmentEnd;
+
+    public void update(ClubUpdateRequest request) {
+        this.thumbnail = request.thumbnail();
+        this.introduction = request.introduction();
+        this.description = request.description();
+        this.clubPresidentName = request.clubPresidentName();
+        this.telephoneNumber = request.telephoneNumber();
+        this.recruitmentStart = request.recruitmentStart();
+        this.recruitmentEnd = request.recruitmentEnd();
+    }
 }
