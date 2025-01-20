@@ -10,6 +10,7 @@ import moadong.club.payload.response.ClubSearchResponse;
 import moadong.club.service.ClubDetailedPageService;
 import moadong.club.service.ClubSearchService;
 import moadong.club.service.ClubService;
+import moadong.global.payload.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,27 +27,27 @@ public class ClubController {
 
     @PostMapping("/")
     @Operation(summary = "클럽 생성", description = "클럽을 생성합니다.")
-    public ResponseEntity<String> createClub(@RequestBody ClubCreateRequest request) {
+    public ResponseEntity<?> createClub(@RequestBody ClubCreateRequest request) {
         clubService.createClub(request);
-        return new ResponseEntity<>("success create club", HttpStatus.OK);
+        return Response.ok("success create club");
     }
 
     @PutMapping("/")
     @Operation(summary = "클럽 수정", description = "클럽을 수정합니다.")
-    public ResponseEntity<String> updateClub(@RequestBody ClubUpdateRequest request) {
+    public ResponseEntity<?> updateClub(@RequestBody ClubUpdateRequest request) {
         clubService.updateClub(request);
-        return new ResponseEntity<>("success update club", HttpStatus.OK);
+        return Response.ok("success update club");
     }
 
     @GetMapping("/{clubId}")
-    public ResponseEntity<ClubDetailedPageResponse> getClubDetailedPage(@PathVariable String clubId) {
+    public ResponseEntity<?> getClubDetailedPage(@PathVariable String clubId) {
         ClubDetailedPageResponse clubDetailedPageResponse = clubDetailedPageService.getClubDetailedPage(clubId);
-        return new ResponseEntity<>(clubDetailedPageResponse, HttpStatus.OK);
+        return Response.ok(clubDetailedPageResponse);
     }
 
     @GetMapping("/list/")
-    public ResponseEntity<ClubSearchResponse> getClassificationFilteredClubList(@RequestParam(value = "filter", required = false) String filter) {
+    public ResponseEntity<?> getClassificationFilteredClubList(@RequestParam(value = "filter", required = false) String filter) {
         ClubSearchResponse clubSearchResponse = clubSearchService.searchByClubStateFilter(filter);
-        return new ResponseEntity<ClubSearchResponse>(clubSearchResponse, HttpStatus.OK);
+        return Response.ok(clubSearchResponse);
     }
 }
