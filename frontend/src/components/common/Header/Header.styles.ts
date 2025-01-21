@@ -3,7 +3,6 @@ import styled from 'styled-components';
 export const HeaderStyles = styled.header`
   position: fixed;
   display: flex;
-  flex-direction: row;
   left: 0;
   top: 0;
   width: 100%;
@@ -16,7 +15,6 @@ export const LogoButtonStyles = styled.button`
     font-family: 'CustomFont';
     src: url('../../../assets/fonts/Dream Beige.otf') format('opentype');
     font-weight: normal;
-    font-style: normal;
   }
   font-family: Dream Beige;
   flex: none;
