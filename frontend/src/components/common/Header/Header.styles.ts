@@ -7,7 +7,7 @@ export const HeaderStyles = styled.header`
   top: 0;
   width: 100%;
   height: 60px;
-  z-index: 9999;
+  z-index: 1;
 `;
 
 export const LogoButtonStyles = styled.button`
