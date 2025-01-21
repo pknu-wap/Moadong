@@ -11,12 +11,6 @@ export const HeaderStyles = styled.header`
 `;
 
 export const LogoButtonStyles = styled.button`
-  @font-face {
-    font-family: 'CustomFont';
-    src: url('../../../assets/fonts/Dream Beige.otf') format('opentype');
-    font-weight: normal;
-  }
-  font-family: Dream Beige;
   flex: none;
   flex-grow: 0;
   border: 0;
