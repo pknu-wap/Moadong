@@ -25,7 +25,7 @@ public record ClubDetailedPageResponse(
                 .clubName(club.getName())
                 .clubState(club.getState().getDesc())
                 .clubDescription(clubInformation.getDescription())
-                .clubPresidentName(clubInformation.getClubPresidentName())
+                .clubPresidentName(clubInformation.getPresidentName())
                 .clubPresidentPhoneNumber(clubInformation.getPresidentTelephoneNumber())
                 .clubFeeds(clubFeedImages)
                 .clubTags(clubTags)
