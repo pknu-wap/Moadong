@@ -42,7 +42,42 @@ export const introduceButtonStyles = styled.button`
   letter-spacing: -0.02em;
   cursor: pointer;
 `;
+
+export const searchBoxStyles = styled.form`
+  margin-top: 5px;
+  margin-left: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 500px;
+  height: 36px;
+  padding: 20px;
   border: none;
-  background: transparent;
+  border-radius: 41px;
+  background-color: #eeeeee;
+`;
+
+export const searchInputStyles = styled.input`
+  background-color: #eeeeee;
+  height: 36px;
+  border: none;
+  border-radius: 41px;
+  outline: none;
+  font-size: 14px;
+`;
+
+export const SearchButton = styled.button`
+  padding: 8px 16px;
+  margin-left: 8px;
+  border: none;
+  background-color: blueviolet;
+  color: white;
+  border-radius: 4px;
+  font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: white;
+  }
 `;
