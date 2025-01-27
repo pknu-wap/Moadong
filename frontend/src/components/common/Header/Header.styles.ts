@@ -6,33 +6,42 @@ export const HeaderStyles = styled.header`
   left: 0;
   top: 0;
   width: 100%;
-  height: 60px;
+  height: 52px;
   z-index: 1;
 `;
 
+export const TextCoverStyles = styled.div`
+  display: flex;
+  width: 365px;
+`;
+
 export const LogoButtonStyles = styled.button`
-  border: 0;
+  margin-left: 130px;
+  width: 117px;
+  height: 41px;
+  background-color: transparent;
+  border: none;
   font-style: normal;
   font-weight: 400;
-  font-size: 36px;
-  height: 60px;
-  line-height: 60px;
+  font-size: 26px;
+  line-height: 40px;
   letter-spacing: -0.03em;
-  background-color: transparent;
   color: #000000;
-  margin-left: 140px;
   cursor: pointer;
 `;
 
 export const introduceButtonStyles = styled.button`
-  width: 81px;
-  height: 60px;
+  margin-left: 45px;
+  width: 63px;
+  height: 43px;
+  background: transparent;
+  border: none;
   font-weight: 500;
-  font-size: 18px;
-  line-height: 60px;
+  font-size: 14px;
+  line-height: 42px;
   letter-spacing: -0.02em;
-  color: #262626;
-  margin-left: 70px;
+  cursor: pointer;
+`;
   border: none;
   background: transparent;
   cursor: pointer;
