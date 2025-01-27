@@ -11,7 +11,6 @@ export const HeaderStyles = styled.header`
 `;
 
 export const LogoButtonStyles = styled.button`
-  flex-grow: 0;
   border: 0;
   font-style: normal;
   font-weight: 400;
@@ -26,7 +25,6 @@ export const LogoButtonStyles = styled.button`
 `;
 
 export const introduceButtonStyles = styled.button`
-  flex-grow: 0;
   width: 81px;
   height: 60px;
   font-weight: 500;
