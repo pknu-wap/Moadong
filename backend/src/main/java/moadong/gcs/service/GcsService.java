@@ -32,8 +32,6 @@ public class GcsService {
             // 파일 업로드
             storage.create(blobInfo, file.getBytes());
         }catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
             throw new RestApiException(ErrorCode.IMAGE_UPLOAD_FAILED);
         }
         return "https://storage.googleapis.com/" + bucketName + "/" + fileName;
