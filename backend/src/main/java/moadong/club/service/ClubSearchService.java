@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -35,9 +34,9 @@ public class ClubSearchService {
     ) {
         Optional<List<Club>> clubs;
         if (availability.equals("all")) {
-            clubs = clubRepository.findClubByClassificationAndDivision(classification, division);
+            clubs = clubRepository.findClubByClassificationAndDivisionIgnoreCase(classification, division);
         } else {
-            clubs = clubRepository.findClubByStateAndClassificationAndDivision(
+            clubs = clubRepository.findClubByStateAndClassificationAndDivisionIgnoreCase(
                     ClubState.fromString(availability),
                     classification,
                     division
