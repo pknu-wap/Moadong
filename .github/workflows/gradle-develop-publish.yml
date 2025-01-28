@@ -3,7 +3,8 @@ name: develop server CD with Gradle
 on:
   push:
     branches: ["develop/be"]
-    paths: ["backend/**"]
+    paths: ["backend/**", ".github/workflows/gradle-develop-publish.yml"]
+
 
 jobs:
   build:
