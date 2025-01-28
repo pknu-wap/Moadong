@@ -64,6 +64,13 @@ export const searchInputStyles = styled.input`
   border-radius: 41px;
   outline: none;
   font-size: 14px;
+
+  &::placeholder {
+    transition: opacity 0.3s;
+  }
+  &:focus::placeholder {
+    opacity: 0;
+  }
 `;
 
 export const SearchButton = styled.button`
