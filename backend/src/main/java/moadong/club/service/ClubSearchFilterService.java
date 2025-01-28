@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-public class ClubSearchService {
+public class ClubSearchFilterService {
 
     private final ClubRepository clubRepository;
     private final ClubInformationRepository clubInformationRepository;
