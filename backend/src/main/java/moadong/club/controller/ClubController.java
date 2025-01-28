@@ -45,8 +45,12 @@ public class ClubController {
     }
 
     @GetMapping("/list/")
-    public ResponseEntity<?> getClassificationFilteredClubList(@RequestParam(value = "filter", required = false) String filter) {
-        ClubSearchResponse clubSearchResponse = clubSearchService.searchByClubStateFilter(filter);
+    public ResponseEntity<?> getClubs(
+            @RequestParam(value = "availability", required = false) String availability,
+            @RequestParam(value = "classification", required = false) String classification,
+            @RequestParam(value = "division", required = false) String division
+    ){
+        ClubSearchResponse clubSearchResponse = clubSearchService.getClubs(availability, classification, division);
         return Response.ok(clubSearchResponse);
     }
 }

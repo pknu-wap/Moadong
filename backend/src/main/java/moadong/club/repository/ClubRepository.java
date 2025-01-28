@@ -12,5 +12,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClubRepository extends MongoRepository<Club, String> {
     Optional<Club> findClubById(ObjectId id);
-    List<Club> findClubByState(ClubState clubState);
+    Optional<List<Club>> findClubByClassificationAndDivision(String classification, String division);
+    Optional<List<Club>> findClubByStateAndClassificationAndDivision(ClubState clubState, String classification, String division);
 }

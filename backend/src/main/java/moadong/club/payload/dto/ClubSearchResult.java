@@ -5,10 +5,34 @@ import lombok.Builder;
 import java.util.List;
 @Builder
 public record ClubSearchResult(
-        String clubId,
-        String clubName,
-        String clubImageUrl,
-        List<String> clubTags,
-        String clubState
+        String id,
+        String name,
+        String logo,
+        List<String> tags,
+        String state,
+        String classification,
+        String division,
+        String description
 ) {
+    public static ClubSearchResult createClubSearchResult(
+            String id,
+            String name,
+            String logo,
+            List<String> tags,
+            String state,
+            String classification,
+            String division,
+            String description
+    ){
+        return ClubSearchResult.builder()
+                .id(id)
+                .name(name)
+                .logo(logo)
+                .tags(tags)
+                .state(state)
+                .classification(classification)
+                .division(division)
+                .description(description)
+                .build();
+    }
 }

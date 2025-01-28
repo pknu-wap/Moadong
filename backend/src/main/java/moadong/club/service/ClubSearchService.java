@@ -1,18 +1,24 @@
 package moadong.club.service;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import moadong.club.entity.Club;
 import moadong.club.enums.ClubState;
+import moadong.club.payload.dto.ClubInformationSearchProjection;
 import moadong.club.payload.dto.ClubSearchResult;
 import moadong.club.payload.dto.ClubTagProjection;
-import moadong.club.payload.dto.ClubThumbnailProjection;
 import moadong.club.payload.response.ClubSearchResponse;
 import moadong.club.repository.ClubInformationRepository;
 import moadong.club.repository.ClubRepository;
 import moadong.club.repository.ClubTagRepository;
+import moadong.global.exception.ErrorCode;
+import moadong.global.exception.RestApiException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -22,36 +28,48 @@ public class ClubSearchService {
     private final ClubInformationRepository clubInformationRepository;
     private final ClubTagRepository clubTagRepository;
 
-    public ClubSearchResponse searchByClubStateFilter(String filter) {
-        List<Club> clubs;
-        if (filter.equals("all")) {
-            clubs = clubRepository.findAll();
+    public ClubSearchResponse getClubs(
+            String availability,
+            String classification,
+            String division
+    ) {
+        Optional<List<Club>> clubs;
+        if (availability.equals("all")) {
+            clubs = clubRepository.findClubByClassificationAndDivision(classification, division);
         } else {
-            clubs = clubRepository.findClubByState(ClubState.fromString(filter));
+            clubs = clubRepository.findClubByStateAndClassificationAndDivision(
+                    ClubState.fromString(availability),
+                    classification,
+                    division
+            );
         }
+        clubs.orElseThrow(() -> new RestApiException(ErrorCode.CLUB_NOT_FOUND));
 
         List<ClubSearchResult> clubSearchResults = new ArrayList<>();
-        for (Club club : clubs) {
-            String thumbnail = clubInformationRepository.findThumbnailByClubId(club.getId())
-                .map(ClubThumbnailProjection::getThumbnail)
-                .orElse("null");
-            List<String> clubTags = clubTagRepository.findAllByClubId(club.getId())
-                .stream()
-                .map(ClubTagProjection::getTag)
-                .toList();
+        for (Club club : clubs.get()) {
+            ClubInformationSearchProjection informationByClubId = clubInformationRepository.findInformationByClubId(club.getId())
+                    .orElse(ClubInformationSearchProjection.empty());
+
+            List<String> tags = clubTagRepository.findAllByClubId(club.getId())
+                    .orElse(Collections.emptyList())
+                    .stream()
+                    .map(ClubTagProjection::getTag)
+                    .toList();
 
             ClubSearchResult clubSearchResult = ClubSearchResult.builder()
-                .clubId(club.getId())
-                .clubName(club.getName())
-                .clubImageUrl(thumbnail)
-                .clubTags(clubTags)
-                .clubState(String.valueOf(club.getState().getDesc()))
-                .build();
+                    .id(club.getId())
+                    .name(club.getName())
+                    .logo(informationByClubId.getLogo())
+                    .tags(tags)
+                    .state(String.valueOf(club.getState().getDesc()))
+                    .division(informationByClubId.getDescription())
+                    .classification(club.getClassification())
+                    .build();
 
             clubSearchResults.add(clubSearchResult);
         }
         return ClubSearchResponse.builder()
-            .results(clubSearchResults)
-            .build();
+                .clubs(clubSearchResults)
+                .build();
     }
 }
