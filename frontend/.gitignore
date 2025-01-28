@@ -13,3 +13,5 @@ dist
 *.crt
 *.key
 *.csr
+
+*storybook.log
