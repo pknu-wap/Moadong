@@ -61,8 +61,9 @@ public class ClubSearchService {
                     .logo(informationByClubId.getLogo())
                     .tags(tags)
                     .state(String.valueOf(club.getState().getDesc()))
-                    .division(informationByClubId.getDescription())
+                    .division(club.getDivision())
                     .classification(club.getClassification())
+                    .description(informationByClubId.getDescription())
                     .build();
 
             clubSearchResults.add(clubSearchResult);
