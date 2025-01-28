@@ -27,25 +27,17 @@ public class ClubSearchService {
     private final ClubInformationRepository clubInformationRepository;
     private final ClubTagRepository clubTagRepository;
 
-    public ClubSearchResponse getClubs(
+    public ClubSearchResponse getClubsByFilter(
             String availability,
             String classification,
             String division
     ) {
-        Optional<List<Club>> clubs;
-        if (availability.equals("all")) {
-            clubs = clubRepository.findClubByClassificationAndDivisionIgnoreCase(classification, division);
-        } else {
-            clubs = clubRepository.findClubByStateAndClassificationAndDivisionIgnoreCase(
-                    ClubState.fromString(availability),
-                    classification,
-                    division
-            );
-        }
-        clubs.orElseThrow(() -> new RestApiException(ErrorCode.CLUB_NOT_FOUND));
+        List<Club> clubs = searchClubsByFilter(availability, classification, division)
+                .orElseThrow(() -> new RestApiException(ErrorCode.CLUB_NOT_FOUND));
 
         List<ClubSearchResult> clubSearchResults = new ArrayList<>();
-        for (Club club : clubs.get()) {
+
+        for (Club club : clubs) {
             ClubInformationSearchProjection informationByClubId = clubInformationRepository.findInformationByClubId(club.getId())
                     .orElse(ClubInformationSearchProjection.empty());
 
@@ -71,5 +63,39 @@ public class ClubSearchService {
         return ClubSearchResponse.builder()
                 .clubs(clubSearchResults)
                 .build();
+    }
+
+    private Optional<List<Club>> searchClubsByFilter(String availability, String classification, String division) {
+        if (availability.equals("all")) {
+            return getClubsByClassificationAndDivision(classification, division);
+        } else {
+            return getClubsByStateAndClassificationAndDivision(availability, classification, division);
+        }
+    }
+
+    private Optional<List<Club>> getClubsByClassificationAndDivision(String classification, String division) {
+        if ("all".equals(classification) && "all".equals(division)) {
+            return Optional.of(clubRepository.findAll()); // 모든 클럽 반환
+        } else if ("all".equals(classification)) {
+            return clubRepository.findClubByDivisionIgnoreCaseExact(division); // division만 필터링
+        } else if ("all".equals(division)) {
+            return clubRepository.findClubByClassificationIgnoreCaseExact(classification); // classification만 필터링
+        } else {
+            return clubRepository.findClubByClassificationAndDivisionIgnoreCaseExact(classification, division); // 둘 다 필터링
+        }
+    }
+
+    private Optional<List<Club>> getClubsByStateAndClassificationAndDivision(String availability, String classification, String division) {
+        ClubState clubState = ClubState.fromString(availability);
+
+        if ("all".equals(classification) && "all".equals(division)) {
+            return clubRepository.findClubByState(clubState); // 상태만 필터링
+        } else if ("all".equals(classification)) {
+            return clubRepository.findClubByStateAndDivisionIgnoreCaseExact(clubState, division); // 상태 + division 필터링
+        } else if ("all".equals(division)) {
+            return clubRepository.findClubByStateAndClassificationIgnoreCaseExact(clubState, classification); // 상태 + classification 필터링
+        } else {
+            return clubRepository.findClubByStateAndClassificationAndDivisionIgnoreCaseExact(clubState, classification, division); // 상태 + classification + division 필터링
+        }
     }
 }
