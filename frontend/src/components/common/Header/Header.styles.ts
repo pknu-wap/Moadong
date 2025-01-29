@@ -15,6 +15,7 @@ export const TextCoverStyles = styled.div`
   width: 365px;
 `;
 
+// [x] TODO : img태그로 변경하여 메인 아이콘을 적용해야 한다.
 export const LogoButtonStyles = styled.button`
   margin-left: 130px;
   width: 117px;
