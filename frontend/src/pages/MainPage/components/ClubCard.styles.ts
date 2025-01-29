@@ -39,6 +39,7 @@ const TagsContainer = styled.div`
 const Description = styled.p`
   font-size: 0.875rem;
   margin: 17px 3px 35px 5px;
+  color: rgba(129, 129, 129, 1);
 `;
 
 export {
