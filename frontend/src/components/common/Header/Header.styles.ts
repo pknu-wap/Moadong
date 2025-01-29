@@ -30,12 +30,10 @@ export const LogoButtonStyles = styled.button`
   cursor: pointer;
 `;
 
-export const introduceButtonStyles = styled.button`
+export const IntroduceButtonStyles = styled.a`
   margin-left: 45px;
   width: 63px;
   height: 43px;
-  background: transparent;
-  border: none;
   font-weight: 500;
   font-size: 14px;
   line-height: 42px;
