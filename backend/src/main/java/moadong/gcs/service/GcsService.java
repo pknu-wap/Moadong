@@ -3,6 +3,9 @@ package moadong.gcs.service;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import moadong.club.entity.ClubFeedImages;
@@ -20,7 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class GcsService {
 
-    private final ClubRepository clubRepository;
     private final ClubInformationRepository clubInformationRepository;
     private final ClubFeedImageRepository clubFeedImageRepository;
 
@@ -35,6 +37,11 @@ public class GcsService {
 
         ClubInformation clubInfo = clubInformationRepository.findByClubId(clubId)
                 .orElseThrow(() -> new RestApiException(ErrorCode.CLUB_INFORMATION_NOT_FOUND));
+        if (clubInfo.getThumbnail() != null) {
+            // https://storage.googleapis.com/{bucketName}/{clubId}/{fileType}/{filePath} -> {filePath}
+            String thumbnailPath = clubInfo.getThumbnail().split("/")[6];
+            deleteFile(clubId, thumbnailPath, "logo");
+        }
 
         String filePath = uploadFile(clubId, file, "logo");
         clubInformationRepository.save(clubInfo.updateThumbnail(filePath));
@@ -73,6 +80,20 @@ public class GcsService {
         }
 
         return "https://storage.googleapis.com/" + bucketName + "/" + blobInfo.getName();
+    }
+
+    private void deleteFile(String clubId, String fileName, String fileType) {
+        // 삭제할 파일의 BlobId를 생성
+        BlobId blobId = BlobId.of(bucketName, clubId + "/" + fileType + "/" + fileName);
+
+        try {
+            boolean deleted = storage.delete(blobId);
+            if (!deleted) {
+                throw new RestApiException(ErrorCode.IMAGE_DELETE_FAILED);
+            }
+        } catch (Exception e) {
+            throw new RestApiException(ErrorCode.IMAGE_DELETE_FAILED);
+        }
     }
 
     // BlobInfo 생성 (버킷 이름, 파일 이름 지정)
