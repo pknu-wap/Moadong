@@ -30,12 +30,6 @@ public class SecurityConfig {
     @Value("${spring.cloud.gcp.credentials.location}")
     private String credentialsLocation;
 
-//    @Bean
-//    public Storage storage() throws IOException {
-//        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("/Users/hamgyubin/Documents/GitHub/Moadong/backend/src/main/resources/moadong.json"));
-//        return StorageOptions.newBuilder().setCredentials(credentials).build().getService();
-//        return StorageOptions.getDefaultInstance().getService();
-//    }
     @Bean
     public Storage storage() throws IOException {
         InputStream keyFile = ResourceUtils.getURL(credentialsLocation).openStream();
