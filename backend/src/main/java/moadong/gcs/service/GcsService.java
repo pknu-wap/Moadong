@@ -38,8 +38,7 @@ public class GcsService {
                 .orElseThrow(() -> new RestApiException(ErrorCode.CLUB_INFORMATION_NOT_FOUND));
 
         String filePath = uploadFile(clubId, file, "logo");
-        clubInfo.updateThumbnail(filePath);
-        clubInformationRepository.save(clubInfo);
+        clubInformationRepository.save(clubInfo.updateThumbnail(filePath));
         return filePath;
     }
 
