@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("club_information")
 @AllArgsConstructor
 @Getter
-@Builder
+@Builder(toBuilder = true)
 public class ClubInformation {
 
     @Id
@@ -53,5 +53,9 @@ public class ClubInformation {
         this.telephoneNumber = request.telephoneNumber();
         this.recruitmentStart = request.recruitmentStart();
         this.recruitmentEnd = request.recruitmentEnd();
+    }
+
+    public ClubInformation updateThumbnail(String newThumbnail) {
+        return this.toBuilder().thumbnail(newThumbnail).build();
     }
 }

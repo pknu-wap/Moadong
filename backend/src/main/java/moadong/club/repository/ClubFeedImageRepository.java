@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface ClubFeedImageRepository extends MongoRepository<ClubFeedImages, String> {
 
     List<ClubFeedImageProjection> findAllByClubId(String clubId);
+
+    long countByClubId(String clubId);
 }
