@@ -1,5 +1,6 @@
 import React from 'react';
 import * as Styled from './Header.styles';
+import SearchBox from '../SearchBox/SearchBox';
 
 const Header = () => {
   return (
@@ -8,10 +9,7 @@ const Header = () => {
         <Styled.LogoButtonStyles>Moadong</Styled.LogoButtonStyles>
         <Styled.IntroduceButtonStyles>모아동 소개</Styled.IntroduceButtonStyles>
       </Styled.TextCoverStyles>
-      <Styled.SearchBoxStyles>
-        <Styled.SearchInputStyles placeholder='어떤 동아리를 찾으세요?' />
-        <Styled.SearchButton />
-      </Styled.SearchBoxStyles>
+      <SearchBox />
     </Styled.HeaderStyles>
   );
 };
