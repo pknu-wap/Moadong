@@ -6,12 +6,12 @@ const Header = () => {
     <Styled.HeaderStyles>
       <Styled.TextCoverStyles>
         <Styled.LogoButtonStyles>Moadong</Styled.LogoButtonStyles>
-        <Styled.introduceButtonStyles>모아동 소개</Styled.introduceButtonStyles>
+        <Styled.IntroduceButtonStyles>모아동 소개</Styled.IntroduceButtonStyles>
       </Styled.TextCoverStyles>
-      <Styled.searchBoxStyles>
-        <Styled.searchInputStyles placeholder='어떤 동아리를 찾으세요?' />
+      <Styled.SearchBoxStyles>
+        <Styled.SearchInputStyles placeholder='어떤 동아리를 찾으세요?' />
         <Styled.SearchButton />
-      </Styled.searchBoxStyles>
+      </Styled.SearchBoxStyles>
     </Styled.HeaderStyles>
   );
 };

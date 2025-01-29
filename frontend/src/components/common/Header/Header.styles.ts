@@ -43,7 +43,7 @@ export const introduceButtonStyles = styled.button`
   cursor: pointer;
 `;
 
-export const searchBoxStyles = styled.form`
+export const SearchBoxStyles = styled.form`
   margin-top: 5px;
   margin-left: 100px;
   display: flex;
@@ -57,7 +57,7 @@ export const searchBoxStyles = styled.form`
   background-color: #eeeeee;
 `;
 
-export const searchInputStyles = styled.input`
+export const SearchInputStyles = styled.input`
   background-color: #eeeeee;
   height: 36px;
   border: none;
