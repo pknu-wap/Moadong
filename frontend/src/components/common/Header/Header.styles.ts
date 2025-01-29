@@ -13,6 +13,7 @@ export const HeaderStyles = styled.header`
 export const TextCoverStyles = styled.div`
   display: flex;
   width: 365px;
+  white-space: nowrap;
 `;
 
 // [x] TODO : img태그로 변경하여 메인 아이콘을 적용해야 한다.
