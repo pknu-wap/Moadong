@@ -39,8 +39,8 @@ public class GcsService {
                 .orElseThrow(() -> new RestApiException(ErrorCode.CLUB_INFORMATION_NOT_FOUND));
         if (clubInfo.getThumbnail() != null) {
             // https://storage.googleapis.com/{bucketName}/{clubId}/{fileType}/{filePath} -> {filePath}
-            String thumbnailPath = clubInfo.getThumbnail().split("/")[6];
-            deleteFile(clubId, thumbnailPath, "logo");
+            String thumbnailPath = clubInfo.getThumbnail().split("/",5)[4];
+            deleteFile(thumbnailPath);
         }
 
         String filePath = uploadFile(clubId, file, "logo");
@@ -82,9 +82,9 @@ public class GcsService {
         return "https://storage.googleapis.com/" + bucketName + "/" + blobInfo.getName();
     }
 
-    private void deleteFile(String clubId, String fileName, String fileType) {
+    private void deleteFile(String filePath) {
         // 삭제할 파일의 BlobId를 생성
-        BlobId blobId = BlobId.of(bucketName, clubId + "/" + fileType + "/" + fileName);
+        BlobId blobId = BlobId.of(bucketName,filePath);
 
         try {
             boolean deleted = storage.delete(blobId);
