@@ -3,7 +3,6 @@ package moadong.club.repository;
 import java.util.Optional;
 import moadong.club.entity.ClubInformation;
 import moadong.club.payload.dto.ClubThumbnailProjection;
-import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface ClubInformationRepository extends MongoRepository<ClubInformation, String> {

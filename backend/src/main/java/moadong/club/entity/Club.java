@@ -8,8 +8,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import moadong.club.payload.request.ClubUpdateRequest;
 import moadong.club.enums.ClubState;
+import moadong.club.payload.request.ClubUpdateRequest;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("club")

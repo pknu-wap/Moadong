@@ -5,7 +5,6 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import moadong.club.entity.Club;
 import moadong.club.entity.ClubFeedImages;
 import moadong.club.entity.ClubInformation;
 import moadong.club.repository.ClubFeedImageRepository;

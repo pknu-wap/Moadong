@@ -7,12 +7,19 @@ import moadong.club.payload.request.ClubCreateRequest;
 import moadong.club.payload.request.ClubUpdateRequest;
 import moadong.club.payload.response.ClubDetailedPageResponse;
 import moadong.club.payload.response.ClubSearchResponse;
+import moadong.club.service.ClubCommandService;
 import moadong.club.service.ClubDetailedPageService;
 import moadong.club.service.ClubSearchService;
-import moadong.club.service.ClubCommandService;
 import moadong.global.payload.Response;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/club")

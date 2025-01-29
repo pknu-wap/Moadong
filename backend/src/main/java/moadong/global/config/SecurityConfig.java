@@ -3,7 +3,6 @@ package moadong.global.config;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import org.springframework.beans.factory.annotation.Value;
