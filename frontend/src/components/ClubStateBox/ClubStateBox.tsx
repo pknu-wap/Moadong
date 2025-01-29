@@ -16,7 +16,7 @@ const stateStyles: Record<
     text: '모집예정',
   },
   모집마감: {
-    backgroundColor: 'rgba(239, 239, 239, 1)',
+    backgroundColor: 'rgba(239, 239, 239, 0.8)',
     color: '#818181',
     text: '모집마감',
   },
