@@ -10,6 +10,13 @@ export const HeaderStyles = styled.header`
   z-index: 1;
 `;
 
+export const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
 export const TextCoverStyles = styled.div`
   display: flex;
   width: 365px;
