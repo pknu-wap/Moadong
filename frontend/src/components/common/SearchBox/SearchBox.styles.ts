@@ -32,7 +32,7 @@ export const SearchInputStyles = styled.input`
 
 export const SearchButton = styled.button`
   padding: 8px 16px;
-  margin-left: 8px;
+  margin-left: 300px;
   border: none;
   background-color: blueviolet;
   color: white;
