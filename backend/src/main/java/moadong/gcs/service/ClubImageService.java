@@ -3,18 +3,17 @@ package moadong.gcs.service;
 import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import java.text.Normalizer;
 import java.util.List;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import moadong.club.entity.ClubFeedImages;
 import moadong.club.entity.ClubInformation;
 import moadong.club.repository.ClubFeedImageRepository;
 import moadong.club.repository.ClubInformationRepository;
-import moadong.club.repository.ClubRepository;
 import moadong.global.exception.ErrorCode;
 import moadong.global.exception.RestApiException;
+import moadong.global.util.RandomStringUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,9 +37,7 @@ public class GcsService {
         ClubInformation clubInfo = clubInformationRepository.findByClubId(clubId)
                 .orElseThrow(() -> new RestApiException(ErrorCode.CLUB_INFORMATION_NOT_FOUND));
         if (clubInfo.getThumbnail() != null) {
-            // https://storage.googleapis.com/{bucketName}/{clubId}/{fileType}/{filePath} -> {filePath}
-            String thumbnailPath = clubInfo.getThumbnail().split("/",5)[4];
-            deleteFile(thumbnailPath);
+            deleteFile(clubInfo.getThumbnail());
         }
 
         String filePath = uploadFile(clubId, file, "logo");
@@ -82,9 +79,9 @@ public class GcsService {
         return "https://storage.googleapis.com/" + bucketName + "/" + blobInfo.getName();
     }
 
-    private void deleteFile(String filePath) {
+    public void deleteFile(String filePath) {
         // 삭제할 파일의 BlobId를 생성
-        BlobId blobId = BlobId.of(bucketName,filePath);
+        BlobId blobId = BlobId.of(bucketName,splitPath(filePath));
 
         try {
             boolean deleted = storage.delete(blobId);
@@ -98,9 +95,27 @@ public class GcsService {
 
     // BlobInfo 생성 (버킷 이름, 파일 이름 지정)
     private BlobInfo getBlobInfo(String clubId, String fileType, MultipartFile file) {
-        String fileName = clubId + "/" + fileType + "/" + file.getOriginalFilename();
+        String originalFileName = file.getOriginalFilename();
+        String contentType = file.getContentType().split("/")[1];
+
+        if (containsKorean(originalFileName)) {
+            originalFileName = RandomStringUtil.generateRandomString(10) + "." + contentType;
+        }
+
+        // 한글이 포함된 파일 이름일 경우 랜덤 영어 문자열로 변환
+        String fileName = clubId + "/" + fileType + "/" + originalFileName;
         BlobId blobId = BlobId.of(bucketName, fileName);
 
         return BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
+    }
+
+    private String splitPath(String path) {
+        // https://storage.googleapis.com/{bucketName}/{clubId}/{fileType}/{filePath} -> {filePath}
+        return path.split("/",5)[4];
+    }
+
+    private boolean containsKorean(String text) {
+        text = Normalizer.normalize(text, Normalizer.Form.NFC);
+        return Pattern.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣]+.*", text);
     }
 }

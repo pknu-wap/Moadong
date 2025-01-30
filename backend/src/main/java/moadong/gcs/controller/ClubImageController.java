@@ -1,13 +1,15 @@
 package moadong.gcs.controller;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import moadong.gcs.dto.ImageDeleteRequest;
 import moadong.gcs.service.GcsService;
 import moadong.global.payload.Response;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +28,12 @@ public class GcsController {
                                         @RequestParam("logo") MultipartFile file) {
         String fileUrl = gcsService.uploadLogo(clubId, file);
         return Response.ok(fileUrl);
+    }
+
+    @DeleteMapping("/images")
+    public ResponseEntity<?> deleteLogo(@RequestBody ImageDeleteRequest imageDeleteRequest) {
+        gcsService.deleteFile(imageDeleteRequest.filePath());
+        return Response.ok("success delete image");
     }
 
     @PostMapping("/{clubId}/feeds")
