@@ -8,7 +8,8 @@ export const SearchBoxStyles = styled.form`
   justify-content: space-between;
   width: 500px;
   height: 36px;
-  padding: 20px;
+  padding: 10px 20px;
+
   border: none;
   border-radius: 41px;
   background-color: #eeeeee;
