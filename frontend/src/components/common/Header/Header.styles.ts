@@ -30,7 +30,6 @@ export const LogoButtonStyles = styled.button`
   height: 41px;
   background-color: transparent;
   border: none;
-  font-style: normal;
   font-weight: 400;
   font-size: 26px;
   line-height: 40px;
