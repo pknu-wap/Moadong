@@ -15,6 +15,8 @@ export const HeaderContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
 `;
 
 export const TextCoverStyles = styled.div`
