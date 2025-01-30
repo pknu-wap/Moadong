@@ -1,4 +1,4 @@
 package moadong.gcs.dto;
 
-public record ImageDeleteRequest() {
+public record ImageDeleteRequest(String filePath) {
 }

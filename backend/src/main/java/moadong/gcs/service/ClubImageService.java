@@ -5,6 +5,7 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import java.text.Normalizer;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import moadong.club.entity.ClubFeedImages;
@@ -20,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
-public class GcsService {
+public class ClubImageService {
 
     private final ClubInformationRepository clubInformationRepository;
     private final ClubFeedImageRepository clubFeedImageRepository;
@@ -90,6 +91,17 @@ public class GcsService {
             }
         } catch (Exception e) {
             throw new RestApiException(ErrorCode.IMAGE_DELETE_FAILED);
+        }
+
+        // https://storage.googleapis.com/{bucketName}/{clubId}/{fileType}/{filePath} -> {fileType}
+        String fileType = filePath.split("/")[5];
+        if (fileType.equals("feed")) {
+            clubFeedImageRepository.deleteAllByImage(filePath);
+
+        } else if (fileType.equals("logo")) {
+            ClubInformation clubInformation = clubInformationRepository.findByThumbnail(filePath)
+                    .orElseThrow(() -> new RestApiException(ErrorCode.CLUB_INFORMATION_NOT_FOUND));
+            clubInformationRepository.save(clubInformation.updateThumbnail(null));
         }
     }
 

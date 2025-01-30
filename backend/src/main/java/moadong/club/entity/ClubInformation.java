@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import moadong.club.payload.request.ClubUpdateRequest;
 import moadong.global.RegexConstants;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("club_information")
@@ -26,6 +27,7 @@ public class ClubInformation {
     private String clubId;
 
     @Column(length = 1024)
+    @Unique
     private String thumbnail;
 
     @Column(length = 30)
