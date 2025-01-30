@@ -5,11 +5,15 @@ import SearchBox from '../SearchBox/SearchBox';
 const Header = () => {
   return (
     <Styled.HeaderStyles>
-      <Styled.TextCoverStyles>
-        <Styled.LogoButtonStyles>Moadong</Styled.LogoButtonStyles>
-        <Styled.IntroduceButtonStyles>모아동 소개</Styled.IntroduceButtonStyles>
-      </Styled.TextCoverStyles>
-      <SearchBox />
+      <Styled.HeaderContainer>
+        <Styled.TextCoverStyles>
+          <Styled.LogoButtonStyles>Moadong</Styled.LogoButtonStyles>
+          <Styled.IntroduceButtonStyles>
+            모아동 소개
+          </Styled.IntroduceButtonStyles>
+          <SearchBox />
+        </Styled.TextCoverStyles>
+      </Styled.HeaderContainer>
     </Styled.HeaderStyles>
   );
 };
