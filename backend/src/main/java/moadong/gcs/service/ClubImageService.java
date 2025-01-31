@@ -98,7 +98,7 @@ public class ClubImageService {
             clubFeedImageRepository.deleteAllByImage(filePath);
 
         } else if (fileType.equals("logo")) {
-            ClubInformation clubInformation = clubInformationRepository.findByThumbnail(filePath)
+            ClubInformation clubInformation = clubInformationRepository.findByLogo(filePath)
                     .orElseThrow(() -> new RestApiException(ErrorCode.CLUB_INFORMATION_NOT_FOUND));
             clubInformationRepository.save(clubInformation.updateLogo(null));
         }

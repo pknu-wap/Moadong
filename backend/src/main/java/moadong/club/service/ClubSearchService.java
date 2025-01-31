@@ -7,7 +7,7 @@ import moadong.club.entity.Club;
 import moadong.club.enums.ClubState;
 import moadong.club.payload.dto.ClubSearchResult;
 import moadong.club.payload.dto.ClubTagProjection;
-import moadong.club.payload.dto.ClubThumbnailProjection;
+import moadong.club.payload.dto.ClubLogoProjection;
 import moadong.club.payload.response.ClubSearchResponse;
 import moadong.club.repository.ClubInformationRepository;
 import moadong.club.repository.ClubRepository;
@@ -32,8 +32,8 @@ public class ClubSearchService {
 
         List<ClubSearchResult> clubSearchResults = new ArrayList<>();
         for (Club club : clubs) {
-            String thumbnail = clubInformationRepository.findThumbnailByClubId(club.getId())
-                .map(ClubThumbnailProjection::getThumbnail)
+            String logo = clubInformationRepository.findLogoByClubId(club.getId())
+                .map(ClubLogoProjection::getLogo)
                 .orElse("null");
             List<String> clubTags = clubTagRepository.findAllByClubId(club.getId())
                 .stream()
@@ -43,7 +43,7 @@ public class ClubSearchService {
             ClubSearchResult clubSearchResult = ClubSearchResult.builder()
                 .clubId(club.getId())
                 .clubName(club.getName())
-                .clubImageUrl(thumbnail)
+                .clubImageUrl(logo)
                 .clubTags(clubTags)
                 .clubState(String.valueOf(club.getState().getDesc()))
                 .build();
