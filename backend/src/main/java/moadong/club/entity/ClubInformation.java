@@ -28,7 +28,7 @@ public class ClubInformation {
 
     @Column(length = 1024)
     @Unique
-    private String thumbnail;
+    private String logo;
 
     @Column(length = 30)
     private String introduction;
@@ -48,7 +48,7 @@ public class ClubInformation {
     private LocalDate recruitmentEnd;
 
     public void update(ClubUpdateRequest request) {
-        this.thumbnail = request.thumbnail();
+        this.logo = request.thumbnail();
         this.introduction = request.introduction();
         this.description = request.description();
         this.clubPresidentName = request.clubPresidentName();
@@ -57,7 +57,7 @@ public class ClubInformation {
         this.recruitmentEnd = request.recruitmentEnd();
     }
 
-    public ClubInformation updateThumbnail(String newThumbnail) {
-        return this.toBuilder().thumbnail(newThumbnail).build();
+    public ClubInformation updateLogo(String logo) {
+        return this.toBuilder().logo(logo).build();
     }
 }

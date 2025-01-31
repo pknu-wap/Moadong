@@ -5,7 +5,6 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import java.text.Normalizer;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import moadong.club.entity.ClubFeedImages;
@@ -37,12 +36,12 @@ public class ClubImageService {
 
         ClubInformation clubInfo = clubInformationRepository.findByClubId(clubId)
                 .orElseThrow(() -> new RestApiException(ErrorCode.CLUB_INFORMATION_NOT_FOUND));
-        if (clubInfo.getThumbnail() != null) {
-            deleteFile(clubInfo.getThumbnail());
+        if (clubInfo.getLogo() != null) {
+            deleteFile(clubInfo.getLogo());
         }
 
         String filePath = uploadFile(clubId, file, "logo");
-        clubInformationRepository.save(clubInfo.updateThumbnail(filePath));
+        clubInformationRepository.save(clubInfo.updateLogo(filePath));
         return filePath;
     }
 
@@ -101,7 +100,7 @@ public class ClubImageService {
         } else if (fileType.equals("logo")) {
             ClubInformation clubInformation = clubInformationRepository.findByThumbnail(filePath)
                     .orElseThrow(() -> new RestApiException(ErrorCode.CLUB_INFORMATION_NOT_FOUND));
-            clubInformationRepository.save(clubInformation.updateThumbnail(null));
+            clubInformationRepository.save(clubInformation.updateLogo(null));
         }
     }
 
