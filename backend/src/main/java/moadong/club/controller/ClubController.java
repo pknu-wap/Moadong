@@ -9,7 +9,7 @@ import moadong.club.payload.response.ClubDetailedPageResponse;
 import moadong.club.payload.response.ClubSearchResponse;
 import moadong.club.service.ClubCommandService;
 import moadong.club.service.ClubDetailedPageService;
-import moadong.club.service.ClubSearchService;
+import moadong.club.service.ClubSearchFilterService;
 import moadong.global.payload.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +29,7 @@ public class ClubController {
 
     private final ClubCommandService clubCommandService;
     private final ClubDetailedPageService clubDetailedPageService;
-    private final ClubSearchService clubSearchService;
+    private final ClubSearchFilterService clubSearchFilterService;
 
     @PostMapping("/")
     @Operation(summary = "클럽 생성", description = "클럽을 생성합니다.")
@@ -52,8 +52,12 @@ public class ClubController {
     }
 
     @GetMapping("/list/")
-    public ResponseEntity<?> getClassificationFilteredClubList(@RequestParam(value = "filter", required = false) String filter) {
-        ClubSearchResponse clubSearchResponse = clubSearchService.searchByClubStateFilter(filter);
+    public ResponseEntity<?> getClubsByFilter(
+            @RequestParam(value = "availability", required = false) String availability,
+            @RequestParam(value = "classification", required = false) String classification,
+            @RequestParam(value = "division", required = false) String division
+    ){
+        ClubSearchResponse clubSearchResponse = clubSearchFilterService.getClubsByFilter(availability, classification, division);
         return Response.ok(clubSearchResponse);
     }
 }

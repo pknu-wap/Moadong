@@ -7,6 +7,6 @@ import java.util.List;
 
 @Builder
 public record ClubSearchResponse(
-    List<ClubSearchResult> results
+        List<ClubSearchResult> clubs
 ) {
 }
