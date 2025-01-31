@@ -26,7 +26,7 @@ public class ClubInformation {
     private String clubId;
 
     @Column(length = 1024)
-    private String thumbnail;
+    private String logo;
 
     @Column(length = 30)
     private String introduction;
@@ -35,22 +35,22 @@ public class ClubInformation {
     private String description;
 
     @Column(length = 5)
-    private String clubPresidentName;
+    private String presidentName;
 
     @Pattern(regexp = RegexConstants.PHONE_NUMBER, message = "전화번호 형식이 올바르지 않습니다.")
     @Column(length = 13)
-    private String telephoneNumber;
+    private String presidentTelephoneNumber;
 
     private LocalDate recruitmentStart;
 
     private LocalDate recruitmentEnd;
 
     public void update(ClubUpdateRequest request) {
-        this.thumbnail = request.thumbnail();
+        this.logo = request.thumbnail();
         this.introduction = request.introduction();
         this.description = request.description();
-        this.clubPresidentName = request.clubPresidentName();
-        this.telephoneNumber = request.telephoneNumber();
+        this.presidentName = request.clubPresidentName();
+        this.presidentTelephoneNumber = request.telephoneNumber();
         this.recruitmentStart = request.recruitmentStart();
         this.recruitmentEnd = request.recruitmentEnd();
     }
