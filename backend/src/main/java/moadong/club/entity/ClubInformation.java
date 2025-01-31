@@ -10,12 +10,13 @@ import lombok.Builder;
 import lombok.Getter;
 import moadong.club.payload.request.ClubUpdateRequest;
 import moadong.global.RegexConstants;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("club_information")
 @AllArgsConstructor
 @Getter
-@Builder
+@Builder(toBuilder = true)
 public class ClubInformation {
 
     @Id
@@ -26,6 +27,7 @@ public class ClubInformation {
     private String clubId;
 
     @Column(length = 1024)
+    @Unique
     private String logo;
 
     @Column(length = 30)
@@ -53,5 +55,9 @@ public class ClubInformation {
         this.presidentTelephoneNumber = request.telephoneNumber();
         this.recruitmentStart = request.recruitmentStart();
         this.recruitmentEnd = request.recruitmentEnd();
+    }
+
+    public ClubInformation updateLogo(String logo) {
+        return this.toBuilder().logo(logo).build();
     }
 }

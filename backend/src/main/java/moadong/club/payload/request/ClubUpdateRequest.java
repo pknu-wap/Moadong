@@ -1,7 +1,6 @@
 package moadong.club.payload.request;
 
 import java.time.LocalDate;
-import org.springframework.cglib.core.Local;
 
 public record ClubUpdateRequest(
     String clubId,
