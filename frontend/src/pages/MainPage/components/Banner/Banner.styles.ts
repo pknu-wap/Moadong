@@ -65,3 +65,22 @@ export const BannerDescription = styled.p`
   letter-spacing: -0.02em;
 `;
 
+export const ButtonContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transform: translateY(-50%);
+  z-index: 10;
+`;
+
+export const NextButton = styled.button`
+  background-color: transparent;
+  color: black;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+`;
