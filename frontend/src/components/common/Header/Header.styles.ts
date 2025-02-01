@@ -6,36 +6,47 @@ export const HeaderStyles = styled.header`
   left: 0;
   top: 0;
   width: 100%;
-  height: 60px;
+  height: 52px;
   z-index: 1;
 `;
 
+export const HeaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+`;
+
+export const TextCoverStyles = styled.div`
+  display: flex;
+  width: 365px;
+  white-space: nowrap;
+`;
+
+// [x] TODO : img태그로 변경하여 메인 아이콘을 적용해야 한다.
 export const LogoButtonStyles = styled.button`
-  flex-grow: 0;
-  border: 0;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 36px;
-  height: 60px;
-  line-height: 60px;
-  letter-spacing: -0.03em;
+  margin-left: 130px;
+  width: 117px;
+  height: 41px;
   background-color: transparent;
+  border: none;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 40px;
+  letter-spacing: -0.03em;
   color: #000000;
-  margin-left: 140px;
   cursor: pointer;
 `;
 
-export const introduceButtonStyles = styled.button`
-  flex-grow: 0;
-  width: 81px;
-  height: 60px;
+export const IntroduceButtonStyles = styled.a`
+  margin-left: 45px;
+  width: 63px;
+  height: 43px;
   font-weight: 500;
-  font-size: 18px;
-  line-height: 60px;
+  font-size: 14px;
+  line-height: 42px;
   letter-spacing: -0.02em;
-  color: #262626;
-  margin-left: 70px;
-  border: none;
-  background: transparent;
   cursor: pointer;
 `;
