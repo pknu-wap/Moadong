@@ -16,7 +16,7 @@ export const BannerWrapper = styled.div<BannerProps>`
   position: relative;
   width: 1180px;
   height: 316px;
-  border-radius: 20px;
+  border-radius: 26px;
   overflow: hidden;
   background-color: #ffddad;
   ${({ backgroundImage }) =>
