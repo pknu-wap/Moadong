@@ -1,12 +1,17 @@
 import React from 'react';
-import GlobalStyles from './styles/Global.styels';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import GlobalStyles from '@/styles/Global.styels';
+import MainPage from '@/pages/MainPage/MainPage';
 
 const App = () => {
   return (
-    <>
+    <BrowserRouter>
       <GlobalStyles />
-      <div>Hello Hoj</div>;
-    </>
+      <Routes>
+        <Route path='/' element={<MainPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
+
 export default App;
