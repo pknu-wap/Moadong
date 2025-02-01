@@ -1,3 +1,6 @@
+interface BannerComponentProps {
+  banners: BannerProps[];
+}
   const slideRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const IMG_WIDTH = 1180;
