@@ -1,7 +1,6 @@
 import * as path from 'path';
 import * as webpack from 'webpack';
-// plugin
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import * as HtmlWebpackPlugin from 'html-webpack-plugin';
 
 const configuration: webpack.Configuration = {
   // 모듈 해석 방법 설정
