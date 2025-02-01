@@ -38,11 +38,17 @@ const Banner = ({ banners }: BannerComponentProps) => {
         </Styled.ButtonContainer>
         <Styled.SlideWrapper ref={slideRef}>
           {banners.map((banner, index) => (
-            <Styled.Dash
-              key={index}
-              style={{
-                backgroundImage: `url(${banner.backgroundImage})`,
-              }}></Styled.Dash>
+            <Styled.BannerItem key={index}>
+              <img
+                src={banner.backgroundImage}
+                alt={`banner-${index}`}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
+            </Styled.BannerItem>
           ))}
         </Styled.SlideWrapper>
       </Styled.BannerWrapper>
