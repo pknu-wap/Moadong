@@ -31,6 +31,7 @@ const configuration: webpack.Configuration = {
             console.error(
               '❌ Webpack Build Failed! Please check errors above.',
             );
+            console.error(stats.toJson().errors);
           } else if (stats.hasWarnings()) {
             console.warn('⚠️ Webpack Build Completed with Warnings.');
           } else {
