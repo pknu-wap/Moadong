@@ -35,7 +35,7 @@ export const SlideWrapper = styled.div`
   transition: all 0.5s ease-in-out;
 `;
 
-export const Dash = styled.div`
+export const BannerItem = styled.div`
   flex: none;
   width: 1180px;
   height: 316px;
