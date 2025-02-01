@@ -42,14 +42,9 @@ const Banner = ({ banners }: BannerComponentProps) => {
           {banners.map((banner, index) => (
             <Styled.Dash
               key={index}
-              style={{ backgroundImage: `url(${banner.backgroundImage})` }}>
-              <Styled.BannerTextContainer>
-                <Styled.BannerTitle>{banner.title}</Styled.BannerTitle>
-                <Styled.BannerDescription>
-                  {banner.description}
-                </Styled.BannerDescription>
-              </Styled.BannerTextContainer>
-            </Styled.Dash>
+              style={{
+                backgroundImage: `url(${banner.backgroundImage})`,
+              }}></Styled.Dash>
           ))}
         </Styled.SlideWrapper>
       </Styled.BannerWrapper>

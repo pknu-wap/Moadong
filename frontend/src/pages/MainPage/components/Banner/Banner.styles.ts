@@ -2,8 +2,6 @@ import styled from 'styled-components';
 
 export interface BannerProps {
   backgroundImage?: string;
-  title?: string;
-  description?: string;
 }
 
 export const BannerContainer = styled.div`
