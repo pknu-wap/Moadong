@@ -18,13 +18,11 @@ const Banner = ({ banners }: BannerComponentProps) => {
   }, [currentSlide]);
 
   const moveToNextSlide = () => {
-    if (currentSlide >= banners.length - 1) return;
-    setCurrentSlide((prev) => prev + 1);
+    setCurrentSlide((prev) => (prev + 1) % banners.length);
   };
 
   const moveToPrevSlide = () => {
-    if (currentSlide <= 0) return;
-    setCurrentSlide((prev) => prev - 1);
+    setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
   };
 
   return (
