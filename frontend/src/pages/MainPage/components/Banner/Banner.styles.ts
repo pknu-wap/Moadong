@@ -41,28 +41,6 @@ export const BannerItem = styled.div`
   height: 316px;
 `;
 
-export const BannerTextContainer = styled.div`
-  margin-left: 59px;
-  margin-top: 180px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
-
-export const BannerTitle = styled.h1`
-  font-size: 48px;
-  font-weight: bold;
-  color: #121212;
-  letter-spacing: -0.02em;
-`;
-
-export const BannerDescription = styled.p`
-  font-size: 27px;
-  font-weight: 400;
-  color: #000000;
-  letter-spacing: -0.02em;
-`;
-
 export const ButtonContainer = styled.div`
   position: absolute;
   width: 100%;
