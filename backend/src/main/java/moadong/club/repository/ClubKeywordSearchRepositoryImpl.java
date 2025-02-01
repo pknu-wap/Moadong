@@ -1,9 +1,7 @@
 package moadong.club.repository;
 
 import lombok.AllArgsConstructor;
-import moadong.club.entity.Club;
 import moadong.club.payload.dto.ClubSearchResult;
-import moadong.club.payload.response.ClubSearchResponse;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
@@ -16,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ClubKeywordSearchRepositoryImpl implements ClubKeywordSearchRepository {
     private final MongoTemplate mongoTemplate;
+
     @Override
     public List<ClubSearchResult> searchResult(String keyword) {
         Aggregation aggregation = Aggregation.newAggregation(
