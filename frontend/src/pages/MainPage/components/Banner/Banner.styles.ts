@@ -18,7 +18,7 @@ export const BannerWrapper = styled.div<BannerProps>`
   height: 316px;
   border-radius: 26px;
   overflow: hidden;
-  background-color: #ffddad;
+  background-color: transparent;
   ${({ backgroundImage }) =>
     backgroundImage &&
     `
