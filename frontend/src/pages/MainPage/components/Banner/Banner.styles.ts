@@ -52,7 +52,7 @@ export const ButtonContainer = styled.div`
   z-index: 10;
 `;
 
-export const NextButton = styled.button`
+export const SlideButton = styled.button`
   background-color: transparent;
   color: black;
   border: none;
