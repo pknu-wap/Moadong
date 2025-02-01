@@ -10,3 +10,13 @@ interface BannerComponentProps {
       slideRef.current.style.transform = `translateX(-${currentSlide * IMG_WIDTH}px)`;
     }
   }, [currentSlide]);
+
+  const moveToNextSlide = () => {
+    if (currentSlide >= banners.length - 1) return;
+    setCurrentSlide((prev) => prev + 1);
+  };
+
+  const moveToPrevSlide = () => {
+    if (currentSlide <= 0) return;
+    setCurrentSlide((prev) => prev - 1);
+  };
