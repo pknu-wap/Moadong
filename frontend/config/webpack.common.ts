@@ -11,7 +11,7 @@ const configuration: webpack.Configuration = {
 
     // 절대 경로
     alias: {
-      '@src': path.resolve(__dirname, '/src/'),
+      '@': path.resolve(__dirname, '../src'),
     },
   },
 
@@ -24,6 +24,13 @@ const configuration: webpack.Configuration = {
         test: /\.(ts|tsx|js|jsx)$/,
         use: ['ts-loader'],
         exclude: /node_modules/,
+      },
+      {
+        test: /\.(png|jpe?g|svg)$/i,
+        type: 'asset/resource',
+        generator: {
+          filename: 'images/[hash][ext][query]',
+        },
       },
     ],
   },
