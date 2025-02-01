@@ -29,12 +29,12 @@ const Banner = ({ banners }: BannerComponentProps) => {
     <Styled.BannerContainer>
       <Styled.BannerWrapper>
         <Styled.ButtonContainer>
-          <Styled.NextButton onClick={moveToPrevSlide}>
+          <Styled.SlideButton onClick={moveToPrevSlide}>
             <img src='/prevButton.png' />
-          </Styled.NextButton>
-          <Styled.NextButton onClick={moveToNextSlide}>
+          </Styled.SlideButton>
+          <Styled.SlideButton onClick={moveToNextSlide}>
             <img src='/nextButton.png' />
-          </Styled.NextButton>
+          </Styled.SlideButton>
         </Styled.ButtonContainer>
         <Styled.SlideWrapper ref={slideRef}>
           {banners.map((banner, index) => (
