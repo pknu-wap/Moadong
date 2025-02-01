@@ -1,10 +1,9 @@
 import * as path from 'path';
 import * as webpack from 'webpack';
-import 'webpack-dev-server';
 import { merge } from 'webpack-merge';
+import * as RefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import 'webpack-dev-server';
 import common from './webpack.common';
-
-const RefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const configuration: webpack.Configuration = {
   mode: 'development',
@@ -31,6 +30,7 @@ const configuration: webpack.Configuration = {
             console.error(
               '❌ Webpack Build Failed! Please check errors above.',
             );
+            console.error(stats.toJson().errors);
           } else if (stats.hasWarnings()) {
             console.warn('⚠️ Webpack Build Completed with Warnings.');
           } else {
