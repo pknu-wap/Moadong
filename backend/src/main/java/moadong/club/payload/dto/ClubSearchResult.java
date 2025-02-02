@@ -11,7 +11,7 @@ public record ClubSearchResult(
         String state,
         String classification,
         String division,
-        String description
+        String introduction
 ) {
     public static ClubSearchResult createClubSearchResult(
             String id,
@@ -21,7 +21,7 @@ public record ClubSearchResult(
             String state,
             String classification,
             String division,
-            String description
+            String introduction
     ){
         return ClubSearchResult.builder()
                 .id(id)
@@ -31,7 +31,7 @@ public record ClubSearchResult(
                 .state(state)
                 .classification(classification)
                 .division(division)
-                .description(description)
+                .introduction(introduction)
                 .build();
     }
 }

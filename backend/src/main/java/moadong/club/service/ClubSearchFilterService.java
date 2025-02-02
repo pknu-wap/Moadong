@@ -55,7 +55,7 @@ public class ClubSearchFilterService {
                     .state(String.valueOf(club.getState().getDesc()))
                     .division(club.getDivision())
                     .classification(club.getClassification())
-                    .description(informationByClubId.getDescription())
+                    .introduction(informationByClubId.getIntroduction())
                     .build();
 
             clubSearchResults.add(clubSearchResult);

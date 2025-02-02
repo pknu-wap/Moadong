@@ -2,7 +2,7 @@ package moadong.club.payload.dto;
 
 public interface ClubInformationSearchProjection {
     String getLogo();
-    String getDescription();
+    String getIntroduction();
 
     static ClubInformationSearchProjection empty() {
         return new ClubInformationSearchProjection() {
@@ -12,7 +12,7 @@ public interface ClubInformationSearchProjection {
             }
 
             @Override
-            public String getDescription() {
+            public String getIntroduction() {
                 return "";
             }
         };
