@@ -29,7 +29,7 @@ jobs:
       run: | 
         cd ./backend/src/main/resources
         touch ./application-prod.properties
-        echo "${{ secrets.APPLICATION_PROD_DEV }}" > ./application-prod.properties
+        echo "${{ secrets.APPLICATION_PROD_DEV }}" > ./application.properties
 
     - name: Grant execute permission for gradlew
       run: chmod +x ./backend/gradlew
@@ -83,7 +83,7 @@ jobs:
         newgrp docker
         
         docker pull ${{ secrets.DOCKER_IMAGE_DEV }} &&
-        docker run -d --name moadong -p 8080:8080 ${{ secrets.DOCKER_IMAGE_DEV }}"
+        docker run -d --name moadong -v /home/wabi241202/gce_sa_key.json:/app/gce_sa_key.json -p 8080:8080 ${{ secrets.DOCKER_IMAGE_DEV }}"
         
 
 #     - name: Docker build
