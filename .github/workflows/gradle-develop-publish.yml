@@ -84,6 +84,7 @@ jobs:
         
         docker pull ${{ secrets.DOCKER_IMAGE_DEV }} &&
         docker run -d --name moadong -p 8080:8080 ${{ secrets.DOCKER_IMAGE_DEV }}"
+        
 
 #     - name: Docker build
 #       run: |
