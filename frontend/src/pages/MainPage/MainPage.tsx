@@ -4,6 +4,8 @@ import ClubCard from '@/pages/MainPage/components/ClubCard/ClubCard';
 import StatusRadioButton from '@/pages/MainPage/components/StatusRadioButton/StatusRadioButton';
 import { mockClubs } from '@/apis/mockClubs';
 import * as Styled from './MainPage.styles';
+import Banner from '@/pages/MainPage/components/Banner/Banner';
+import { BannerImageList } from '@/utils/banners';
 
 const MainPage = () => {
   const [isFilterActive, setIsFilterActive] = useState(false);
@@ -38,6 +40,7 @@ const MainPage = () => {
 
   return (
     <Styled.PageContainer>
+      <Banner banners={BannerImageList} />
       <CategoryButtonList onCategorySelect={handleCategorySelect} />
       <Styled.FilterWrapper>
         <StatusRadioButton onChange={handleFilterChange} />
