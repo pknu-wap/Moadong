@@ -4,22 +4,6 @@ export const CategoryButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: nowrap;
-
-  @media (max-width: 1280px) {
-    gap: calc(5vw + 10px);
-  }
-
-  @media (max-width: 700px) {
-    gap: calc(4vw + 5px);
-  }
-
-  @media (max-width: 480px) {
-    gap: calc(3vw + 2px);
-  }
-
-  @media (max-width: 375px) {
-    gap: 8px;
-  }
 `;
 
 export const CategoryButton = styled.button`
