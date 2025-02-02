@@ -1,23 +1,11 @@
 import React from 'react';
-import ClubTag from '../../../components/ClubTag/ClubTag';
-import ClubLogo from '../../../components/ClubLogo/ClubLogo';
-import ClubStateBox from '../../../components/ClubStateBox/ClubStateBox';
+import ClubTag from '@/components/ClubTag/ClubTag';
+import ClubLogo from '@/components/ClubLogo/ClubLogo';
+import ClubStateBox from '@/components/ClubStateBox/ClubStateBox';
 import * as Styled from './ClubCard.styles';
+import { Club } from '@/types/club';
 
-interface ClubCardProps {
-  club: {
-    id: string;
-    name: string;
-    logo: string;
-    tags: string[];
-    state: string;
-    division: string;
-    classification: string;
-    description: string;
-  };
-}
-
-const ClubCard = ({ club }: ClubCardProps) => {
+const ClubCard = ({ club }: Club) => {
   return (
     <Styled.CardContainer state={club.state}>
       <Styled.CardHeader>
