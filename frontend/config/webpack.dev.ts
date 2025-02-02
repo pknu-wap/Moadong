@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as webpack from 'webpack';
 import { merge } from 'webpack-merge';
-import * as RefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+const RefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 import 'webpack-dev-server';
 import common from './webpack.common';
 
