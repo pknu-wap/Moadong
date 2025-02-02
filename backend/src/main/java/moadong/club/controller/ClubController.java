@@ -10,6 +10,7 @@ import moadong.club.payload.response.ClubSearchResponse;
 import moadong.club.service.ClubCommandService;
 import moadong.club.service.ClubDetailedPageService;
 import moadong.club.service.ClubSearchFilterService;
+import moadong.club.service.ClubSearchService;
 import moadong.global.payload.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ public class ClubController {
     private final ClubCommandService clubCommandService;
     private final ClubDetailedPageService clubDetailedPageService;
     private final ClubSearchFilterService clubSearchFilterService;
+    private final ClubSearchService clubSearchService;
 
     @PostMapping("/")
     @Operation(summary = "클럽 생성", description = "클럽을 생성합니다.")
@@ -58,6 +60,14 @@ public class ClubController {
             @RequestParam(value = "division", required = false) String division
     ){
         ClubSearchResponse clubSearchResponse = clubSearchFilterService.getClubsByFilter(availability, classification, division);
+        return Response.ok(clubSearchResponse);
+    }
+
+    @GetMapping("/search/")
+    public ResponseEntity<?> searchClubsByKeyword(
+            @RequestParam(value = "keyword", required = true) String keyword
+    ){
+        ClubSearchResponse clubSearchResponse = clubSearchService.searchClubsByKeyword(keyword);
         return Response.ok(clubSearchResponse);
     }
 }
