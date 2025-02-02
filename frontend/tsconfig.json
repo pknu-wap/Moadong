@@ -17,7 +17,7 @@
     }
   },
   "include": ["src",
-    "types/global.d.ts"
+    "src/types/global.d.ts"
   ],
   "exclude": ["node_modules", "dist"]
 }
