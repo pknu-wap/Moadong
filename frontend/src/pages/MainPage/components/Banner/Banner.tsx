@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import * as Styled from './Banner.styles';
 import { BannerProps } from './Banner.styles';
+import { SlideButton } from '@/utils/banners';
 
 interface BannerComponentProps {
   banners: BannerProps[];
@@ -30,10 +31,10 @@ const Banner = ({ banners }: BannerComponentProps) => {
       <Styled.BannerWrapper>
         <Styled.ButtonContainer>
           <Styled.SlideButton onClick={moveToPrevSlide}>
-            <img src='/prevButton.png' />
+            <img src={SlideButton[0]} />
           </Styled.SlideButton>
           <Styled.SlideButton onClick={moveToNextSlide}>
-            <img src='/nextButton.png' />
+            <img src={SlideButton[1]} />
           </Styled.SlideButton>
         </Styled.ButtonContainer>
         <Styled.SlideWrapper ref={slideRef}>
