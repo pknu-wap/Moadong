@@ -6,7 +6,7 @@ const CardContainer = styled.div<{ state: string }>`
   border-radius: 14px;
   padding: 20px;
   background-color: #fff;
-  width: 370px;
+  width: 100%;
   height: 170px;
   box-shadow: ${({ state }) =>
     state === '모집중'
@@ -38,8 +38,10 @@ const TagsContainer = styled.div`
 
 const Description = styled.p`
   font-size: 0.875rem;
-  margin: 17px 3px 35px 5px;
+  margin: 22px 3px 22px 5px;
   color: rgba(129, 129, 129, 1);
+  line-height: 16px;
+  white-space: nowrap;
 `;
 
 export {
