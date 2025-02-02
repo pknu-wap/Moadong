@@ -48,12 +48,14 @@ public class ClubController {
     }
 
     @GetMapping("/{clubId}")
+    @Operation(summary = "클럽 상세 정보 조회", description = "클럽 상세 정보를 조회합니다.")
     public ResponseEntity<?> getClubDetailedPage(@PathVariable String clubId) {
         ClubDetailedPageResponse clubDetailedPageResponse = clubDetailedPageService.getClubDetailedPage(clubId);
         return Response.ok(clubDetailedPageResponse);
     }
 
     @GetMapping("/list/")
+    @Operation(summary = "클럽 리스트 조회(모집,분과,종류에 따른 구분)", description = "모집,분과,종류에 따른 구분에 따라 클럽 리스트 조회합니다.")
     public ResponseEntity<?> getClubsByFilter(
             @RequestParam(value = "availability", required = false) String availability,
             @RequestParam(value = "classification", required = false) String classification,
@@ -64,6 +66,7 @@ public class ClubController {
     }
 
     @GetMapping("/search/")
+    @Operation(summary = "키워드에 맞는 클럽을 검색합니다.", description = "이름,태그,소개에 따라 검색합니다.")
     public ResponseEntity<?> searchClubsByKeyword(
             @RequestParam(value = "keyword", required = true) String keyword
     ){

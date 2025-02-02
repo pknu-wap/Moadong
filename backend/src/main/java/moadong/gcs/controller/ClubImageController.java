@@ -1,6 +1,9 @@
 package moadong.gcs.controller;
 
 import java.util.List;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import moadong.gcs.dto.ImageDeleteRequest;
 import moadong.gcs.service.ClubImageService;
@@ -18,12 +21,14 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/api/club")
 @RequiredArgsConstructor
+@Tag(name = "ClubImage", description = "클럽 이미지 관련 API")
 public class ClubImageController {
 
     private final ClubImageService clubImageService;
 
 
     @PostMapping("/{clubId}/logo")
+    @Operation(summary = "로고 이미지 업로드", description = "로고 이미지를 저장소에 업로드합니다.")
     public ResponseEntity<?> uploadLogo(@PathVariable String clubId,
                                         @RequestParam("logo") MultipartFile file) {
         String fileUrl = clubImageService.uploadLogo(clubId, file);
@@ -31,12 +36,14 @@ public class ClubImageController {
     }
 
     @DeleteMapping("/images")
+    @Operation(summary = "동아리 이미지 삭제", description = "저장소에 있는 동아리 이미지를 삭제합니다.")
     public ResponseEntity<?> deleteFile(@RequestBody ImageDeleteRequest imageDeleteRequest) {
         clubImageService.deleteFile(imageDeleteRequest.filePath());
         return Response.ok("success delete image");
     }
 
     @PostMapping("/{clubId}/feeds")
+    @Operation(summary = "피드 이미지 업로드", description = "피드 이미지를 저장소에 업로드합니다.")
     public ResponseEntity<?> uploadLogo(@PathVariable String clubId,
                                         @RequestParam("feeds") List<MultipartFile> files) {
         clubImageService.uploadFeeds(clubId, files);
