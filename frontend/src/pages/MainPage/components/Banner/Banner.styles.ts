@@ -14,15 +14,17 @@ export const BannerContainer = styled.div`
 
 export const BannerWrapper = styled.div<BannerProps>`
   position: relative;
-  width: 1180px;
-  height: 316px;
+  width: 100%;
+  max-width: 1180px;
+  height: auto;
+  aspect-ratio: 1180 / 316;
   border-radius: 26px;
   overflow: hidden;
   background-color: transparent;
   ${({ backgroundImage }) =>
     backgroundImage &&
     `
-    background-image : url(${backgroundImage});
+    background-image: url(${backgroundImage});
     background-size: cover;
     background-position: center;
     `}
@@ -37,10 +39,13 @@ export const SlideWrapper = styled.div`
 
 export const BannerItem = styled.div`
   flex: none;
-  width: 1180px;
-  height: 316px;
+  width: 100%;
+  height: 100%;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 `;
-
 export const ButtonContainer = styled.div`
   position: absolute;
   width: 100%;
