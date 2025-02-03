@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import * as Styled from './Banner.styles';
 import { BannerProps } from './Banner.styles';
 import { SlideButton } from '@/utils/banners';
@@ -10,13 +10,32 @@ interface BannerComponentProps {
 const Banner = ({ banners }: BannerComponentProps) => {
   const slideRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const IMG_WIDTH = 1180;
+  const [slideWidth, setSlideWidth] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  const updateSlideWidth = useCallback(() => {
+    if (slideRef.current) {
+      setSlideWidth(slideRef.current.offsetWidth);
+      setIsAnimating(false);
+      slideRef.current.style.transform = `translateX(-${currentSlide * slideRef.current.offsetWidth}px)`;
+    }
+  }, [currentSlide]);
+
+  useEffect(() => {
+    updateSlideWidth();
+    window.addEventListener('resize', updateSlideWidth);
+
+    return () => {
+      window.removeEventListener('resize', updateSlideWidth);
+    };
+  }, [updateSlideWidth]);
 
   useEffect(() => {
     if (slideRef.current) {
-      slideRef.current.style.transform = `translateX(-${currentSlide * IMG_WIDTH}px)`;
+      setIsAnimating(true);
+      slideRef.current.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
     }
-  }, [currentSlide]);
+  }, [currentSlide, slideWidth]);
 
   const moveToNextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % banners.length);
@@ -37,7 +56,7 @@ const Banner = ({ banners }: BannerComponentProps) => {
             <img src={SlideButton[1]} />
           </Styled.SlideButton>
         </Styled.ButtonContainer>
-        <Styled.SlideWrapper ref={slideRef}>
+        <Styled.SlideWrapper ref={slideRef} isAnimating={isAnimating}>
           {banners.map((banner, index) => (
             <Styled.BannerItem key={index}>
               <img
