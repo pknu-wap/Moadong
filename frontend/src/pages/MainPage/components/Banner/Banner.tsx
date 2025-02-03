@@ -50,10 +50,10 @@ const Banner = ({ banners }: BannerComponentProps) => {
       <Styled.BannerWrapper>
         <Styled.ButtonContainer>
           <Styled.SlideButton onClick={moveToPrevSlide}>
-            <img src={SlideButton[0]} />
+            <img src={SlideButton[0]} alt='Previous Slide' />
           </Styled.SlideButton>
           <Styled.SlideButton onClick={moveToNextSlide}>
-            <img src={SlideButton[1]} />
+            <img src={SlideButton[1]} alt='Next Slide' />
           </Styled.SlideButton>
         </Styled.ButtonContainer>
         <Styled.SlideWrapper ref={slideRef} isAnimating={isAnimating}>
