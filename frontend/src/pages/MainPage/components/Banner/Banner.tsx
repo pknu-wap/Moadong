@@ -11,7 +11,7 @@ const Banner = ({ banners }: BannerComponentProps) => {
   const slideRef = useRef<HTMLDivElement>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slideWidth, setSlideWidth] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(true);
 
   const updateSlideWidth = useCallback(() => {
     if (slideRef.current) {
