@@ -30,11 +30,14 @@ export const BannerWrapper = styled.div<BannerProps>`
     `}
 `;
 
-export const SlideWrapper = styled.div`
+export const SlideWrapper = styled.div<{ isAnimating: boolean }>`
   display: flex;
   width: 100%;
   height: 100%;
-  transition: all 0.5s ease-in-out;
+  ${({ isAnimating }) =>
+    isAnimating
+      ? 'transition: transform 0.5s ease-in-out;'
+      : 'transition: none;'}
 `;
 
 export const BannerItem = styled.div`
@@ -45,6 +48,7 @@ export const BannerItem = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
 `;
 export const ButtonContainer = styled.div`
   position: absolute;
