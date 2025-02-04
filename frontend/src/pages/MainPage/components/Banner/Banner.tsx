@@ -9,7 +9,7 @@ interface BannerComponentProps {
 
 const Banner = ({ banners }: BannerComponentProps) => {
   const slideRef = useRef<HTMLDivElement>(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [slideWidth, setSlideWidth] = useState(0);
   const [isAnimating, setIsAnimating] = useState(true);
 
@@ -17,9 +17,9 @@ const Banner = ({ banners }: BannerComponentProps) => {
     if (slideRef.current) {
       setSlideWidth(slideRef.current.offsetWidth);
       setIsAnimating(false);
-      slideRef.current.style.transform = `translateX(-${currentSlide * slideRef.current.offsetWidth}px)`;
+      slideRef.current.style.transform = `translateX(-${currentSlideIndex * slideRef.current.offsetWidth}px)`;
     }
-  }, [currentSlide]);
+  }, [currentSlideIndex]);
 
   useEffect(() => {
     updateSlideWidth();
@@ -33,16 +33,18 @@ const Banner = ({ banners }: BannerComponentProps) => {
   useEffect(() => {
     if (slideRef.current) {
       setIsAnimating(true);
-      slideRef.current.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+      slideRef.current.style.transform = `translateX(-${currentSlideIndex * slideWidth}px)`;
     }
-  }, [currentSlide, slideWidth]);
+  }, [currentSlideIndex, slideWidth]);
 
   const moveToNextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % banners.length);
+    setCurrentSlideIndex((prev) => (prev + 1) % banners.length);
   };
 
   const moveToPrevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + banners.length) % banners.length);
+    setCurrentSlideIndex(
+      (prev) => (prev - 1 + banners.length) % banners.length,
+    );
   };
 
   return (
