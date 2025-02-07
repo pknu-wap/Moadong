@@ -22,7 +22,9 @@ jobs:
           cache: gradle  # Gradle 캐싱 활성화
 
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: |
+          cd ./backend
+          chmod +x gradlew
 
       - name: Test with Gradle
         run: |
