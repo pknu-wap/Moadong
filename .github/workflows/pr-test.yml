@@ -25,7 +25,10 @@ jobs:
         run: chmod +x gradlew
 
       - name: Test with Gradle
-        run: ./gradlew --info test
+        run: |
+          cd ./backend
+          ./gradlew --info test
+
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2 # JUnit, NUnit, xUnit 등의 테스트 결과를 자동으로 PR에 표시하는 GitHub Action
