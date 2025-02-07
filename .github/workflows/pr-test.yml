@@ -36,6 +36,9 @@ jobs:
           name: "gce_sa_key.json"
           json: ${{ secrets.GCE_SA_KEY }}
 
+      - name: Move JSON file
+        run: mv gce_sa_key.json /app/gce_sa_key.json
+
       - name: Grant execute permission for gradlew and test
         run: |
           cd ./backend
