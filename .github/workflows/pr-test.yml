@@ -38,6 +38,7 @@ jobs:
 
       - name: Move JSON file
         run: |
+          ls
           mkdir app
           mv gce_sa_key.json /app/gce_sa_key.json
 
