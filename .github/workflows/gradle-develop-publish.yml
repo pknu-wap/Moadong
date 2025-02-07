@@ -28,7 +28,6 @@ jobs:
     - name: make application.properties
       run: | 
         cd ./backend/src/main/resources
-        touch ./application.properties
         echo "${{ secrets.APPLICATION_PROD_DEV }}" > ./application.properties
 
     - name: Grant execute permission for gradlew
