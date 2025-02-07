@@ -2,7 +2,7 @@ name: Test
 
 on:
   pull_request:
-    branches: [ "develop/be" ]  # develop/be 브랜치에 pr 시 실행
+    branches: [ "develop/be" ]  # develop/be 브랜치에 PR 시 실행
 
 jobs:
   test:
@@ -21,16 +21,19 @@ jobs:
           distribution: 'temurin'
           cache: gradle  # Gradle 캐싱 활성화
 
-      - name: Grant execute permission for gradlew
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+
+      - name: make application.properties
+        run: | 
+          cd ./backend/src/main/resources
+          echo "${{ secrets.APPLICATION_PROD_DEV }}" > ./application.properties
+
+      - name: Grant execute permission for gradlew and test
         run: |
           cd ./backend
           chmod +x gradlew
-
-      - name: Test with Gradle
-        run: |
-          cd ./backend
           ./gradlew --info test
-
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action@v2 # JUnit, NUnit, xUnit 등의 테스트 결과를 자동으로 PR에 표시하는 GitHub Action
