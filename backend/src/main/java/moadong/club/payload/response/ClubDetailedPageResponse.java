@@ -8,27 +8,35 @@ import java.util.List;
 
 @Builder
 public record ClubDetailedPageResponse(
-        String clubId,
-        String clubName,
-        String clubImageUrl,
-        List<String> clubTags,
-        String clubState,
-        List<String> clubFeeds,
-        String clubDescription,
-        String clubPresidentName,
-        String clubPresidentPhoneNumber,
-        String clubPeriod
+        String id,
+        String name,
+        String logo,
+        List<String> tags,
+        String state,
+        List<String> feeds,
+        String description,
+        String presidentName,
+        String presidentPhoneNumber,
+        String recruitmentPeriod,
+        String classification,
+        String division
 ) {
-    public static ClubDetailedPageResponse createClubDetailedPageResponse(Club club, ClubInformation clubInformation, List<String> clubFeedImages, List<String> clubTags) {
+    public static ClubDetailedPageResponse createClubDetailedPageResponse(
+            Club club,
+            ClubInformation clubInformation,
+            List<String> clubFeedImages,
+            List<String> clubTags) {
         return ClubDetailedPageResponse.builder()
-                .clubId(club.getId())
-                .clubName(club.getName())
-                .clubState(club.getState().getDesc())
-                .clubDescription(clubInformation.getDescription())
-                .clubPresidentName(clubInformation.getPresidentName())
-                .clubPresidentPhoneNumber(clubInformation.getPresidentTelephoneNumber())
-                .clubFeeds(clubFeedImages)
-                .clubTags(clubTags)
+                .id(club.getId())
+                .name(club.getName())
+                .classification(club.getClassification())
+                .division(club.getDivision())
+                .state(club.getState().getDesc())
+                .description(clubInformation.getDescription())
+                .presidentName(clubInformation.getPresidentName())
+                .presidentPhoneNumber(clubInformation.getPresidentTelephoneNumber())
+                .feeds(clubFeedImages)
+                .tags(clubTags)
                 .build();
     }
 }
