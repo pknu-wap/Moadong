@@ -9,7 +9,6 @@ import moadong.club.payload.response.ClubDetailedResponse;
 import moadong.club.payload.response.ClubSearchResponse;
 import moadong.club.service.ClubCommandService;
 import moadong.club.service.ClubDetailedPageService;
-import moadong.club.service.ClubSearchFilterService;
 import moadong.club.service.ClubSearchService;
 import moadong.global.payload.Response;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +29,6 @@ public class ClubController {
 
     private final ClubCommandService clubCommandService;
     private final ClubDetailedPageService clubDetailedPageService;
-    private final ClubSearchFilterService clubSearchFilterService;
     private final ClubSearchService clubSearchService;
 
     @PostMapping("/")
@@ -53,24 +51,24 @@ public class ClubController {
         ClubDetailedResponse clubDetailedPageResponse = clubDetailedPageService.getClubDetailedPage(clubId);
         return Response.ok(clubDetailedPageResponse);
     }
-
-    @GetMapping("/list/")
-    @Operation(summary = "클럽 리스트 조회(모집,분과,종류에 따른 구분)", description = "모집,분과,종류에 따른 구분에 따라 클럽 리스트 조회합니다.")
-    public ResponseEntity<?> getClubsByFilter(
-            @RequestParam(value = "availability", required = false) String availability,
+    @GetMapping("/search/")
+    @Operation(summary = "키워드에 맞는 클럽을 검색합니다.(모집,분과,종류에 따른 구분)",
+            description = "모집,분과,종류에 필터링 이후 이름,태그,소개에 따라 검색합니다."
+                    + "\nkeyword에 빈칸 입력 시 전체 검색"
+                    + "\nrecruitmentStatus, classification, division에 all 입력 시 전체 검색"
+                    + "\nkeyword는 대소문자 구분 없고 일부분만 들어가도 검색이 가능하나, 나머지는 정확히 똑같아야 함")
+    public ResponseEntity<?> searchClubsByKeyword(
+            @RequestParam(value = "keyword", required = false) String keyword,
+            @RequestParam(value = "recruitmentStatus", required = false) String recruitmentStatus,
             @RequestParam(value = "classification", required = false) String classification,
             @RequestParam(value = "division", required = false) String division
     ){
-        ClubSearchResponse clubSearchResponse = clubSearchFilterService.getClubsByFilter(availability, classification, division);
-        return Response.ok(clubSearchResponse);
-    }
-
-    @GetMapping("/search/")
-    @Operation(summary = "키워드에 맞는 클럽을 검색합니다.", description = "이름,태그,소개에 따라 검색합니다.")
-    public ResponseEntity<?> searchClubsByKeyword(
-            @RequestParam(value = "keyword", required = true) String keyword
-    ){
-        ClubSearchResponse clubSearchResponse = clubSearchService.searchClubsByKeyword(keyword);
+        ClubSearchResponse clubSearchResponse = clubSearchService.searchClubsByKeyword(
+                keyword,
+                recruitmentStatus,
+                division,
+                classification
+                );
         return Response.ok(clubSearchResponse);
     }
 }

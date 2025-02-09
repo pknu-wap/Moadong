@@ -11,27 +11,7 @@ public record ClubSearchResult(
         String state,
         String classification,
         String division,
-        String introduction
+        String introduction,
+        String recruitmentStatus
 ) {
-    public static ClubSearchResult createClubSearchResult(
-            String id,
-            String name,
-            String logo,
-            List<String> tags,
-            String state,
-            String classification,
-            String division,
-            String introduction
-    ){
-        return ClubSearchResult.builder()
-                .id(id)
-                .name(name)
-                .logo(logo)
-                .tags(tags)
-                .state(state)
-                .classification(classification)
-                .division(division)
-                .introduction(introduction)
-                .build();
-    }
 }
