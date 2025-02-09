@@ -1,18 +1,22 @@
 import React from 'react';
 import * as Styled from './Header.styles';
-import SearchBox from '../SearchBox/SearchBox';
+
+import SearchBox from '@/components/common/SearchBox/SearchBox';
+import MainIcon from '../../../assets/images/mainIcon.png';
 
 const Header = () => {
   return (
     <Styled.HeaderStyles>
       <Styled.HeaderContainer>
         <Styled.TextCoverStyles>
-          <Styled.LogoButtonStyles>Moadong</Styled.LogoButtonStyles>
+          <Styled.LogoButtonStyles>
+            <img src={MainIcon} />
+          </Styled.LogoButtonStyles>
           <Styled.IntroduceButtonStyles>
             모아동 소개
           </Styled.IntroduceButtonStyles>
-          <SearchBox />
         </Styled.TextCoverStyles>
+        <SearchBox />
       </Styled.HeaderContainer>
     </Styled.HeaderStyles>
   );
