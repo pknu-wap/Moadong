@@ -1,8 +1,7 @@
 import React from 'react';
 import * as Styled from './Header.styles';
-
 import SearchBox from '@/components/common/SearchBox/SearchBox';
-import MainIcon from '../../../assets/images/mainIcon.png';
+import MainIcon from '@/assets/images/mainIcon.png';
 
 const Header = () => {
   return (

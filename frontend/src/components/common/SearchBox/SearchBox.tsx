@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Styled from './SearchBox.styles';
-import SearchIcon from '../../../assets/images/searchIcon.png';
+import SearchIcon from '@/assets/images/searchIcon.png';
 
 const SearchBox = () => {
   return (
