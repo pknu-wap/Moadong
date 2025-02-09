@@ -1,6 +1,8 @@
 package moadong.club.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -8,6 +10,7 @@ import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import moadong.club.enums.RecruitmentStatus;
 import moadong.club.payload.request.ClubUpdateRequest;
 import moadong.global.RegexConstants;
 import org.checkerframework.common.aliasing.qual.Unique;
@@ -46,6 +49,9 @@ public class ClubInformation {
     private LocalDate recruitmentStart;
 
     private LocalDate recruitmentEnd;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private RecruitmentStatus recruitmentStatus;
 
     public void update(ClubUpdateRequest request) {
         this.logo = request.thumbnail();

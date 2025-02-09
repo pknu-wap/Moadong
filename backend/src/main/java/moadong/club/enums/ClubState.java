@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum ClubState {
-    UNAVAILABLE("unavailable","모집 끝"),
-    AVAILABLE("available","모집 중");
+    UNAVAILABLE("UNAVAILABLE","비활성화"),
+    AVAILABLE("AVAILABLE","활성화");
     private final String name;
     private final String desc;
 
