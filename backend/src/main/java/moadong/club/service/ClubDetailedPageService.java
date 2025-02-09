@@ -3,9 +3,10 @@ package moadong.club.service;
 import lombok.AllArgsConstructor;
 import moadong.club.entity.Club;
 import moadong.club.entity.ClubInformation;
+import moadong.club.payload.dto.ClubDetailedResult;
 import moadong.club.payload.dto.ClubFeedImageProjection;
 import moadong.club.payload.dto.ClubTagProjection;
-import moadong.club.payload.response.ClubDetailedPageResponse;
+import moadong.club.payload.response.ClubDetailedResponse;
 import moadong.club.repository.ClubFeedImageRepository;
 import moadong.club.repository.ClubInformationRepository;
 import moadong.club.repository.ClubRepository;
@@ -27,7 +28,7 @@ public class ClubDetailedPageService {
     private final ClubFeedImageRepository clubFeedImageRepository;
     private final ClubTagRepository clubTagRepository;
 
-    public ClubDetailedPageResponse getClubDetailedPage(String clubId) {
+    public ClubDetailedResponse getClubDetailedPage(String clubId) {
         ObjectId objectId = new ObjectId(clubId);
         Club club = clubRepository.findClubById(objectId)
                 .orElseThrow(() -> new RestApiException(ErrorCode.CLUB_NOT_FOUND));
@@ -45,12 +46,13 @@ public class ClubDetailedPageService {
                 .stream()
                 .map(ClubTagProjection::getTag)
                 .toList();
-
-        return ClubDetailedPageResponse.createClubDetailedPageResponse(
+        
+        ClubDetailedResult clubDetailedResult = ClubDetailedResult.of(
                 club,
                 clubInformation,
                 clubFeedImages,
                 clubTags
         );
+        return new ClubDetailedResponse(clubDetailedResult);
     }
 }
