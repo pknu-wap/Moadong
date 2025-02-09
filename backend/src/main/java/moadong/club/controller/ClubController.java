@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import moadong.club.payload.request.ClubCreateRequest;
 import moadong.club.payload.request.ClubUpdateRequest;
-import moadong.club.payload.response.ClubDetailedPageResponse;
+import moadong.club.payload.response.ClubDetailedResponse;
 import moadong.club.payload.response.ClubSearchResponse;
 import moadong.club.service.ClubCommandService;
 import moadong.club.service.ClubDetailedPageService;
@@ -50,7 +50,7 @@ public class ClubController {
     @GetMapping("/{clubId}")
     @Operation(summary = "클럽 상세 정보 조회", description = "클럽 상세 정보를 조회합니다.")
     public ResponseEntity<?> getClubDetailedPage(@PathVariable String clubId) {
-        ClubDetailedPageResponse clubDetailedPageResponse = clubDetailedPageService.getClubDetailedPage(clubId);
+        ClubDetailedResponse clubDetailedPageResponse = clubDetailedPageService.getClubDetailedPage(clubId);
         return Response.ok(clubDetailedPageResponse);
     }
 
