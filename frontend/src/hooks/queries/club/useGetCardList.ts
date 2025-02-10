@@ -11,6 +11,5 @@ export const useGetCardList = (
     queryKey: ['clubs', keyword, recruitmentStatus, classification, division],
     queryFn: () =>
       getClubList(keyword, recruitmentStatus, classification, division),
-    enabled: !!keyword,
   });
 };
