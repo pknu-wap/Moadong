@@ -53,10 +53,10 @@ public class ClubController {
     }
     @GetMapping("/search/")
     @Operation(summary = "키워드에 맞는 클럽을 검색합니다.(모집,분과,종류에 따른 구분)",
-            description = "모집,분과,종류에 필터링 이후 이름,태그,소개에 따라 검색합니다."
-                    + "\nkeyword에 빈칸 입력 시 전체 검색"
-                    + "\nrecruitmentStatus, classification, division에 all 입력 시 전체 검색"
-                    + "\nkeyword는 대소문자 구분 없고 일부분만 들어가도 검색이 가능하나, 나머지는 정확히 똑같아야 함")
+            description = "모집,분과,종류에 필터링 이후 이름,태그,소개에 따라 검색합니다.<br>"
+                    + "keyword에 빈칸 입력 시 전체 검색<br>"
+                    + "recruitmentStatus, classification, division에 all 입력 시 전체 검색<br>"
+                    + "keyword는 대소문자 구분 없고 일부분만 들어가도 검색이 가능하나, 나머지는 정확히 똑같아야 함<br>")
     public ResponseEntity<?> searchClubsByKeyword(
             @RequestParam(value = "keyword", required = false) String keyword,
             @RequestParam(value = "recruitmentStatus", required = false) String recruitmentStatus,

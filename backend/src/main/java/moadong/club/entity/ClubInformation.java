@@ -6,7 +6,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,9 +46,10 @@ public class ClubInformation {
     @Column(length = 13)
     private String presidentTelephoneNumber;
 
-    private LocalDate recruitmentStart;
+    private LocalDateTime recruitmentStart;
 
-    private LocalDate recruitmentEnd;
+    private LocalDateTime recruitmentEnd;
+
     @Enumerated(EnumType.STRING)
     @NotNull
     private RecruitmentStatus recruitmentStatus;
@@ -61,9 +62,14 @@ public class ClubInformation {
         this.presidentTelephoneNumber = request.telephoneNumber();
         this.recruitmentStart = request.recruitmentStart();
         this.recruitmentEnd = request.recruitmentEnd();
+        this.recruitmentStatus = RecruitmentStatus.UPCOMING;
     }
 
     public ClubInformation updateLogo(String logo) {
         return this.toBuilder().logo(logo).build();
+    }
+
+    public void updateRecruitmentStatus(RecruitmentStatus status) {
+        this.recruitmentStatus = status;
     }
 }
