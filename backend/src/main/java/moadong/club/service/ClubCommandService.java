@@ -22,6 +22,7 @@ public class ClubCommandService {
     private final ClubRepository clubRepository;
     private final ClubInformationRepository clubInformationRepository;
     private final ClubTagRepository clubTagRepository;
+    private final RecruitmentScheduler recruitmentScheduler;
 
     public String createClub(ClubCreateRequest request) {
         Club club = Club.builder()
@@ -52,6 +53,7 @@ public class ClubCommandService {
         clubInformation.update(request);
         clubInformationRepository.save(clubInformation);
 
+        //태그
         clubTagRepository.deleteAllByClubId(club.getId());
         List<String> tags = request.tags();
         for (String tag : tags) {
@@ -61,6 +63,10 @@ public class ClubCommandService {
                 .build();
             clubTagRepository.save(newTag);
         }
+
+        //모집일정을 동적스케쥴러에 달아둠
+        recruitmentScheduler.scheduleRecruitment(club.getId(), request.recruitmentStart(),
+            request.recruitmentEnd());
 
         return club.getId();
     }
