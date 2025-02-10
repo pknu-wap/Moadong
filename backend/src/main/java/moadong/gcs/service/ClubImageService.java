@@ -7,7 +7,7 @@ import java.text.Normalizer;
 import java.util.List;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
-import moadong.club.entity.ClubFeedImages;
+import moadong.club.entity.ClubFeedImage;
 import moadong.club.entity.ClubInformation;
 import moadong.club.repository.ClubFeedImageRepository;
 import moadong.club.repository.ClubInformationRepository;
@@ -57,8 +57,8 @@ public class ClubImageService {
                 throw new RestApiException(ErrorCode.FILE_NOT_FOUND);
             }
             String filePath = uploadFile(clubId, file, "feed");
-            ClubFeedImages clubFeedImages = ClubFeedImages.builder().clubId(clubId).image(filePath).build();
-            clubFeedImageRepository.save(clubFeedImages);
+            ClubFeedImage clubFeedImage = ClubFeedImage.builder().clubId(clubId).image(filePath).build();
+            clubFeedImageRepository.save(clubFeedImage);
         }
     }
 
