@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface ClubTagRepository extends MongoRepository<ClubTag, String> {
     Optional<List<ClubTagProjection>> findAllByClubId(String clubId);
+
+    void deleteAllByClubId(String clubId);
 }

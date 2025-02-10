@@ -1,13 +1,16 @@
 package moadong.club.service;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
-import moadong.club.payload.request.ClubCreateRequest;
-import moadong.club.payload.request.ClubUpdateRequest;
 import moadong.club.entity.Club;
 import moadong.club.entity.ClubInformation;
+import moadong.club.entity.ClubTag;
 import moadong.club.enums.ClubState;
+import moadong.club.payload.request.ClubCreateRequest;
+import moadong.club.payload.request.ClubUpdateRequest;
 import moadong.club.repository.ClubInformationRepository;
 import moadong.club.repository.ClubRepository;
+import moadong.club.repository.ClubTagRepository;
 import moadong.global.exception.ErrorCode;
 import moadong.global.exception.RestApiException;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ public class ClubCommandService {
 
     private final ClubRepository clubRepository;
     private final ClubInformationRepository clubInformationRepository;
+    private final ClubTagRepository clubTagRepository;
 
     public String createClub(ClubCreateRequest request) {
         Club club = Club.builder()
@@ -47,6 +51,16 @@ public class ClubCommandService {
 
         clubInformation.update(request);
         clubInformationRepository.save(clubInformation);
+
+        clubTagRepository.deleteAllByClubId(club.getId());
+        List<String> tags = request.tags();
+        for (String tag : tags) {
+            ClubTag newTag = ClubTag.builder()
+                .clubId(club.getId())
+                .tag(tag)
+                .build();
+            clubTagRepository.save(newTag);
+        }
 
         return club.getId();
     }
