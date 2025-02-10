@@ -8,6 +8,8 @@ import moadong.club.entity.ClubInformation;
 import moadong.club.enums.ClubState;
 import moadong.club.repository.ClubInformationRepository;
 import moadong.club.repository.ClubRepository;
+import moadong.global.exception.ErrorCode;
+import moadong.global.exception.RestApiException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,9 +38,9 @@ public class ClubCommandService {
 
     public String updateClub(ClubUpdateRequest request) {
         Club club = clubRepository.findById(request.clubId())
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 클럽입니다."));
+            .orElseThrow(() -> new RestApiException(ErrorCode.CLUB_NOT_FOUND));
         ClubInformation clubInformation = clubInformationRepository.findByClubId(request.clubId())
-            .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 클럽 정보입니다."));
+            .orElseThrow(() -> new RestApiException(ErrorCode.CLUB_INFORMATION_NOT_FOUND));
 
         club.update(request);
         clubRepository.save(club);
