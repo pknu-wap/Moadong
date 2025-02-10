@@ -6,13 +6,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("club_tags")
+@Document("club_feed_images")
 @AllArgsConstructor
 @Getter
 @Builder
-public class ClubTags {
+public class ClubFeedImage {
 
     @Id
     private String id;
@@ -20,6 +21,7 @@ public class ClubTags {
     @NotNull
     private String clubId;
 
-    @Column(length = 8)
-    private String tag;
+    @Column(length = 1024)
+    @Unique
+    private String image;
 }
