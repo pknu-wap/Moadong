@@ -10,27 +10,32 @@ import { BannerImageList } from '@/utils/banners';
 import { Club } from '@/types/club';
 import * as Styled from './MainPage.styles';
 
+//Todo
+// 1. 검색 기능 추가
+// 2. 로딩, 에러, 빈 데이터 UI 추가
+
 const MainPage = () => {
   const [isFilterActive, setIsFilterActive] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [keyword, setKeyword] = useState('');
+  // const [keyword, setKeyword] = useState('');
 
   const recruitmentStatus = isFilterActive ? 'open' : 'all';
   const classification = selectedCategory;
   const division = 'all';
 
+  // 검색 기능 추가 후 ''는 keyword로 대체
   const {
     data: clubs,
     isLoading,
     error,
-  } = useGetCardList(keyword, recruitmentStatus, classification, division);
+  } = useGetCardList('', recruitmentStatus, classification, division);
 
   const hasData = clubs && clubs.length > 0;
 
   const clubList = useMemo(() => {
     if (!hasData) return null;
     return clubs.map((club: Club) => <ClubCard key={club.id} club={club} />);
-  }, [clubs]);
+  }, [clubs, hasData]);
 
   return (
     <>
@@ -38,7 +43,7 @@ const MainPage = () => {
       <Styled.PageContainer>
         <Banner banners={BannerImageList} />
         {/* 검색 입력창 추가 */}
-        {/* setKeyword()로 검색 키워드 지정해주면 된다! */}
+        {/* setKeyword()로 검색 키워드 지정해주면 된다 */}
         <CategoryButtonList onCategorySelect={setSelectedCategory} />
         <Styled.FilterWrapper>
           <StatusRadioButton onChange={setIsFilterActive} />
