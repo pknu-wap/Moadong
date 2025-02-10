@@ -15,4 +15,8 @@ public record Response<T>(
         return ResponseEntity.ok(new Response<>(OK_CODE, OK_MESSAGE, data));
     }
 
+    public static <T> ResponseEntity<Response<T>> ok(String message, T data) {
+        return ResponseEntity.ok(new Response<>(OK_CODE, message, data));
+    }
+
 }

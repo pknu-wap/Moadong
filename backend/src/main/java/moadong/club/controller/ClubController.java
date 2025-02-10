@@ -35,8 +35,7 @@ public class ClubController {
     @Operation(summary = "클럽 생성", description = "클럽을 생성합니다.")
     public ResponseEntity<?> createClub(@RequestBody ClubCreateRequest request) {
         String clubId = clubCommandService.createClub(request);
-        return Response.ok("success create club\n"
-            + "clubId : " + clubId);
+        return Response.ok("success create club", "clubId : " + clubId);
     }
 
     @PutMapping("/")
