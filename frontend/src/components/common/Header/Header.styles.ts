@@ -2,12 +2,23 @@ import styled from 'styled-components';
 
 export const HeaderStyles = styled.header`
   position: fixed;
-  display: flex;
-  left: 0;
   top: 0;
-  width: 100%;
+  left: 0;
+  right: 0;
   height: 52px;
+  padding: 0 40px;
+  max-width: 1180px;
+  margin: 0 auto;
   z-index: 1;
+  background-color: white;
+
+  @media (max-width: 500px) {
+    padding: 0 20px;
+  }
+
+  @media (max-width: 375px) {
+    padding: 0 10px;
+  }
 `;
 
 export const HeaderContainer = styled.div`
@@ -15,8 +26,7 @@ export const HeaderContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
+  gap: 80px;
 `;
 
 export const TextCoverStyles = styled.div`
@@ -25,11 +35,9 @@ export const TextCoverStyles = styled.div`
   white-space: nowrap;
 `;
 
-// [x] TODO : img태그로 변경하여 메인 아이콘을 적용해야 한다.
 export const LogoButtonStyles = styled.button`
-  margin-left: 130px;
-  width: 117px;
-  height: 41px;
+  width: 152px;
+  height: 43px;
   background-color: transparent;
   border: none;
   font-weight: 400;
@@ -38,6 +46,12 @@ export const LogoButtonStyles = styled.button`
   letter-spacing: -0.03em;
   color: #000000;
   cursor: pointer;
+
+  img {
+    width: 152px;
+    height: auto;
+    object-fit: cover;
+  }
 `;
 
 export const IntroduceButtonStyles = styled.a`

@@ -2,14 +2,12 @@ import styled from 'styled-components';
 
 export const SearchBoxStyles = styled.form`
   margin-top: 5px;
-  margin-left: 100px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 500px;
+  width: 300px;
   height: 36px;
   padding: 10px 20px;
-
   border: none;
   border-radius: 41px;
   background-color: #eeeeee;
@@ -19,7 +17,6 @@ export const SearchInputStyles = styled.input`
   background-color: #eeeeee;
   height: 36px;
   border: none;
-  border-radius: 41px;
   outline: none;
   font-size: 14px;
 
@@ -32,17 +29,12 @@ export const SearchInputStyles = styled.input`
 `;
 
 export const SearchButton = styled.button`
-  padding: 8px 8px;
-  margin-left: 300px;
   border: none;
-  background-color: blueviolet;
-  color: white;
-  border-radius: 4px;
+  background-color: transparent;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: white;
+  img {
+    width: 16px;
+    height: auto;
   }
 `;
