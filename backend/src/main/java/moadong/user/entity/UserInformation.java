@@ -10,13 +10,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collation = "user_information")
+@Document("user_information")
 public class UserInformation {
     @Id
     private String id;

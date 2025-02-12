@@ -19,11 +19,11 @@ import java.util.Collection;
 import java.util.Date;
 
 @Entity
-@Getter
 @Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collation = "user")
+@Document("user")
 public class User implements UserDetails {
     @Id
     private String id;
