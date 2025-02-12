@@ -30,8 +30,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable()) // CSRF 비활성화
-                .cors(withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll() // 모든 요청에 대해 인증 해제
                 );
@@ -51,7 +51,7 @@ public class SecurityConfig {
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList(frontendDomain, "http://localhost:*"));
+        configuration.setAllowedOriginPatterns(Arrays.asList(frontendDomain, "http://localhost:*", "https://deploy-preview-76--moadong.netlify.app/"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
