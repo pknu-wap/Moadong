@@ -10,6 +10,13 @@ export const IntroduceBoxWrapper = styled.div`
   border: 1px solid #dcdcdc;
   padding: 30px;
   gap: 30px;
+
+  @media (max-width: 500px) {
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #dcdcdc;
+  }
 `;
 
 export const IntroduceTitle = styled.p`
