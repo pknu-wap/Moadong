@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import GlobalStyles from '@/styles/Global.styels';
 import MainPage from '@/pages/MainPage/MainPage';
-import ClubDetailPage from '@/pages/ClubDetailPage/ClubDetailPagel';
+import ClubDetailPage from '@/pages/ClubDetailPage/ClubDetailPage';
 
 const App = () => {
   return (
