@@ -5,7 +5,11 @@ export const InfoBoxWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   gap: 50px;
-  margin-top: 80px;
+  margin-top: 80px; // [x]FIXME : margin 다시 조정
+
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 `;
 
 export const InfoBox = styled.div`
@@ -14,6 +18,13 @@ export const InfoBox = styled.div`
   border-radius: 18px;
   border: 1px solid #dcdcdc;
   padding: 30px;
+
+  @media (max-width: 500px) {
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid #dcdcdc;
+  }
 `;
 
 export const Title = styled.p`
