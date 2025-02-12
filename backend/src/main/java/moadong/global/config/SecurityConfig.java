@@ -24,8 +24,8 @@ public class SecurityConfig {
     @Value("${spring.cloud.gcp.credentials.location}")
     private String credentialsLocation;
 
-    @Value("${server.domain}")
-    private String serverDomain;
+    @Value("${frontend.domain}")
+    private String frontendDomain;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -51,7 +51,7 @@ public class SecurityConfig {
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList(serverDomain, "http://localhost:*"));
+        configuration.setAllowedOriginPatterns(Arrays.asList(frontendDomain, "http://localhost:*"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
         configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
