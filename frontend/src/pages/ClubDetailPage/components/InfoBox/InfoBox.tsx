@@ -19,11 +19,19 @@ const infoData: InfoList[] = [
   },
 ];
 
-const InfoBox = () => {
+const InfoBox = ({
+  sectionRefs,
+}: {
+  sectionRefs: React.RefObject<(HTMLDivElement | null)[]>;
+}) => {
   return (
     <Styled.InfoBoxWrapper>
       {infoData.map((info, index) => (
-        <Styled.InfoBox key={index}>
+        <Styled.InfoBox
+          key={index}
+          ref={(el) => {
+            sectionRefs.current[index] = el;
+          }}>
           <Styled.Title>{info.title}</Styled.Title>
           <Styled.DescriptionContainer>
             {info.descriptions.map((desc, idx) => (
