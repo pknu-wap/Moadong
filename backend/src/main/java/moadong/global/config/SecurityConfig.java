@@ -3,31 +3,41 @@ package moadong.global.config;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
-import java.io.IOException;
-import java.io.InputStream;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 public class SecurityConfig {
 
+    @Value("${spring.cloud.gcp.credentials.location}")
+    private String credentialsLocation;
+
+    @Value("${server.domain}")
+    private String serverDomain;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // CSRF 비활성화
-            .authorizeHttpRequests(authorize -> authorize
-                .anyRequest().permitAll() // 모든 요청에 대해 인증 해제
-            );
+                .csrf(csrf -> csrf.disable()) // CSRF 비활성화
+                .cors(withDefaults())
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().permitAll() // 모든 요청에 대해 인증 해제
+                );
 
         return http.build();
     }
-
-    @Value("${spring.cloud.gcp.credentials.location}")
-    private String credentialsLocation;
 
     @Bean
     public Storage storage() throws IOException {
@@ -36,5 +46,19 @@ public class SecurityConfig {
                 .setCredentials(GoogleCredentials.fromStream(keyFile))
                 .build()
                 .getService();
+    }
+
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Arrays.asList(serverDomain, "http://localhost:*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
