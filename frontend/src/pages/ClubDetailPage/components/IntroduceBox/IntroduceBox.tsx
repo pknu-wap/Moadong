@@ -2,6 +2,7 @@ import React from 'react';
 import * as Styled from './IntroduceBox.styles';
 import ReactMarkdown from 'react-markdown';
 
+// [x]FIXME: 하드코딩되어 있음.
 const markdownContent = `
 ### 💻 프로그래밍 중앙 동아리 WAP 30기 신입 개발자 회원 모집 💻
 
@@ -53,9 +54,16 @@ https://docs.google.com/forms/d/e/1FAIpQLSc41UNglvB3Y-8SbwjGk5aBh7WTtwlyf5FPJJLw
 회장: 이제희 010-8512-3292
 `;
 
-const IntroduceBox = () => {
+const IntroduceBox = ({
+  sectionRefs,
+}: {
+  sectionRefs: React.RefObject<(HTMLDivElement | null)[]>;
+}) => {
   return (
-    <Styled.IntroduceBoxWrapper>
+    <Styled.IntroduceBoxWrapper
+      ref={(el) => {
+        sectionRefs.current[2] = el;
+      }}>
       <Styled.IntroduceTitle>소개글</Styled.IntroduceTitle>
       <Styled.IntroduceContentBox>
         <ReactMarkdown>{markdownContent}</ReactMarkdown>
