@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import moadong.global.annotation.Korean;
+import moadong.global.annotation.PhoneNumber;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 @Entity
@@ -23,7 +25,8 @@ public class UserInformation {
     @Indexed(unique = true)
     private String userId;
     @NotNull
+    @Korean
     private String name;
-    @Pattern(regexp = "^\\d{2,3}-\\d{3,4}-\\d{4}$")
+    @PhoneNumber
     private String phoneNumber;
 }
