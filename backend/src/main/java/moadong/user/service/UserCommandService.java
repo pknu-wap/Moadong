@@ -1,6 +1,8 @@
 package moadong.user.service;
 
 import com.mongodb.DuplicateKeyException;
+import com.mongodb.MongoWriteException;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import moadong.global.exception.ErrorCode;
 import moadong.global.exception.RestApiException;
@@ -20,7 +22,7 @@ public class UserCommandService {
         try {
             User user = userRepository.save(userRegisterRequest.toUserEntity());
             userInformationRepository.save(userRegisterRequest.toUserInformationEntity(user.getId()));
-        } catch (DuplicateKeyException e) {
+        } catch (MongoWriteException e) {
             throw new RestApiException(ErrorCode.USER_ALREADY_EXIST);
         }
     }

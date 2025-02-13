@@ -2,12 +2,14 @@ package moadong.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import moadong.global.payload.Response;
 import moadong.user.payload.UserRegisterRequest;
 import moadong.user.service.UserCommandService;
 import moadong.user.view.UserSwaggerView;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +26,7 @@ public class UserController {
             summary = UserSwaggerView.ADMIN_REGISTER_SUMMARY,
             description = UserSwaggerView.ADMIN_PWD_ROLE_DESCRIPTION
     )
-    public ResponseEntity<?> registerUser(@RequestBody UserRegisterRequest request) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegisterRequest request) {
         userCommandService.registerUser(request);
         return Response.ok("success register");
     }
