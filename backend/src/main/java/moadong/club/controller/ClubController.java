@@ -11,6 +11,7 @@ import moadong.club.service.ClubCommandService;
 import moadong.club.service.ClubDetailedPageService;
 import moadong.club.service.ClubSearchService;
 import moadong.global.payload.Response;
+import moadong.metric.service.MetricService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class ClubController {
     private final ClubCommandService clubCommandService;
     private final ClubDetailedPageService clubDetailedPageService;
     private final ClubSearchService clubSearchService;
+    private final MetricService metricService;
 
     @PostMapping("/")
     @Operation(summary = "클럽 생성", description = "클럽을 생성합니다.")
@@ -58,10 +60,10 @@ public class ClubController {
                     + "recruitmentStatus, classification, division에 all 입력 시 전체 검색<br>"
                     + "keyword는 대소문자 구분 없고 일부분만 들어가도 검색이 가능하나, 나머지는 정확히 똑같아야 함<br>")
     public ResponseEntity<?> searchClubsByKeyword(
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "recruitmentStatus", required = false) String recruitmentStatus,
-            @RequestParam(value = "classification", required = false) String classification,
-            @RequestParam(value = "division", required = false) String division
+            @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword,
+            @RequestParam(value = "recruitmentStatus", required = false, defaultValue = "all") String recruitmentStatus,
+            @RequestParam(value = "classification", required = false, defaultValue = "all") String classification,
+            @RequestParam(value = "division", required = false, defaultValue = "all") String division
     ){
         ClubSearchResponse clubSearchResponse = clubSearchService.searchClubsByKeyword(
                 keyword,
