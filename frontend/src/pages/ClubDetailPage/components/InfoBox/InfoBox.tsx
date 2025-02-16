@@ -35,7 +35,7 @@ const InfoBox = ({
           <Styled.Title>{info.title}</Styled.Title>
           <Styled.DescriptionContainer>
             {info.descriptions.map((desc, idx) => (
-              <Styled.DescriptionWrapper key={idx}>
+              <Styled.DescriptionWrapper key={`${desc.label}-${idx}`}>
                 <Styled.LeftText>{desc.label}</Styled.LeftText>
                 <Styled.RightText>{desc.value}</Styled.RightText>
               </Styled.DescriptionWrapper>
