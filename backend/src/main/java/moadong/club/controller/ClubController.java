@@ -11,7 +11,6 @@ import moadong.club.service.ClubCommandService;
 import moadong.club.service.ClubDetailedPageService;
 import moadong.club.service.ClubSearchService;
 import moadong.global.payload.Response;
-import moadong.metric.service.MetricService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +30,6 @@ public class ClubController {
     private final ClubCommandService clubCommandService;
     private final ClubDetailedPageService clubDetailedPageService;
     private final ClubSearchService clubSearchService;
-    private final MetricService metricService;
 
     @PostMapping("/")
     @Operation(summary = "클럽 생성", description = "클럽을 생성합니다.")
