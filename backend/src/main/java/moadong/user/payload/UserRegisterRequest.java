@@ -1,5 +1,6 @@
 package moadong.user.payload;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import moadong.global.annotation.Korean;
@@ -8,9 +9,17 @@ import moadong.user.entity.User;
 import moadong.user.entity.UserInformation;
 
 public record UserRegisterRequest(
+        @NotNull
+        @Email
+        @Size(min = 5, max = 50)
         String email,
+        @NotNull
+        @Size(min = 8, max = 20)
         String password,
+        @NotNull
+        @Korean
         String name,
+        @PhoneNumber
         String phoneNumber
 ) {
     public User toUserEntity() {

@@ -1,7 +1,16 @@
 package moadong.user.payload;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public record UserLoginRequest(
-    String email,
-    String password
+        @NotNull
+        @Email
+        @Size(min = 5, max = 50)
+        String email,
+        @NotNull
+        @Size(min = 8, max = 20)
+        String password
 ) {
 }
