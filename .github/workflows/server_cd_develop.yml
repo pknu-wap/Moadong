@@ -1,6 +1,6 @@
-# .github/workflows/server_cd_dev.yml
+# .github/workflows/server_cd_develop.yml
 
-name: Server CD
+name: Develop Server CD
 
 on:
   push:

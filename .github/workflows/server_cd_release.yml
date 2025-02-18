@@ -1,6 +1,6 @@
 # .github/workflows/server_cd_develop.yml
 
-name: Server CD
+name: Release Server CD
 
 on:
   push:
