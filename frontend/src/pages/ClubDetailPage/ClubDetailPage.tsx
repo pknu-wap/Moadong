@@ -6,6 +6,7 @@ import ClubApplyButton from '@/pages/ClubDetailPage/components/ClubApplyButton/C
 import InfoTabs from '@/pages/ClubDetailPage/components/InfoTabs/InfoTabs';
 import InfoBox from '@/pages/ClubDetailPage/components/InfoBox/InfoBox';
 import IntroduceBox from '@/pages/ClubDetailPage/components/IntroduceBox/IntroduceBox';
+import DeadlineBadge from '@/pages/ClubDetailPage/components/DeadlineBadge/DeadlineBadge';
 import Footer from '@/components/@common/Footer/Footer';
 import * as Styled from '@/styles/PageContainer.styles';
 import './ClubDetailPage.styles';
@@ -48,7 +49,7 @@ const ClubDetailPage = () => {
         <Footer />
       </Styled.PageContainer>
       <ClubDetailFooterContainer>
-        D-10
+        <DeadlineBadge />
         <ClubApplyButton />
       </ClubDetailFooterContainer>
     </>
