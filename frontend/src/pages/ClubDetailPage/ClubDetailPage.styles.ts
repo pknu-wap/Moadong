@@ -20,11 +20,15 @@ export const ClubDetailFooterContainer = styled.div`
     position: sticky;
     bottom: 0;
     width: 100%;
+    height: 92px;
     z-index: 100;
-    padding: 10px 20px;
+    padding: 10px 40px;
+
     display: flex;
-    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
+    gap: 16px;
+
     background-color: white;
     border-top: 1px solid #cdcdcd;
   }
