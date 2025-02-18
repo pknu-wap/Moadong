@@ -1,11 +1,19 @@
 import React, { useEffect } from 'react';
 import Header from '@/components/common/Header/Header';
+import BackNavigationBar from '@/pages/ClubDetailPage/components/BackNavigationBar/BackNavigationBar';
+import ClubProfile from '@/pages/ClubDetailPage/components/ClubProfile/ClubProfile';
+import ClubApplyButton from '@/pages/ClubDetailPage/components/ClubApplyButton/ClubApplyButton';
 import InfoTabs from '@/pages/ClubDetailPage/components/InfoTabs/InfoTabs';
 import InfoBox from '@/pages/ClubDetailPage/components/InfoBox/InfoBox';
 import IntroduceBox from '@/pages/ClubDetailPage/components/IntroduceBox/IntroduceBox';
 import Footer from '@/components/@common/Footer/Footer';
 import * as Styled from '@/styles/PageContainer.styles';
+import './ClubDetailPage.styles';
 import useAutoScroll from '@/hooks/useAutoScroll';
+import {
+  ClubDetailFooterContainer,
+  ClubDetailHeaderContainer,
+} from '@/pages/ClubDetailPage/ClubDetailPage.styles';
 
 const ClubDetailPage = () => {
   const { sectionRefs, scrollToSection } = useAutoScroll();
@@ -23,12 +31,26 @@ const ClubDetailPage = () => {
   return (
     <>
       {showHeader && <Header />}
-      <InfoTabs onTabClick={scrollToSection} />
+      <BackNavigationBar />
       <Styled.PageContainer>
+        <ClubDetailHeaderContainer>
+          <ClubProfile
+            name={'WAP'}
+            classification={'중동'}
+            division={'학술'}
+            tags={['프로젝트', '소프트웨어']}
+          />
+          <ClubApplyButton />
+        </ClubDetailHeaderContainer>
+        <InfoTabs onTabClick={scrollToSection} />
         <InfoBox sectionRefs={sectionRefs} />
         <IntroduceBox sectionRefs={sectionRefs} />
+        <Footer />
       </Styled.PageContainer>
-      <Footer />
+      <ClubDetailFooterContainer>
+        D-10
+        <ClubApplyButton />
+      </ClubDetailFooterContainer>
     </>
   );
 };
