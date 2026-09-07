@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import NotificationIcon from '@/assets/images/icons/notification_icon.svg';
+import NotificationIcon from '@/assets/images/icons/notification_icon_home.svg';
 import SearchIcon from '@/assets/images/icons/search_button_icon.svg';
 import MoadongLogo from '@/assets/images/moadong_name_logo.svg';
 import { USER_EVENT } from '@/constants/eventName';
