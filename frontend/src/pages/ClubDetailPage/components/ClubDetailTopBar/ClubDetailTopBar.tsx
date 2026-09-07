@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import NotificationIcon from '@/assets/images/icons/notification_icon.svg?react';
-import PrevButtonIcon from '@/assets/images/icons/prev_button_icon.svg?react';
+import BackChevronIcon from '@/assets/images/icons/back_chevron_icon.svg?react';
 import Spinner from '@/components/common/Spinner/Spinner';
 import { PAGE_NAME, USER_EVENT } from '@/constants/eventName';
 import useMixpanelTrack from '@/hooks/Mixpanel/useMixpanelTrack';
@@ -110,7 +110,7 @@ const ClubDetailTopBar = ({
             onClick={handleBackClick}
             aria-label='뒤로가기'
           >
-            <PrevButtonIcon width={30} height={30} />
+            <BackChevronIcon width={48} height={48} />
           </Styled.IconButton>
         </Styled.IconButtonWrapper>
         <Styled.ClubName $isVisible={isHeaderVisible}>
@@ -125,8 +125,8 @@ const ClubDetailTopBar = ({
               aria-label='알림 설정'
             >
               <NotificationIcon
-                width={24}
-                height={24}
+                width={21}
+                height={21}
                 fill={
                   isNotificationActive
                     ? theme.colors.primary[900]
