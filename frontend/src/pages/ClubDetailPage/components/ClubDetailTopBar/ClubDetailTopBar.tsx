@@ -4,6 +4,7 @@ import { useTheme } from 'styled-components';
 import BackChevronIcon from '@/assets/images/icons/back_chevron_icon.svg?react';
 import NotificationIcon from '@/assets/images/icons/notification_icon.svg?react';
 import Spinner from '@/components/common/Spinner/Spinner';
+import Toast from '@/components/common/Toast/Toast';
 import { PAGE_NAME, USER_EVENT } from '@/constants/eventName';
 import useMixpanelTrack from '@/hooks/Mixpanel/useMixpanelTrack';
 import { useScrollTrigger } from '@/hooks/Scroll/useScrollTrigger';
@@ -16,6 +17,10 @@ import {
   type AppToWebMessage,
 } from '@/utils/webviewBridge';
 import * as Styled from './ClubDetailTopBar.styles';
+import UnsubscribeConfirmModal from './UnsubscribeConfirmModal';
+
+export const SUBSCRIBED_TOAST_MESSAGE = '구독이 완료되었어요';
+export const PERMISSION_TOAST_MESSAGE = '알림 권한을 켜 주세요';
 
 interface TabItem {
   key: string;
@@ -49,6 +54,8 @@ const ClubDetailTopBar = ({
   const trackEvent = useMixpanelTrack();
   const [isNotificationActive, setIsNotificationActive] =
     useState(initialIsSubscribed);
+  const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -67,7 +74,14 @@ const ClubDetailTopBar = ({
         data.type === 'SUBSCRIBE_RESULT' &&
         data.payload.clubId === clubId
       ) {
-        setIsNotificationActive(data.payload.subscribed);
+        const { subscribed, needsPermission } = data.payload;
+        setIsNotificationActive(subscribed);
+        // 앱이 실제로 처리한 결과에만 반응한다. 권한이 막혀 있으면 "완료"라고 말하지 않는다.
+        if (needsPermission) {
+          setToastMessage(PERMISSION_TOAST_MESSAGE);
+        } else if (subscribed) {
+          setToastMessage(SUBSCRIBED_TOAST_MESSAGE);
+        }
       }
     };
     window.addEventListener('message', handleMessage);
@@ -92,7 +106,7 @@ const ClubDetailTopBar = ({
     }
   };
 
-  const handleNotificationClick = () => {
+  const requestToggle = () => {
     requestSubscribeToggle(clubId);
     trackEvent(USER_EVENT.WEBVIEW_SUBSCRIBE_TOGGLED, {
       club_id: clubId,
@@ -101,69 +115,95 @@ const ClubDetailTopBar = ({
     });
   };
 
+  // 구독 해제는 되돌리기 번거로우니 한 번 더 묻고, 구독은 바로 보낸다.
+  const handleNotificationClick = () => {
+    if (isNotificationActive) {
+      setIsUnsubscribeModalOpen(true);
+      return;
+    }
+    requestToggle();
+  };
+
+  const handleUnsubscribeConfirm = () => {
+    setIsUnsubscribeModalOpen(false);
+    requestToggle();
+  };
+
   return (
-    <Styled.TopBarWrapper $isVisible={isHeaderVisible || showTabs}>
-      <Styled.TopBarContent $isVisible={isHeaderVisible}>
-        <Styled.IconButtonWrapper>
-          <Styled.IconButton
-            $isVisible={isHeaderVisible}
-            onClick={handleBackClick}
-            aria-label='뒤로가기'
-          >
-            <BackChevronIcon width={48} height={48} />
-          </Styled.IconButton>
-        </Styled.IconButtonWrapper>
-        <Styled.ClubName $isVisible={isHeaderVisible}>
-          {clubName}
-        </Styled.ClubName>
-        {isInApp ? (
+    <>
+      <Styled.TopBarWrapper $isVisible={isHeaderVisible || showTabs}>
+        <Styled.TopBarContent $isVisible={isHeaderVisible}>
           <Styled.IconButtonWrapper>
-            <Styled.NotificationButton
+            <Styled.IconButton
               $isVisible={isHeaderVisible}
-              $isActive={isNotificationActive}
-              onClick={handleNotificationClick}
-              aria-label='알림 설정'
+              onClick={handleBackClick}
+              aria-label='뒤로가기'
             >
-              <NotificationIcon
-                width={21}
-                height={21}
-                fill={
-                  isNotificationActive
-                    ? theme.colors.primary[900]
-                    : theme.colors.gray[500]
-                }
-              />
-            </Styled.NotificationButton>
+              <BackChevronIcon width={48} height={48} />
+            </Styled.IconButton>
           </Styled.IconButtonWrapper>
-        ) : isKakao ? (
-          <>
-            {isLoading && (
-              <Styled.LoadingOverlay>
-                <Spinner height='auto' />
-              </Styled.LoadingOverlay>
-            )}
-            <Styled.AppOpenButton onClick={() => openApp()}>
-              앱열기
-            </Styled.AppOpenButton>
-          </>
-        ) : (
-          <Styled.Placeholder />
+          <Styled.ClubName $isVisible={isHeaderVisible}>
+            {clubName}
+          </Styled.ClubName>
+          {isInApp ? (
+            <Styled.IconButtonWrapper>
+              <Styled.NotificationButton
+                $isVisible={isHeaderVisible}
+                $isActive={isNotificationActive}
+                onClick={handleNotificationClick}
+                aria-label='알림 설정'
+              >
+                <NotificationIcon
+                  width={21}
+                  height={21}
+                  fill={
+                    isNotificationActive
+                      ? theme.colors.primary[900]
+                      : theme.colors.gray[500]
+                  }
+                />
+              </Styled.NotificationButton>
+            </Styled.IconButtonWrapper>
+          ) : isKakao ? (
+            <>
+              {isLoading && (
+                <Styled.LoadingOverlay>
+                  <Spinner height='auto' />
+                </Styled.LoadingOverlay>
+              )}
+              <Styled.AppOpenButton onClick={() => openApp()}>
+                앱열기
+              </Styled.AppOpenButton>
+            </>
+          ) : (
+            <Styled.Placeholder />
+          )}
+        </Styled.TopBarContent>
+        {tabs && showTabs && (
+          <Styled.TabBar>
+            {tabs.map((tab) => (
+              <Styled.TabButton
+                key={tab.key}
+                $active={activeTab === tab.key}
+                onClick={() => onTabClick?.(tab.key)}
+              >
+                {tab.label}
+              </Styled.TabButton>
+            ))}
+          </Styled.TabBar>
         )}
-      </Styled.TopBarContent>
-      {tabs && showTabs && (
-        <Styled.TabBar>
-          {tabs.map((tab) => (
-            <Styled.TabButton
-              key={tab.key}
-              $active={activeTab === tab.key}
-              onClick={() => onTabClick?.(tab.key)}
-            >
-              {tab.label}
-            </Styled.TabButton>
-          ))}
-        </Styled.TabBar>
-      )}
-    </Styled.TopBarWrapper>
+      </Styled.TopBarWrapper>
+      <UnsubscribeConfirmModal
+        isOpen={isUnsubscribeModalOpen}
+        onClose={() => setIsUnsubscribeModalOpen(false)}
+        onConfirm={handleUnsubscribeConfirm}
+      />
+      <Toast
+        isOpen={toastMessage !== null}
+        onClose={() => setToastMessage(null)}
+        message={toastMessage ?? ''}
+      />
+    </>
   );
 };
 
