@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'styled-components';
-import NotificationIcon from '@/assets/images/icons/notification_icon.svg?react';
 import BackChevronIcon from '@/assets/images/icons/back_chevron_icon.svg?react';
+import NotificationIcon from '@/assets/images/icons/notification_icon.svg?react';
 import Spinner from '@/components/common/Spinner/Spinner';
 import { PAGE_NAME, USER_EVENT } from '@/constants/eventName';
 import useMixpanelTrack from '@/hooks/Mixpanel/useMixpanelTrack';
