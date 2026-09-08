@@ -68,6 +68,28 @@ describe('useUploadFeed', () => {
     expect(data.urlByFile.size).toBe(1);
   });
 
+  it('finalUrl이 없는 응답은 업로드하지 않고 실패로 처리한다', async () => {
+    mockedGetUploadUrls.mockResolvedValue([
+      success('a.jpg'),
+      {
+        presignedUrl: 'https://r2.example/put/b.jpg',
+        finalUrl: '',
+        success: true,
+        failureReason: null,
+      },
+    ]);
+
+    const files = [makeFile('a.jpg'), makeFile('b.jpg')];
+    const data = await uploadFiles(files);
+
+    expect(data.failedFiles).toEqual(['b.jpg']);
+    expect(mockedUploadToStorage).toHaveBeenCalledTimes(1);
+    expect(mockedUploadToStorage).toHaveBeenCalledWith(
+      'https://r2.example/put/a.jpg',
+      files[0],
+    );
+  });
+
   it('업로드 결과를 파일 참조 기준으로 매핑한다', async () => {
     mockedGetUploadUrls.mockResolvedValue([success('a.jpg'), success('b.jpg')]);
     mockedUploadToStorage.mockImplementation((_url: string, file: File) =>

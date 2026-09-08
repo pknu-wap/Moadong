@@ -50,7 +50,7 @@ export const useUploadFeed = () => {
       const uploadResults = await Promise.allSettled(
         files.map((file, i) => {
           const res = feedResArr[i];
-          if (!res?.success || !res.presignedUrl) {
+          if (!res?.success || !res.presignedUrl || !res.finalUrl) {
             return Promise.reject(
               new Error(res?.failureReason ?? 'presigned URL 생성 실패'),
             );
