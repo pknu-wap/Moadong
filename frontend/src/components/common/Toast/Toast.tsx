@@ -13,6 +13,10 @@ interface ToastProps {
   backgroundColor?: string;
   color?: string;
   duration?: number;
+  /** 지정하면 토스트를 탭할 수 있는 버튼으로 렌더한다 */
+  onClick?: () => void;
+  /** 모바일·태블릿에서 화면 아래로부터의 거리(CSS length). 하단 고정 버튼이 있는 화면에서 겹침을 피할 때 쓴다 */
+  bottomOffset?: string;
 }
 
 const Toast = ({
@@ -22,6 +26,8 @@ const Toast = ({
   backgroundColor = DEFAULT_BACKGROUND_COLOR,
   color = colors.base.white,
   duration = DEFAULT_DURATION,
+  onClick,
+  bottomOffset,
 }: ToastProps) => {
   const onCloseRef = useRef(onClose);
   useEffect(() => {
@@ -40,7 +46,11 @@ const Toast = ({
   return (
     <Portal>
       <Styled.ToastMessage
+        as={onClick ? 'button' : undefined}
         role='status'
+        onClick={onClick}
+        $clickable={onClick !== undefined}
+        $bottomOffset={bottomOffset}
         $backgroundColor={backgroundColor}
         $color={color}
         $duration={duration}

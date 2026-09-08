@@ -28,6 +28,8 @@ export const ToastMessage = styled.div<{
   $backgroundColor: string;
   $color: string;
   $duration: number;
+  $clickable: boolean;
+  $bottomOffset?: string;
 }>`
   position: fixed;
   left: 50%;
@@ -35,20 +37,23 @@ export const ToastMessage = styled.div<{
   z-index: ${Z_INDEX.toast};
   max-width: calc(100% - 40px);
   padding: 12px 20px;
+  border: none;
   border-radius: 999px;
   background-color: ${({ $backgroundColor }) => $backgroundColor};
   color: ${({ $color }) => $color};
   ${setTypography(typography.paragraph.p5)};
   letter-spacing: -0.2px;
   text-align: center;
-  pointer-events: none;
+  font-family: inherit;
+  pointer-events: ${({ $clickable }) => ($clickable ? 'auto' : 'none')};
+  cursor: ${({ $clickable }) => ($clickable ? 'pointer' : 'default')};
   animation: ${fadeInOutFromTop} ${({ $duration }) => $duration}ms
     ${transitions.easing.easeInOut} forwards;
 
   /* 헤더를 숨기는 화면이 많아 상단에 두면 콘텐츠를 가린다. 하단으로 붙인다. */
   ${media.tablet} {
     top: auto;
-    bottom: ${GAP_FROM_BOTTOM}px;
+    bottom: ${({ $bottomOffset }) => $bottomOffset ?? `${GAP_FROM_BOTTOM}px`};
     animation-name: ${fadeInOutFromBottom};
   }
 
