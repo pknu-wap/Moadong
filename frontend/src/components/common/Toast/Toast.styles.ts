@@ -29,6 +29,7 @@ export const ToastMessage = styled.div<{
   $color: string;
   $duration: number;
   $clickable: boolean;
+  $bottomOffset?: string;
 }>`
   position: fixed;
   left: 50%;
@@ -52,7 +53,7 @@ export const ToastMessage = styled.div<{
   /* 헤더를 숨기는 화면이 많아 상단에 두면 콘텐츠를 가린다. 하단으로 붙인다. */
   ${media.tablet} {
     top: auto;
-    bottom: ${GAP_FROM_BOTTOM}px;
+    bottom: ${({ $bottomOffset }) => $bottomOffset ?? `${GAP_FROM_BOTTOM}px`};
     animation-name: ${fadeInOutFromBottom};
   }
 

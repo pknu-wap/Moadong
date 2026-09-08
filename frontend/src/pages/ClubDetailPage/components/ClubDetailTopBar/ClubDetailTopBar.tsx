@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import BackChevronIcon from '@/assets/images/icons/back_chevron_icon.svg?react';
 import NotificationIcon from '@/assets/images/icons/notification_icon.svg?react';
+import { FIXED_BOTTOM_BUTTON_AREA_HEIGHT } from '@/components/common/FixedBottomButtonArea/FixedBottomButtonArea.styles';
 import Spinner from '@/components/common/Spinner/Spinner';
 import Toast from '@/components/common/Toast/Toast';
 import { PAGE_NAME, USER_EVENT } from '@/constants/eventName';
@@ -22,6 +23,10 @@ import UnsubscribeConfirmModal from './UnsubscribeConfirmModal';
 
 export const SUBSCRIBED_TOAST_MESSAGE = '구독이 완료되었어요';
 export const PERMISSION_TOAST_MESSAGE = '알림 권한을 켜 주세요';
+
+// 상세는 하단에 지원하기 버튼이 고정돼 있어 토스트를 그 위로 띄운다
+const TOAST_GAP_ABOVE_BUTTON = 16;
+const TOAST_BOTTOM_OFFSET = `calc(${FIXED_BOTTOM_BUTTON_AREA_HEIGHT + TOAST_GAP_ABOVE_BUTTON}px + env(safe-area-inset-bottom))`;
 
 interface TabItem {
   key: string;
@@ -209,6 +214,7 @@ const ClubDetailTopBar = ({
         isOpen={toastMessage !== null}
         onClose={() => setToastMessage(null)}
         message={toastMessage ?? ''}
+        bottomOffset={TOAST_BOTTOM_OFFSET}
         onClick={
           toastMessage === PERMISSION_TOAST_MESSAGE
             ? handlePermissionToastClick

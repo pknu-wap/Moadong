@@ -59,15 +59,16 @@ const [isOpen, setIsOpen] = useState(true);
 />;
 ```
 
-| prop              | 필수 | 기본값                | 설명                                                                       |
-| ----------------- | ---- | --------------------- | -------------------------------------------------------------------------- |
-| `isOpen`          | ✅   | -                     | 노출 여부                                                                  |
-| `onClose`         | ✅   | -                     | `duration` 경과 시 호출. 호출부가 `isOpen`을 내린다                        |
-| `message`         | ✅   | -                     | 표시할 문구                                                                |
-| `backgroundColor` |      | `rgba(17,17,17,0.85)` | 배경색                                                                     |
-| `color`           |      | `colors.base.white`   | 글자색                                                                     |
-| `duration`        |      | `3500`                | 노출 시간(ms)                                                              |
-| `onClick`         |      | -                     | 지정하면 `button`으로 렌더되고 탭할 수 있다. 없으면 `pointer-events: none` |
+| prop              | 필수 | 기본값                | 설명                                                                                                                                   |
+| ----------------- | ---- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `isOpen`          | ✅   | -                     | 노출 여부                                                                                                                              |
+| `onClose`         | ✅   | -                     | `duration` 경과 시 호출. 호출부가 `isOpen`을 내린다                                                                                    |
+| `message`         | ✅   | -                     | 표시할 문구                                                                                                                            |
+| `backgroundColor` |      | `rgba(17,17,17,0.85)` | 배경색                                                                                                                                 |
+| `color`           |      | `colors.base.white`   | 글자색                                                                                                                                 |
+| `duration`        |      | `3500`                | 노출 시간(ms)                                                                                                                          |
+| `onClick`         |      | -                     | 지정하면 `button`으로 렌더되고 탭할 수 있다. 없으면 `pointer-events: none`                                                             |
+| `bottomOffset`    |      | `24px`                | 모바일·태블릿에서 아래로부터의 거리(CSS length). 하단 고정 버튼 위로 띄울 때 `calc(...px + env(safe-area-inset-bottom))` 형태로 넘긴다 |
 
 - **위치가 브레이크포인트별로 다르다.**
   - 701px 초과: 헤더 아래 (`top: HEADER_HEIGHT.desktop + 16px`), 위에서 내려오는 애니메이션

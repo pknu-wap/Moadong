@@ -39,6 +39,11 @@ const meta = {
       action: 'clicked',
       description: '지정하면 토스트를 탭할 수 있게 됩니다.',
     },
+    bottomOffset: {
+      control: 'text',
+      description:
+        '모바일·태블릿에서 화면 아래로부터의 거리(CSS length)입니다.',
+    },
   },
 } satisfies Meta<typeof Toast>;
 
