@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import MoreArrowIcon from '@/assets/images/icons/more_arraw_icon.svg?react';
 import { media } from '@/styles/mediaQuery';
 import { colors } from '@/styles/theme/colors';
 import { setTypography, typography } from '@/styles/theme/typography';
@@ -77,20 +78,30 @@ export const HelperText = styled.p`
   color: ${colors.gray[600]};
 `;
 
+/* 지원자 현황 탭의 지원서 선택 드롭다운(FormDropdownSelector)과 같은 모양 */
+export const SelectWrapper = styled.div`
+  position: relative;
+`;
+
 export const Select = styled.select`
   width: 100%;
-  height: 45px;
-  padding: 0 18px;
-  border: 1px solid ${colors.gray[500]};
-  border-radius: 6px;
-  background-color: transparent;
-  font-size: 1.125rem;
-  color: rgba(0, 0, 0, 0.8);
+  height: 52px;
+  padding: 14px 44px 14px 18px;
+  border: 1px solid ${colors.gray[200]};
+  border-radius: 14px;
+  background-color: ${colors.gray[50]};
+  ${setTypography(typography.paragraph.p2)}
+  color: ${colors.base.black};
   cursor: pointer;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 3px;
+    border-color: ${colors.primary[800]};
+    background-color: ${colors.base.white};
   }
 
   &:disabled {
@@ -101,6 +112,17 @@ export const Select = styled.select`
   &:invalid {
     color: ${colors.gray[600]};
   }
+`;
+
+export const SelectChevron = styled(MoreArrowIcon)`
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  color: ${colors.gray[500]};
+  pointer-events: none;
 `;
 
 export const MapPreview = styled.div`

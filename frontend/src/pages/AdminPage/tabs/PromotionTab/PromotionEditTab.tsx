@@ -1,5 +1,10 @@
-import { useState } from 'react';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import {
+  useLocation,
+  useNavigate,
+  useOutletContext,
+  useParams,
+} from 'react-router-dom';
 import Button from '@/components/common/Button/Button';
 import CustomTextArea from '@/components/common/CustomTextArea/CustomTextArea';
 import FixedBottomButtonArea from '@/components/common/FixedBottomButtonArea/FixedBottomButtonArea';
@@ -39,9 +44,13 @@ import {
 
 const CUSTOM_BUILDING_VALUE = '__custom__';
 
+/** 건물을 고르기 전에도 지도를 보여주기 위한 기준 좌표. 마커는 찍지 않는다 */
+const DEFAULT_MAP_CENTER = BUILDING_OPTIONS[0].coordinates;
+
 const PromotionEditTab = () => {
   const { articleId } = useParams<{ articleId: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const trackEvent = useMixpanelTrack();
   const { isMobile, isTablet } = useDevice();
   const isCompact = isMobile || isTablet;
@@ -65,6 +74,21 @@ const PromotionEditTab = () => {
   const form = usePromotionForm({ clubId: clubDetail.id, article });
   const { values, setField } = form;
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  // 작성 중 일부 이미지 업로드가 실패하면 수정 화면으로 replace하며 문구를 함께 넘긴다.
+  // 여기서 읽지 않으면 "이미지가 안 올라갔다"는 사실이 사용자에게 전혀 안 보인다.
+  // /new → /:id/edit은 같은 컴포넌트라 다시 마운트되지 않을 수 있어 렌더 중에 받는다.
+  const incomingToast = (location.state as { toastMessage?: string } | null)
+    ?.toastMessage;
+  const [consumedToast, setConsumedToast] = useState<string | null>(null);
+  if (incomingToast && incomingToast !== consumedToast) {
+    setConsumedToast(incomingToast);
+    setToastMessage(incomingToast);
+  }
+  useEffect(() => {
+    if (!incomingToast) return;
+    navigate(location.pathname, { replace: true, state: null });
+  }, [incomingToast, location.pathname, navigate]);
 
   const isEdit = Boolean(articleId);
   const isFormDisabled = !isApproved || form.isSaving;
@@ -182,34 +206,38 @@ const PromotionEditTab = () => {
 
       <div>
         <Styled.Label htmlFor='promotion-building'>지도 위치</Styled.Label>
-        <Styled.Select
-          id='promotion-building'
-          value={buildingSelectValue}
-          onChange={handleBuildingChange}
-          disabled={isFormDisabled}
-        >
-          <option value='' disabled>
-            건물을 선택해주세요
-          </option>
-          {buildingSelectValue === CUSTOM_BUILDING_VALUE && (
-            <option value={CUSTOM_BUILDING_VALUE} disabled>
-              직접 지정된 위치
+        <Styled.SelectWrapper>
+          <Styled.Select
+            id='promotion-building'
+            value={buildingSelectValue}
+            onChange={handleBuildingChange}
+            disabled={isFormDisabled}
+          >
+            <option value='' disabled>
+              건물을 선택해주세요
             </option>
-          )}
-          {BUILDING_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </Styled.Select>
+            {buildingSelectValue === CUSTOM_BUILDING_VALUE && (
+              <option value={CUSTOM_BUILDING_VALUE} disabled>
+                직접 지정된 위치
+              </option>
+            )}
+            {BUILDING_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Styled.Select>
+          <Styled.SelectChevron />
+        </Styled.SelectWrapper>
         <Styled.HelperText>
           선택한 건물 위치가 홍보글 상세의 지도에 표시돼요.
         </Styled.HelperText>
-        {values.coordinates && (
-          <Styled.MapPreview>
-            <NaverMap location={values.coordinates} />
-          </Styled.MapPreview>
-        )}
+        <Styled.MapPreview>
+          <NaverMap
+            location={values.coordinates ?? DEFAULT_MAP_CENTER}
+            showMarker={Boolean(values.coordinates)}
+          />
+        </Styled.MapPreview>
       </div>
 
       <InputField
@@ -268,12 +296,12 @@ const PromotionEditTab = () => {
       />
 
       <PromotionImageField
-        existingImages={values.existingImages}
-        localFiles={values.localFiles}
+        images={values.images}
+        columns={isCompact ? 3 : 4}
         disabled={isFormDisabled}
-        onAddFiles={form.addLocalFiles}
-        onRemoveExisting={form.removeExistingImage}
-        onRemoveLocal={form.removeLocalFile}
+        onAddFiles={form.addFiles}
+        onRemove={form.removeImage}
+        onReorder={form.reorderImages}
         onReject={setToastMessage}
       />
     </>
