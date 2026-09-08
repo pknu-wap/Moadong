@@ -29,6 +29,27 @@ export const formatKSTDateTimeFull = (dateStr: string) =>
     minute: '2-digit',
   });
 
+const kstDayKey = (dateStr: string) =>
+  formatKSTDateTime(dateStr, {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  });
+
+/**
+ * 카드처럼 폭이 좁은 곳에서 쓰는 기간 표기.
+ * 하루짜리면 "11월 29일 일요일", 여러 날이면 요일을 빼고 "11월 29일 ~ 11월 30일".
+ */
+export const formatKSTDateRange = (startStr: string, endStr: string) => {
+  if (!startStr) return '';
+  if (!endStr || kstDayKey(startStr) === kstDayKey(endStr))
+    return formatKSTDate(startStr);
+
+  const short = (dateStr: string) =>
+    formatKSTDateTime(dateStr, { month: 'long', day: 'numeric' });
+  return `${short(startStr)} ~ ${short(endStr)}`;
+};
+
 /** "2025. 7. 1 오후 12:46" 형식으로 반환 */
 export const formatApplicationEditedAt = (dateStr: string): string => {
   if (!dateStr) return '';
