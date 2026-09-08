@@ -7,14 +7,18 @@ import {
   hasPendingChanges,
   sliceToLimit,
 } from '../photoEditUtils';
-import { FeedItem, LocalItem, UploadedItem } from '../types';
+import {
+  ImageItem,
+  LocalItem,
+  UploadedItem,
+} from '@/pages/AdminPage/components/ImageSortGrid/types';
 
 export const useFeedItems = (clubId: string, originalFeeds: string[]) => {
   const { mutate: uploadFeed, isPending: isUploading } = useUploadFeed();
   const { mutate: updateFeed, isPending: isUpdating } = useUpdateFeed();
 
-  const [feedItems, setFeedItems] = useState<FeedItem[]>([]);
-  const feedItemsRef = useRef<FeedItem[]>(feedItems);
+  const [feedItems, setFeedItems] = useState<ImageItem[]>([]);
+  const feedItemsRef = useRef<ImageItem[]>(feedItems);
 
   const isLoading = isUploading || isUpdating;
   const pendingChanges = hasPendingChanges(feedItems, originalFeeds);
