@@ -53,8 +53,6 @@ beforeEach(() => {
     configurable: true,
   });
   window.ReactNativeWebView = { postMessage };
-  // 모달의 useBodyScrollLock이 부르는데 jsdom엔 없다
-  window.scrollTo = jest.fn();
 });
 
 afterEach(() => {
@@ -63,13 +61,12 @@ afterEach(() => {
 });
 
 describe('구독 중이 아닐 때', () => {
-  it('종을 누르면 바로 앱에 토글을 보내고 모달은 띄우지 않는다', async () => {
+  it('종을 누르면 바로 앱에 토글을 보낸다', async () => {
     renderTopBar(false);
 
     await userEvent.click(screen.getByRole('button', { name: '알림 설정' }));
 
     expect(sentTypes()).toEqual(['SUBSCRIBE_TOGGLE']);
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('앱이 구독 완료를 회신하면 완료 토스트를 띄운다', () => {
@@ -114,35 +111,13 @@ describe('구독 중이 아닐 때', () => {
 });
 
 describe('구독 중일 때', () => {
-  it('종을 누르면 토글을 보내지 않고 취소 확인 모달을 띄운다', async () => {
+  it('종을 누르면 확인 없이 바로 앱에 토글을 보낸다', async () => {
     renderTopBar(true);
 
     await userEvent.click(screen.getByRole('button', { name: '알림 설정' }));
 
-    expect(postMessage).not.toHaveBeenCalled();
-    expect(screen.getByRole('dialog')).toHaveTextContent(
-      '정말 구독을 취소하시겠어요?',
-    );
-  });
-
-  it('"아니요"를 누르면 모달만 닫히고 아무것도 보내지 않는다', async () => {
-    renderTopBar(true);
-    await userEvent.click(screen.getByRole('button', { name: '알림 설정' }));
-
-    await userEvent.click(screen.getByRole('button', { name: '아니요' }));
-
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
-    expect(postMessage).not.toHaveBeenCalled();
-  });
-
-  it('"네"를 누르면 모달이 닫히고 앱에 토글을 보낸다', async () => {
-    renderTopBar(true);
-    await userEvent.click(screen.getByRole('button', { name: '알림 설정' }));
-
-    await userEvent.click(screen.getByRole('button', { name: '네' }));
-
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     expect(sentTypes()).toEqual(['SUBSCRIBE_TOGGLE']);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('구독 해제 회신에는 토스트를 띄우지 않는다', () => {

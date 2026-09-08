@@ -19,7 +19,6 @@ import {
   type AppToWebMessage,
 } from '@/utils/webviewBridge';
 import * as Styled from './ClubDetailTopBar.styles';
-import UnsubscribeConfirmModal from './UnsubscribeConfirmModal';
 
 export const SUBSCRIBED_TOAST_MESSAGE = '구독이 완료되었어요';
 export const PERMISSION_TOAST_MESSAGE = '알림 권한을 켜 주세요';
@@ -60,7 +59,6 @@ const ClubDetailTopBar = ({
   const trackEvent = useMixpanelTrack();
   const [isNotificationActive, setIsNotificationActive] =
     useState(initialIsSubscribed);
-  const [isUnsubscribeModalOpen, setIsUnsubscribeModalOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -112,27 +110,13 @@ const ClubDetailTopBar = ({
     }
   };
 
-  const requestToggle = () => {
+  const handleNotificationClick = () => {
     requestSubscribeToggle(clubId);
     trackEvent(USER_EVENT.WEBVIEW_SUBSCRIBE_TOGGLED, {
       club_id: clubId,
       subscribed: !isNotificationActive,
       source: PAGE_NAME.CLUB_DETAIL,
     });
-  };
-
-  // 구독 해제는 되돌리기 번거로우니 한 번 더 묻고, 구독은 바로 보낸다.
-  const handleNotificationClick = () => {
-    if (isNotificationActive) {
-      setIsUnsubscribeModalOpen(true);
-      return;
-    }
-    requestToggle();
-  };
-
-  const handleUnsubscribeConfirm = () => {
-    setIsUnsubscribeModalOpen(false);
-    requestToggle();
   };
 
   // 권한 안내 토스트만 탭할 수 있다. 완료 토스트는 이어지는 동작이 없다.
@@ -205,11 +189,6 @@ const ClubDetailTopBar = ({
           </Styled.TabBar>
         )}
       </Styled.TopBarWrapper>
-      <UnsubscribeConfirmModal
-        isOpen={isUnsubscribeModalOpen}
-        onClose={() => setIsUnsubscribeModalOpen(false)}
-        onConfirm={handleUnsubscribeConfirm}
-      />
       <Toast
         isOpen={toastMessage !== null}
         onClose={() => setToastMessage(null)}
