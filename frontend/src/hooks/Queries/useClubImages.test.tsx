@@ -48,6 +48,26 @@ describe('useUploadFeed', () => {
     mockedUploadToStorage.mockResolvedValue(undefined);
   });
 
+  it('presigned 응답이 요청보다 짧아도 터지지 않고 남은 파일을 실패로 처리한다', async () => {
+    // 서버는 개수 제한에 걸리면 남은 슬롯만큼 + 에러 1개만 돌려준다
+    mockedGetUploadUrls.mockResolvedValue([
+      success('a.jpg'),
+      {
+        presignedUrl: null,
+        finalUrl: null,
+        success: false,
+        failureReason: '파일 개수 초과',
+      },
+    ]);
+
+    const files = [makeFile('a.jpg'), makeFile('b.jpg'), makeFile('c.jpg')];
+    const data = await uploadFiles(files);
+
+    expect(data.failedFiles).toEqual(['b.jpg', 'c.jpg']);
+    expect(data.urlByFile.get(files[0])).toBe('https://cdn.example/a.jpg');
+    expect(data.urlByFile.size).toBe(1);
+  });
+
   it('업로드 결과를 파일 참조 기준으로 매핑한다', async () => {
     mockedGetUploadUrls.mockResolvedValue([success('a.jpg'), success('b.jpg')]);
     mockedUploadToStorage.mockImplementation((_url: string, file: File) =>

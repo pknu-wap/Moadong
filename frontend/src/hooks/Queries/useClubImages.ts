@@ -45,16 +45,17 @@ export const useUploadFeed = () => {
 
       // 2. r2에 병렬 업로드 (개별 성공/실패 추적)
       // presigned URL 생성 자체가 실패한 항목은 업로드 건너뜀
+      // 서버가 개수 제한에 걸리면 요청보다 짧은 배열을 돌려준다.
+      // 인덱스로 매칭하므로 없는 항목도 실패로 처리해야 뒤 파일에서 터지지 않는다.
       const uploadResults = await Promise.allSettled(
         files.map((file, i) => {
-          if (!feedResArr[i].success || !feedResArr[i].presignedUrl) {
+          const res = feedResArr[i];
+          if (!res?.success || !res.presignedUrl) {
             return Promise.reject(
-              new Error(
-                feedResArr[i].failureReason ?? 'presigned URL 생성 실패',
-              ),
+              new Error(res?.failureReason ?? 'presigned URL 생성 실패'),
             );
           }
-          return uploadToStorage(feedResArr[i].presignedUrl, file);
+          return uploadToStorage(res.presignedUrl, file);
         }),
       );
 
@@ -63,7 +64,7 @@ export const useUploadFeed = () => {
       const failedFiles: string[] = [];
 
       uploadResults.forEach((result, i) => {
-        const finalUrl = feedResArr[i].finalUrl;
+        const finalUrl = feedResArr[i]?.finalUrl;
         if (result.status === 'fulfilled' && finalUrl) {
           urlByFile.set(files[i], finalUrl);
         } else {
