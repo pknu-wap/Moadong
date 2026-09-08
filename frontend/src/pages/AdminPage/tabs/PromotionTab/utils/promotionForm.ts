@@ -5,6 +5,7 @@ import {
   PROMOTION_TITLE_MAX,
 } from '@/constants/adminFieldLimits';
 import { clubLocations } from '@/constants/clubLocation';
+import { ImageItem } from '@/pages/AdminPage/components/ImageSortGrid/types';
 import {
   CreatePromotionArticleRequest,
   PromotionArticle,
@@ -15,12 +16,6 @@ export interface Coordinates {
   lng: number;
 }
 
-/** 아직 올리지 않은 로컬 파일. previewUrl은 createObjectURL 결과라 버릴 때 revoke해야 한다 */
-export interface LocalImage {
-  file: File;
-  previewUrl: string;
-}
-
 export interface PromotionFormValues {
   title: string;
   location: string;
@@ -28,9 +23,12 @@ export interface PromotionFormValues {
   eventStart: Date | null;
   eventEnd: Date | null;
   description: string;
-  /** 서버에 이미 올라간 이미지 URL (수정 시 삭제 가능) */
-  existingImages: string[];
-  localFiles: LocalImage[];
+  /**
+   * 화면에 보이는 순서 그대로의 이미지 목록. 이미 올라간 것과 아직 안 올린 것이
+   * 한 배열에 섞여 있어야 드래그로 순서를 바꿀 수 있다.
+   * local 항목의 previewUrl은 createObjectURL 결과라 버릴 때 revoke해야 한다.
+   */
+  images: ImageItem[];
 }
 
 export interface BuildingOption {
@@ -71,8 +69,7 @@ export const createEmptyPromotionForm = (): PromotionFormValues => {
     eventStart: nextHour,
     eventEnd: nextHour,
     description: '',
-    existingImages: [],
-    localFiles: [],
+    images: [],
   };
 };
 
@@ -94,8 +91,7 @@ export const articleToFormValues = (
   eventStart: toDateOrNull(article.eventStartDate),
   eventEnd: toDateOrNull(article.eventEndDate),
   description: article.description,
-  existingImages: article.images ?? [],
-  localFiles: [],
+  images: (article.images ?? []).map((url) => ({ type: 'uploaded', url })),
 });
 
 /**
@@ -120,10 +116,7 @@ export const validatePromotionForm = (
   if (!values.description.trim()) return '행사 설명을 입력해주세요.';
   if (values.description.trim().length > PROMOTION_DESCRIPTION_MAX)
     return `행사 설명은 ${PROMOTION_DESCRIPTION_MAX}자 이내로 입력해주세요.`;
-  if (
-    mode === 'edit' &&
-    values.existingImages.length + values.localFiles.length === 0
-  )
+  if (mode === 'edit' && values.images.length === 0)
     return '이미지를 1장 이상 등록해주세요.';
   return null;
 };

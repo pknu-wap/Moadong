@@ -7,11 +7,11 @@ const renderField = () => {
   const onReject = jest.fn();
   const { container } = render(
     <PromotionImageField
-      existingImages={[]}
-      localFiles={[]}
+      images={[]}
+      columns={4}
       onAddFiles={onAddFiles}
-      onRemoveExisting={jest.fn()}
-      onRemoveLocal={jest.fn()}
+      onRemove={jest.fn()}
+      onReorder={jest.fn()}
       onReject={onReject}
     />,
   );

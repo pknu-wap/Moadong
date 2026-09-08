@@ -5,6 +5,10 @@ import {
   useUpdatePromotionArticle,
   useUploadPromotionImages,
 } from '@/hooks/Queries/usePromotion';
+import {
+  ImageItem,
+  LocalItem,
+} from '@/pages/AdminPage/components/ImageSortGrid/types';
 import { PromotionArticle } from '@/types/promotion';
 import {
   articleToFormValues,
@@ -61,9 +65,9 @@ export const usePromotionForm = ({
   }, [values]);
   useEffect(
     () => () =>
-      valuesRef.current.localFiles.forEach(({ previewUrl }) =>
-        URL.revokeObjectURL(previewUrl),
-      ),
+      valuesRef.current.images.forEach((item) => {
+        if (item.type === 'local') URL.revokeObjectURL(item.previewUrl);
+      }),
     [],
   );
 
@@ -72,52 +76,66 @@ export const usePromotionForm = ({
     value: PromotionFormValues[K],
   ) => setValues((prev) => ({ ...prev, [key]: value }));
 
-  const addLocalFiles = (files: File[]) =>
+  const addFiles = (files: File[]) =>
     setValues((prev) => ({
       ...prev,
-      localFiles: [
-        ...prev.localFiles,
-        ...files.map((file) => ({
-          file,
-          previewUrl: URL.createObjectURL(file),
-        })),
+      images: [
+        ...prev.images,
+        ...files.map(
+          (file): LocalItem => ({
+            type: 'local',
+            file,
+            previewUrl: URL.createObjectURL(file),
+            status: 'pending',
+          }),
+        ),
       ],
     }));
 
-  const removeLocalFile = (index: number) =>
+  const removeImage = (index: number) =>
     setValues((prev) => {
-      const target = prev.localFiles[index];
-      if (target) URL.revokeObjectURL(target.previewUrl);
-      return {
-        ...prev,
-        localFiles: prev.localFiles.filter((_, i) => i !== index),
-      };
+      const target = prev.images[index];
+      if (target?.type === 'local') URL.revokeObjectURL(target.previewUrl);
+      return { ...prev, images: prev.images.filter((_, i) => i !== index) };
     });
 
-  const removeExistingImage = (url: string) =>
-    setValues((prev) => ({
-      ...prev,
-      existingImages: prev.existingImages.filter((image) => image !== url),
-    }));
+  const reorderImages = (images: ImageItem[]) =>
+    setValues((prev) => ({ ...prev, images }));
 
+  /**
+   * 아직 안 올린 파일만 업로드하고, 화면 순서를 유지한 채 URL 목록을 만든다.
+   * 활동 사진처럼 "기존 → 새 것"으로 다시 세우지 않는 이유가 이것이다.
+   */
   const uploadFiles = async (articleId: string) => {
-    const { uploaded, failedFiles } = await uploadImages({
-      articleId,
-      files: values.localFiles.map(({ file }) => file),
-    });
-    const uploadedUrls = uploaded.map(({ url }) => url);
-    const uploadedFiles = new Set(uploaded.map(({ file }) => file));
-    // 올라간 파일은 서버 이미지로 옮겨 둔다. 일부 실패로 화면에 남았을 때 다시 저장해도 중복 업로드되지 않는다.
+    const localFiles = values.images
+      .filter((item): item is LocalItem => item.type === 'local')
+      .map(({ file }) => file);
+
+    const { uploaded, failedFiles } =
+      localFiles.length > 0
+        ? await uploadImages({ articleId, files: localFiles })
+        : { uploaded: [], failedFiles: [] };
+    const urlByFile = new Map(uploaded.map(({ file, url }) => [file, url]));
+
+    // 올라간 파일만 제자리에서 uploaded로 바꾼다. 일부 실패로 화면에 남았을 때 다시 저장해도 중복 업로드되지 않는다.
     setValues((prev) => ({
       ...prev,
-      existingImages: [...prev.existingImages, ...uploadedUrls],
-      localFiles: prev.localFiles.filter(({ file, previewUrl }) => {
-        const isUploaded = uploadedFiles.has(file);
-        if (isUploaded) URL.revokeObjectURL(previewUrl);
-        return !isUploaded;
+      images: prev.images.map((item) => {
+        if (item.type !== 'local') return item;
+        const url = urlByFile.get(item.file);
+        if (!url) return item;
+        URL.revokeObjectURL(item.previewUrl);
+        return { type: 'uploaded', url };
       }),
     }));
-    return { uploadedUrls, failedCount: failedFiles.length };
+
+    const orderedUrls = values.images
+      .map((item) =>
+        item.type === 'uploaded' ? item.url : urlByFile.get(item.file),
+      )
+      .filter((url): url is string => Boolean(url));
+
+    return { orderedUrls, failedCount: failedFiles.length };
   };
 
   const save = async (): Promise<SaveResult> => {
@@ -140,8 +158,7 @@ export const usePromotionForm = ({
         articleId = created.articleId;
       }
 
-      const { uploadedUrls, failedCount } = await uploadFiles(articleId);
-      const images = [...values.existingImages, ...uploadedUrls];
+      const { orderedUrls: images, failedCount } = await uploadFiles(articleId);
 
       // PUT은 images를 1개 이상 요구한다. 작성에서 올릴 이미지가 없으면 PUT할 것도 없고,
       // 수정에서 여기 오는 건 검증을 통과한 이미지가 전부 업로드 실패한 경우뿐이다.
@@ -181,9 +198,9 @@ export const usePromotionForm = ({
     mode,
     values,
     setField,
-    addLocalFiles,
-    removeLocalFile,
-    removeExistingImage,
+    addFiles,
+    removeImage,
+    reorderImages,
     isSaving,
     save,
   };

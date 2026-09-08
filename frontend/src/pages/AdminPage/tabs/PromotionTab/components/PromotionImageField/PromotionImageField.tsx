@@ -1,41 +1,51 @@
-import { useRef } from 'react';
-import ClearButtonIcon from '@/assets/images/icons/dark_clear_button_icon.svg?react';
+import { useEffect, useRef } from 'react';
 import { PROMOTION_IMAGE_MAX_COUNT } from '@/constants/adminFieldLimits';
 import { ALLOWED_IMAGE_TYPES, MAX_FILE_SIZE } from '@/constants/uploadLimit';
-import { LocalImage } from '../../utils/promotionForm';
+import { ImageSortGrid } from '@/pages/AdminPage/components/ImageSortGrid/ImageSortGrid';
+import { ImageItem } from '@/pages/AdminPage/components/ImageSortGrid/types';
+import { useDragSort } from '@/pages/AdminPage/components/ImageSortGrid/useDragSort';
 import * as Styled from './PromotionImageField.styles';
 
 interface PromotionImageFieldProps {
-  existingImages: string[];
-  localFiles: LocalImage[];
+  images: ImageItem[];
+  columns: number;
   disabled?: boolean;
   onAddFiles: (files: File[]) => void;
-  onRemoveExisting: (url: string) => void;
-  onRemoveLocal: (index: number) => void;
+  onRemove: (index: number) => void;
+  onReorder: (images: ImageItem[]) => void;
   /** 파일 제한에 걸렸을 때 안내 문구를 띄운다 */
   onReject: (message: string) => void;
 }
 
 const PromotionImageField = ({
-  existingImages,
-  localFiles,
+  images,
+  columns,
   disabled = false,
   onAddFiles,
-  onRemoveExisting,
-  onRemoveLocal,
+  onRemove,
+  onReorder,
   onReject,
 }: PromotionImageFieldProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const totalCount = existingImages.length + localFiles.length;
-  const isFull = totalCount >= PROMOTION_IMAGE_MAX_COUNT;
+  const imagesRef = useRef(images);
+  useEffect(() => {
+    imagesRef.current = images;
+  }, [images]);
+
+  const { gridRef, dragIndex, dropPosition, handleMouseDown } = useDragSort({
+    disabled,
+    onReorder,
+    itemsRef: imagesRef,
+  });
+
+  const isFull = images.length >= PROMOTION_IMAGE_MAX_COUNT;
 
   const handleFilesSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(e.target.files ?? []);
     e.target.value = '';
     if (selected.length === 0) return;
 
-    // accept는 선택창 필터일 뿐이라 "모든 파일"로 바꾸면 우회된다. 저장 시점에야 실패를 알지 않도록 여기서 막는다
     const unsupported = selected.find(
       (file) => !(ALLOWED_IMAGE_TYPES as readonly string[]).includes(file.type),
     );
@@ -52,7 +62,7 @@ const PromotionImageField = ({
       return;
     }
 
-    const remaining = PROMOTION_IMAGE_MAX_COUNT - totalCount;
+    const remaining = PROMOTION_IMAGE_MAX_COUNT - images.length;
     if (selected.length > remaining) {
       onReject(
         `이미지는 최대 ${PROMOTION_IMAGE_MAX_COUNT}장까지 등록할 수 있습니다.`,
@@ -66,40 +76,20 @@ const PromotionImageField = ({
       <Styled.Header>
         <Styled.Label>행사 이미지</Styled.Label>
         <Styled.Count>
-          {totalCount}/{PROMOTION_IMAGE_MAX_COUNT}
+          {images.length}/{PROMOTION_IMAGE_MAX_COUNT}
         </Styled.Count>
       </Styled.Header>
 
-      <Styled.Grid>
-        {existingImages.map((url) => (
-          <Styled.Item key={url}>
-            <Styled.Photo src={url} alt='' />
-            <Styled.RemoveButton
-              type='button'
-              aria-label='이미지 삭제'
-              disabled={disabled}
-              onClick={() => onRemoveExisting(url)}
-            >
-              <ClearButtonIcon />
-            </Styled.RemoveButton>
-          </Styled.Item>
-        ))}
-
-        {localFiles.map(({ previewUrl }, index) => (
-          <Styled.Item key={previewUrl}>
-            <Styled.Photo src={previewUrl} alt='' />
-            <Styled.PendingBadge>업로드 예정</Styled.PendingBadge>
-            <Styled.RemoveButton
-              type='button'
-              aria-label='이미지 삭제'
-              disabled={disabled}
-              onClick={() => onRemoveLocal(index)}
-            >
-              <ClearButtonIcon />
-            </Styled.RemoveButton>
-          </Styled.Item>
-        ))}
-
+      <ImageSortGrid
+        items={images}
+        gridRef={gridRef}
+        dragIndex={dragIndex}
+        dropPosition={dropPosition}
+        isLoading={disabled}
+        columns={columns}
+        onMouseDown={handleMouseDown}
+        onDelete={onRemove}
+      >
         {!isFull && (
           <Styled.AddTile
             type='button'
@@ -110,10 +100,11 @@ const PromotionImageField = ({
             <span>이미지 추가</span>
           </Styled.AddTile>
         )}
-      </Styled.Grid>
+      </ImageSortGrid>
 
       <Styled.HelperText>
         JPG·PNG·WebP 등 이미지 파일, 장당 10MB 이하. 저장할 때 함께 업로드돼요.
+        끌어서 순서를 바꿀 수 있어요.
       </Styled.HelperText>
 
       <input

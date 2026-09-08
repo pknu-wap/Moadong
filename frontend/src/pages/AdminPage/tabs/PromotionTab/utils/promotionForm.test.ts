@@ -1,3 +1,4 @@
+import { ImageItem } from '@/pages/AdminPage/components/ImageSortGrid/types';
 import { PromotionArticle } from '@/types/promotion';
 import {
   articleToFormValues,
@@ -18,13 +19,19 @@ const validValues: PromotionFormValues = {
   eventStart: new Date('2026-04-01T10:00:00+09:00'),
   eventEnd: new Date('2026-04-01T12:00:00+09:00'),
   description: '연극 정기공연입니다.',
-  existingImages: [],
-  localFiles: [],
+  images: [],
 };
 
-const makeLocalImage = (name: string) => ({
+const makeLocalImage = (name: string): ImageItem => ({
+  type: 'local',
   file: new File(['x'], name, { type: 'image/png' }),
   previewUrl: `blob:${name}`,
+  status: 'pending',
+});
+
+const makeUploadedImage = (url: string): ImageItem => ({
+  type: 'uploaded',
+  url,
 });
 
 describe('BUILDING_OPTIONS', () => {
@@ -85,13 +92,13 @@ describe('validatePromotionForm', () => {
     );
     expect(
       validatePromotionForm(
-        { ...validValues, existingImages: ['https://cdn/a.png'] },
+        { ...validValues, images: [makeUploadedImage('https://cdn/a.png')] },
         'edit',
       ),
     ).toBeNull();
     expect(
       validatePromotionForm(
-        { ...validValues, localFiles: [makeLocalImage('a.png')] },
+        { ...validValues, images: [makeLocalImage('a.png')] },
         'edit',
       ),
     ).toBeNull();
@@ -165,8 +172,9 @@ describe('articleToFormValues', () => {
     const values = articleToFormValues(article);
     expect(values.coordinates).toEqual({ lat: 35.132367, lng: 129.106974 });
     expect(values.eventStart?.toISOString()).toBe('2026-04-01T01:00:00.000Z');
-    expect(values.existingImages).toEqual(['https://cdn/a.png']);
-    expect(values.localFiles).toEqual([]);
+    expect(values.images).toEqual([
+      { type: 'uploaded', url: 'https://cdn/a.png' },
+    ]);
   });
 
   it('좌표가 없으면 coordinates는 null', () => {
