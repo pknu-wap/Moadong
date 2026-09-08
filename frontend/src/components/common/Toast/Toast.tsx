@@ -13,6 +13,8 @@ interface ToastProps {
   backgroundColor?: string;
   color?: string;
   duration?: number;
+  /** 지정하면 토스트를 탭할 수 있는 버튼으로 렌더한다 */
+  onClick?: () => void;
 }
 
 const Toast = ({
@@ -22,6 +24,7 @@ const Toast = ({
   backgroundColor = DEFAULT_BACKGROUND_COLOR,
   color = colors.base.white,
   duration = DEFAULT_DURATION,
+  onClick,
 }: ToastProps) => {
   const onCloseRef = useRef(onClose);
   useEffect(() => {
@@ -40,7 +43,10 @@ const Toast = ({
   return (
     <Portal>
       <Styled.ToastMessage
+        as={onClick ? 'button' : undefined}
         role='status'
+        onClick={onClick}
+        $clickable={onClick !== undefined}
         $backgroundColor={backgroundColor}
         $color={color}
         $duration={duration}

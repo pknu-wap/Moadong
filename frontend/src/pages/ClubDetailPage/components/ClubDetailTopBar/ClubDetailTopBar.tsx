@@ -13,6 +13,7 @@ import isInAppWebView from '@/utils/isInAppWebView';
 import isKakaoTalkBrowser from '@/utils/isKakaoTalkBrowser';
 import {
   requestNavigateBack,
+  requestOpenAppSettings,
   requestSubscribeToggle,
   type AppToWebMessage,
 } from '@/utils/webviewBridge';
@@ -129,6 +130,12 @@ const ClubDetailTopBar = ({
     requestToggle();
   };
 
+  // 권한 안내 토스트만 탭할 수 있다. 완료 토스트는 이어지는 동작이 없다.
+  const handlePermissionToastClick = () => {
+    setToastMessage(null);
+    requestOpenAppSettings();
+  };
+
   return (
     <>
       <Styled.TopBarWrapper $isVisible={isHeaderVisible || showTabs}>
@@ -202,6 +209,11 @@ const ClubDetailTopBar = ({
         isOpen={toastMessage !== null}
         onClose={() => setToastMessage(null)}
         message={toastMessage ?? ''}
+        onClick={
+          toastMessage === PERMISSION_TOAST_MESSAGE
+            ? handlePermissionToastClick
+            : undefined
+        }
       />
     </>
   );

@@ -91,6 +91,26 @@ describe('구독 중이 아닐 때', () => {
       PERMISSION_TOAST_MESSAGE,
     );
   });
+
+  it('권한 안내 토스트를 탭하면 앱에 설정 열기를 요청하고 토스트를 닫는다', async () => {
+    renderTopBar(false);
+    replyFromApp(false, true);
+
+    await userEvent.click(screen.getByRole('status'));
+
+    expect(sentTypes()).toEqual(['OPEN_APP_SETTINGS']);
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+
+  it('완료 토스트는 탭할 수 없다', () => {
+    renderTopBar(false);
+    replyFromApp(true);
+
+    const toast = screen.getByRole('status');
+
+    expect(toast.tagName).not.toBe('BUTTON');
+    expect(getComputedStyle(toast).pointerEvents).toBe('none');
+  });
 });
 
 describe('구독 중일 때', () => {

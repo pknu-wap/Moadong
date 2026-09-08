@@ -24,14 +24,14 @@ common/Toast/
 
 값을 직접 쓰지 말고 토큰을 쓴다.
 
-| 대상 | 토큰 |
-| --- | --- |
-| 색상 | `colors` (`@/styles/theme/colors`) |
-| 타이포 | `setTypography(typography.xxx)` (`@/styles/theme/typography`) |
-| 트랜지션 | `transitions.duration.*`, `transitions.easing.*` |
-| z-index | `Z_INDEX` (`@/styles/zIndex`) |
-| 반응형 | `media.*` (`@/styles/mediaQuery`) |
-| 헤더 높이 | `HEADER_HEIGHT` (`common/Header/Header.styles`) |
+| 대상      | 토큰                                                          |
+| --------- | ------------------------------------------------------------- |
+| 색상      | `colors` (`@/styles/theme/colors`)                            |
+| 타이포    | `setTypography(typography.xxx)` (`@/styles/theme/typography`) |
+| 트랜지션  | `transitions.duration.*`, `transitions.easing.*`              |
+| z-index   | `Z_INDEX` (`@/styles/zIndex`)                                 |
+| 반응형    | `media.*` (`@/styles/mediaQuery`)                             |
+| 헤더 높이 | `HEADER_HEIGHT` (`common/Header/Header.styles`)               |
 
 - 반투명 색상은 예외다. 알파 색상 토큰이나 변환 유틸이 없어서 `rgba()` 리터럴을 그대로 쓴다 (`Modal`, `Toast` 동일).
 - 브레이크포인트는 **max-width 기준**이라 데스크탑 스타일을 먼저 쓰고 `media.tablet` → `media.mobile` 순으로 좁혀간다.
@@ -59,14 +59,15 @@ const [isOpen, setIsOpen] = useState(true);
 />;
 ```
 
-| prop | 필수 | 기본값 | 설명 |
-| --- | --- | --- | --- |
-| `isOpen` | ✅ | - | 노출 여부 |
-| `onClose` | ✅ | - | `duration` 경과 시 호출. 호출부가 `isOpen`을 내린다 |
-| `message` | ✅ | - | 표시할 문구 |
-| `backgroundColor` | | `rgba(17,17,17,0.85)` | 배경색 |
-| `color` | | `colors.base.white` | 글자색 |
-| `duration` | | `3500` | 노출 시간(ms) |
+| prop              | 필수 | 기본값                | 설명                                                                       |
+| ----------------- | ---- | --------------------- | -------------------------------------------------------------------------- |
+| `isOpen`          | ✅   | -                     | 노출 여부                                                                  |
+| `onClose`         | ✅   | -                     | `duration` 경과 시 호출. 호출부가 `isOpen`을 내린다                        |
+| `message`         | ✅   | -                     | 표시할 문구                                                                |
+| `backgroundColor` |      | `rgba(17,17,17,0.85)` | 배경색                                                                     |
+| `color`           |      | `colors.base.white`   | 글자색                                                                     |
+| `duration`        |      | `3500`                | 노출 시간(ms)                                                              |
+| `onClick`         |      | -                     | 지정하면 `button`으로 렌더되고 탭할 수 있다. 없으면 `pointer-events: none` |
 
 - **위치가 브레이크포인트별로 다르다.**
   - 701px 초과: 헤더 아래 (`top: HEADER_HEIGHT.desktop + 16px`), 위에서 내려오는 애니메이션
