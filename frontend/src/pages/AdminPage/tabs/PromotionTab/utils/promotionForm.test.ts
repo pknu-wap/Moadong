@@ -1,3 +1,4 @@
+import { clubLocations } from '@/constants/clubLocation';
 import { ImageItem } from '@/pages/AdminPage/components/ImageSortGrid/types';
 import { PromotionArticle } from '@/types/promotion';
 import {
@@ -35,14 +36,34 @@ const makeUploadedImage = (url: string): ImageItem => ({
 });
 
 describe('BUILDING_OPTIONS', () => {
-  it('건물명 기준으로 중복 없이 좌표를 갖는다', () => {
-    const names = BUILDING_OPTIONS.map((o) => o.value);
-    expect(new Set(names).size).toBe(names.length);
-    expect(BUILDING_OPTIONS.length).toBeGreaterThan(0);
-    BUILDING_OPTIONS.forEach((o) => {
-      expect(typeof o.coordinates.lat).toBe('number');
-      expect(typeof o.coordinates.lng).toBe('number');
-    });
+  const uniqueCoordinates = new Set(
+    clubLocations.map(({ lat, lng }) => `${lat},${lng}`),
+  );
+
+  it('관리 중인 좌표를 하나도 빠뜨리지 않는다', () => {
+    // 건물명으로 묶으면 한솔관(E16)처럼 좌표가 둘인 건물의 뒤쪽이 사라진다
+    expect(BUILDING_OPTIONS.length).toBe(uniqueCoordinates.size);
+    expect(
+      new Set(
+        BUILDING_OPTIONS.map((o) => `${o.coordinates.lat},${o.coordinates.lng}`),
+      ),
+    ).toEqual(uniqueCoordinates);
+  });
+
+  it('value가 겹치지 않는다', () => {
+    // 겹치면 select에서 좌표가 다른 두 위치를 구분할 수 없다
+    const values = BUILDING_OPTIONS.map((o) => o.value);
+    expect(new Set(values).size).toBe(values.length);
+  });
+
+  it('같은 건물에 좌표가 여럿이면 동으로 구분한다', () => {
+    const hansol = BUILDING_OPTIONS.filter((o) =>
+      o.label.startsWith('한솔관(E16)'),
+    );
+    expect(hansol.map((o) => o.label).sort()).toEqual([
+      '한솔관(E16) A동',
+      '한솔관(E16) B동',
+    ]);
   });
 
   it('좌표로 건물을 되찾을 수 있고 없는 좌표면 undefined', () => {

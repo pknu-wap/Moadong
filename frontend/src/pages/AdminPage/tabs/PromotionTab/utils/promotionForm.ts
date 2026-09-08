@@ -37,17 +37,38 @@ export interface BuildingOption {
   coordinates: Coordinates;
 }
 
+/** 동아리방 표기 맨 앞의 동 (예: 'A동 208호' → 'A동') */
+const DONG_PREFIX = /^[A-Za-z]동/;
+
 /**
- * 관리자가 위도·경도를 직접 입력하지 않도록 캠퍼스 건물 목록에서 고른다.
- * 같은 건물이 여러 동아리에 걸쳐 있으니 건물명 기준으로 한 번만 남긴다.
+ * 관리자가 위도·경도를 직접 입력하지 않도록 실제로 관리 중인 위치 목록에서 고른다.
+ * 건물명이 아니라 좌표 기준으로 묶는다. 한솔관(E16)처럼 한 건물에 좌표가 둘인 곳이
+ * 있어서 건물명으로 묶으면 뒤쪽 좌표가 통째로 사라진다.
+ * 건물명이 겹치는 좌표끼리는 동아리방 표기의 동으로 구분한다.
  */
-export const BUILDING_OPTIONS: BuildingOption[] = clubLocations.reduce<
-  BuildingOption[]
->((options, { building, lat, lng }) => {
-  if (options.some((option) => option.value === building)) return options;
-  options.push({ label: building, value: building, coordinates: { lat, lng } });
-  return options;
-}, []);
+export const BUILDING_OPTIONS: BuildingOption[] = (() => {
+  const byCoordinates = new Map<string, (typeof clubLocations)[number]>();
+  clubLocations.forEach((location) => {
+    const key = `${location.lat},${location.lng}`;
+    if (!byCoordinates.has(key)) byCoordinates.set(key, location);
+  });
+
+  const locations = [...byCoordinates.values()];
+  const buildingCount = locations.reduce<Record<string, number>>(
+    (counts, { building }) => ({
+      ...counts,
+      [building]: (counts[building] ?? 0) + 1,
+    }),
+    {},
+  );
+
+  return locations.map(({ building, detailLocation, lat, lng }) => {
+    const dong = detailLocation.match(DONG_PREFIX)?.[0];
+    const label =
+      buildingCount[building] > 1 && dong ? `${building} ${dong}` : building;
+    return { label, value: label, coordinates: { lat, lng } };
+  });
+})();
 
 export const findBuildingByCoordinates = (
   coordinates: Coordinates | null,
