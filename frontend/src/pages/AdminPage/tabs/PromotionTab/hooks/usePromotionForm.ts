@@ -5,6 +5,7 @@ import {
   useUpdatePromotionArticle,
   useUploadPromotionImages,
 } from '@/hooks/Queries/usePromotion';
+import { buildFinalUrls } from '@/pages/AdminPage/components/ImageSortGrid/buildFinalUrls';
 import {
   ImageItem,
   LocalItem,
@@ -102,10 +103,7 @@ export const usePromotionForm = ({
   const reorderImages = (images: ImageItem[]) =>
     setValues((prev) => ({ ...prev, images }));
 
-  /**
-   * 아직 안 올린 파일만 업로드하고, 화면 순서를 유지한 채 URL 목록을 만든다.
-   * 활동 사진처럼 "기존 → 새 것"으로 다시 세우지 않는 이유가 이것이다.
-   */
+  /** 아직 안 올린 파일만 업로드하고, 화면 순서를 유지한 채 URL 목록을 만든다 */
   const uploadFiles = async (articleId: string) => {
     const localFiles = values.images
       .filter((item): item is LocalItem => item.type === 'local')
@@ -129,13 +127,10 @@ export const usePromotionForm = ({
       }),
     }));
 
-    const orderedUrls = values.images
-      .map((item) =>
-        item.type === 'uploaded' ? item.url : urlByFile.get(item.file),
-      )
-      .filter((url): url is string => Boolean(url));
-
-    return { orderedUrls, failedCount: failedFiles.length };
+    return {
+      orderedUrls: buildFinalUrls(values.images, urlByFile),
+      failedCount: failedFiles.length,
+    };
   };
 
   const save = async (): Promise<SaveResult> => {

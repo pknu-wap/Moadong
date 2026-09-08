@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useUpdateFeed, useUploadFeed } from '@/hooks/Queries/useClubImages';
 import {
-  buildFinalUrls,
   extractLocalItems,
   findOversizedFile,
   hasPendingChanges,
   sliceToLimit,
 } from '../photoEditUtils';
+import { buildFinalUrls } from '@/pages/AdminPage/components/ImageSortGrid/buildFinalUrls';
 import {
   ImageItem,
   LocalItem,

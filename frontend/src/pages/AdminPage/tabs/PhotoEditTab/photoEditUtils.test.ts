@@ -4,7 +4,6 @@ import {
   LocalItem,
 } from '@/pages/AdminPage/components/ImageSortGrid/types';
 import {
-  buildFinalUrls,
   findOversizedFile,
   hasPendingChanges,
   sliceToLimit,
@@ -86,37 +85,5 @@ describe('hasPendingChanges', () => {
 
   it('아이템이 없고 원본도 비어있으면 false를 반환한다', () => {
     expect(hasPendingChanges([], [])).toBe(false);
-  });
-});
-
-describe('buildFinalUrls', () => {
-  it('새로 올린 사진이 앞에 있어도 화면 순서를 그대로 유지한다', () => {
-    const local = makeLocal('new.jpg');
-    const feedItems: ImageItem[] = [local, makeUploaded('b'), makeUploaded('c')];
-    const urlByFile = new Map([[local.file, 'a']]);
-    expect(buildFinalUrls(feedItems, urlByFile)).toEqual(['a', 'b', 'c']);
-  });
-
-  it('새로 올린 사진이 중간에 있어도 화면 순서를 그대로 유지한다', () => {
-    const local = makeLocal('new.jpg');
-    const feedItems: ImageItem[] = [makeUploaded('a'), local, makeUploaded('c')];
-    const urlByFile = new Map([[local.file, 'b']]);
-    expect(buildFinalUrls(feedItems, urlByFile)).toEqual(['a', 'b', 'c']);
-  });
-
-  it('업로드에 실패해 URL이 없는 local 아이템은 제외한다', () => {
-    const uploaded = makeLocal('ok.jpg');
-    const failed = makeLocal('fail.jpg');
-    const feedItems: ImageItem[] = [uploaded, makeUploaded('b'), failed];
-    const urlByFile = new Map([[uploaded.file, 'a']]);
-    expect(buildFinalUrls(feedItems, urlByFile)).toEqual(['a', 'b']);
-  });
-
-  it('local 아이템이 없으면 uploaded URL을 순서대로 반환한다', () => {
-    const feedItems: ImageItem[] = [makeUploaded('b'), makeUploaded('a')];
-    expect(buildFinalUrls(feedItems, new Map<File, string>())).toEqual([
-      'b',
-      'a',
-    ]);
   });
 });
