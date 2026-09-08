@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useOutletContext } from 'react-router-dom';
 import { getServerErrorMessage } from '@/apis/utils/getServerErrorMessage';
+import addLargeIcon from '@/assets/images/icons/add_large_icon.svg';
 import Plus from '@/assets/images/icons/Plus.svg';
 import Spinner from '@/components/common/Spinner/Spinner';
 import Toast from '@/components/common/Toast/Toast';
@@ -14,19 +15,17 @@ import {
 } from '@/hooks/Queries/usePromotion';
 import useDevice from '@/hooks/useDevice';
 import { ContentSection } from '@/pages/AdminPage/components/ContentSection/ContentSection';
+import MobileFloatingButton from '@/pages/AdminPage/components/MobileFloatingButton/MobileFloatingButton';
 import { colors } from '@/styles/theme/colors';
 import { ClubDetail } from '@/types/club';
 import { PromotionArticle } from '@/types/promotion';
-import { formatKSTDateTimeFull } from '@/utils/formatKSTDateTime';
+import AdminPromotionCard from './components/AdminPromotionCard/AdminPromotionCard';
 import {
   isClubApproved,
   PROMOTION_LIST_PATH,
   PROMOTION_NOT_APPROVED_MESSAGE,
 } from './constants';
 import * as Styled from './PromotionListTab.styles';
-
-const formatPeriod = (article: PromotionArticle) =>
-  `${formatKSTDateTimeFull(article.eventStartDate)} ~ ${formatKSTDateTimeFull(article.eventEndDate)}`;
 
 const PromotionListTab = () => {
   const navigate = useNavigate();
@@ -45,8 +44,7 @@ const PromotionListTab = () => {
     isError,
     error,
   } = useGetPromotionArticles();
-  const { mutate: deleteArticle, isPending: isDeleting } =
-    useDeletePromotionArticle();
+  const { mutate: deleteArticle } = useDeletePromotionArticle();
 
   // 작성·수정 화면에서 저장 후 넘어오면서 건넨 문구를 첫 렌더에 띄우고,
   // 뒤로가기로 돌아왔을 때 다시 뜨지 않도록 history state는 비운다
@@ -59,6 +57,25 @@ const PromotionListTab = () => {
     if (!incomingToast) return;
     navigate(location.pathname, { replace: true, state: null });
   }, [incomingToast, location.pathname, navigate]);
+
+  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (openMenuId === null) return;
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setOpenMenuId(null);
+      }
+    };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, [openMenuId]);
+
+  const handleMenuToggle = (e: React.MouseEvent, articleId: string) => {
+    e.stopPropagation();
+    setOpenMenuId((prev) => (prev === articleId ? null : articleId));
+  };
 
   const myArticles = (articles ?? []).filter(
     (article) => article.clubId === clubDetail.id,
@@ -81,6 +98,7 @@ const PromotionListTab = () => {
     ) {
       return;
     }
+    setOpenMenuId(null);
     deleteArticle(article.id, {
       onSuccess: () => setToastMessage('홍보 게시글이 삭제되었습니다.'),
       onError: (deleteError) =>
@@ -113,52 +131,24 @@ const PromotionListTab = () => {
     }
 
     return (
-      <Styled.CardList>
+      <Styled.CardGrid>
         {myArticles.map((article) => (
-          <Styled.Card key={article.id}>
-            <Styled.Thumbnail
-              type='button'
-              aria-label={`${article.title} 수정`}
-              onClick={() => handleEdit(article.id)}
-            >
-              {article.images[0] ? (
-                <img src={article.images[0]} alt='' />
-              ) : (
-                <Styled.ThumbnailPlaceholder>
-                  이미지 없음
-                </Styled.ThumbnailPlaceholder>
-              )}
-            </Styled.Thumbnail>
-
-            <Styled.CardBody>
-              <Styled.CardTitle>{article.title}</Styled.CardTitle>
-              <Styled.CardMeta>{article.location}</Styled.CardMeta>
-              <Styled.CardMeta>{formatPeriod(article)}</Styled.CardMeta>
-            </Styled.CardBody>
-
-            <Styled.CardActions>
-              <Styled.ActionButton
-                type='button'
-                onClick={() => handleEdit(article.id)}
-              >
-                수정
-              </Styled.ActionButton>
-              <Styled.ActionButton
-                type='button'
-                $danger
-                disabled={isDeleting}
-                onClick={() => handleDelete(article)}
-              >
-                삭제
-              </Styled.ActionButton>
-            </Styled.CardActions>
-          </Styled.Card>
+          <AdminPromotionCard
+            key={article.id}
+            article={article}
+            isMenuOpen={openMenuId === article.id}
+            menuRef={menuRef}
+            onMenuToggle={handleMenuToggle}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
         ))}
-      </Styled.CardList>
+      </Styled.CardGrid>
     );
   };
 
-  const createButton = isApproved && (
+  // 컴팩트에서는 다른 관리자 화면과 같은 주황색 + 플로팅 버튼을 쓴다
+  const desktopCreateButton = isApproved && (
     <Styled.AddButton type='button' onClick={handleCreate}>
       새 게시글 작성 <Styled.PlusIcon src={Plus} alt='' />
     </Styled.AddButton>
@@ -178,13 +168,24 @@ const PromotionListTab = () => {
                 {PROMOTION_NOT_APPROVED_MESSAGE}
               </Styled.Notice>
             )}
-            <Styled.CompactHeader>{createButton}</Styled.CompactHeader>
             {renderBody()}
           </Styled.CompactBody>
+          {isApproved && (
+            <MobileFloatingButton
+              onClick={handleCreate}
+              icon={addLargeIcon}
+              ariaLabel='새 게시글 작성'
+              /* 운영진 문의 버튼(48px, bottom 101px) 바로 위. 겹치면 문의 버튼에 가린다 */
+              bottom='calc(161px + env(safe-area-inset-bottom))'
+            />
+          )}
         </>
       ) : (
         <ContentSection>
-          <ContentSection.Header title='내 홍보 게시글' action={createButton} />
+          <ContentSection.Header
+            title='내 홍보 게시글'
+            action={desktopCreateButton}
+          />
           <ContentSection.Body>
             {!isApproved && myArticles.length > 0 && (
               <Styled.Notice role='status'>

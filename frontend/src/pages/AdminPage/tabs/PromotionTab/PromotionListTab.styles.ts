@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { media } from '@/styles/mediaQuery';
 import { colors } from '@/styles/theme/colors';
 import { setTypography, typography } from '@/styles/theme/typography';
@@ -33,9 +33,20 @@ export const CompactBody = styled.div`
   padding: 16px 20px 40px;
 `;
 
-export const CompactHeader = styled.div`
-  display: flex;
-  justify-content: flex-end;
+/* 사용자 홍보 목록과 같은 세로형 카드라 그리드로 깐다. 관리자 본문 폭이 좁아 열 수는 따로 잡는다 */
+export const CardGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+
+  ${media.laptop} {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  ${media.tablet} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
 `;
 
 export const Notice = styled.div`
@@ -68,132 +79,6 @@ export const AddButton = styled.button`
 export const PlusIcon = styled.img`
   width: 19px;
   height: 19px;
-`;
-
-export const CardList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-`;
-
-export const Card = styled.li`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 14px 16px;
-  border: 1px solid ${colors.gray[400]};
-  border-radius: 20px;
-  background: ${colors.base.white};
-
-  ${media.tablet} {
-    flex-wrap: wrap;
-    gap: 12px;
-    padding: 12px;
-  }
-`;
-
-export const Thumbnail = styled.button`
-  flex-shrink: 0;
-  width: 96px;
-  height: 96px;
-  padding: 0;
-  border: none;
-  border-radius: 12px;
-  overflow: hidden;
-  background: ${colors.gray[100]};
-  cursor: pointer;
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  ${media.tablet} {
-    width: 72px;
-    height: 72px;
-  }
-`;
-
-export const ThumbnailPlaceholder = styled.span`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  ${setTypography(typography.paragraph.p7)}
-  color: ${colors.gray[600]};
-`;
-
-export const CardBody = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-  flex: 1;
-`;
-
-export const CardTitle = styled.p`
-  ${setTypography(typography.paragraph.p2)}
-  color: ${colors.gray[900]};
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-export const CardMeta = styled.p`
-  ${setTypography(typography.paragraph.p6)}
-  color: ${colors.gray[700]};
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-export const CardActions = styled.div`
-  display: flex;
-  gap: 8px;
-  flex-shrink: 0;
-
-  ${media.tablet} {
-    width: 100%;
-    justify-content: flex-end;
-  }
-`;
-
-export const ActionButton = styled.button<{ $danger?: boolean }>`
-  height: 34px;
-  padding: 0 14px;
-  border: 1px solid ${colors.gray[400]};
-  border-radius: 8px;
-  background: ${colors.base.white};
-  ${setTypography(typography.button.button1)}
-  color: ${colors.gray[800]};
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-
-  &:hover:not(:disabled) {
-    background: ${colors.gray[100]};
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-
-  ${({ $danger }) =>
-    $danger &&
-    css`
-      color: #ef4444;
-      border-color: #fca5a5;
-
-      &:hover:not(:disabled) {
-        background: #fff1f2;
-      }
-    `}
 `;
 
 export const EmptyState = styled.div`

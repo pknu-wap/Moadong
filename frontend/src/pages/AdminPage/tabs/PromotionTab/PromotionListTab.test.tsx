@@ -18,12 +18,13 @@ jest.mock('@/hooks/Queries/usePromotion', () => ({
 }));
 jest.mock('@/hooks/Mixpanel/useMixpanelTrack', () => () => jest.fn());
 jest.mock('@/hooks/Mixpanel/useTrackPageView', () => () => {});
-jest.mock('@/hooks/useDevice', () => () => ({
+const mockDevice = {
   isMobile: false,
   isTablet: false,
   isLaptop: false,
   isDesktop: true,
-}));
+};
+jest.mock('@/hooks/useDevice', () => () => mockDevice);
 
 const makeArticle = (
   overrides: Partial<PromotionArticle> &
@@ -41,7 +42,7 @@ const makeArticle = (
   ...overrides,
 });
 
-const renderTab = (state = 'AVAILABLE') => {
+const renderTab = (state = 'AVAILABLE') =>
   render(
     <MemoryRouter initialEntries={['/admin/promotion']}>
       <Routes>
@@ -50,13 +51,19 @@ const renderTab = (state = 'AVAILABLE') => {
           element={<Outlet context={{ id: 'my-club', state }} />}
         >
           <Route path='promotion' element={<PromotionListTab />} />
+          <Route path='promotion/:articleId/edit' element={<p>수정 화면</p>} />
         </Route>
       </Routes>
     </MemoryRouter>,
   );
-};
 
 beforeEach(() => {
+  Object.assign(mockDevice, {
+    isMobile: false,
+    isTablet: false,
+    isLaptop: false,
+    isDesktop: true,
+  });
   mockArticles.length = 0;
   mockDelete.mockReset();
   const root = document.createElement('div');
@@ -80,6 +87,21 @@ describe('PromotionListTab', () => {
     expect(screen.queryByText('제목 other')).not.toBeInTheDocument();
   });
 
+  it('데스크톱은 텍스트가 보이는 작성 버튼을 쓴다', () => {
+    renderTab();
+    expect(screen.getByText('새 게시글 작성')).toBeInTheDocument();
+  });
+
+  it('컴팩트에서는 텍스트 없이 aria-label만 가진 플로팅 버튼을 쓴다', () => {
+    mockDevice.isMobile = true;
+    mockDevice.isDesktop = false;
+    renderTab();
+
+    const button = screen.getByRole('button', { name: '새 게시글 작성' });
+    expect(button).toHaveTextContent('');
+    expect(screen.queryByText('새 게시글 작성')).not.toBeInTheDocument();
+  });
+
   it('심사 전 동아리는 작성 버튼 대신 안내 문구를 보여준다', () => {
     renderTab('UNAVAILABLE');
 
@@ -93,17 +115,58 @@ describe('PromotionListTab', () => {
     ).toBeInTheDocument();
   });
 
+  it('카드 본문을 누르면 수정 화면으로 간다', () => {
+    mockArticles.push(makeArticle({ id: 'mine', clubId: 'my-club' }));
+    renderTab();
+
+    fireEvent.click(screen.getByRole('button', { name: '제목 mine 수정' }));
+
+    expect(screen.getByText('수정 화면')).toBeInTheDocument();
+  });
+
+  it('수정·삭제는 카드 우측 상단 메뉴를 열어야 나온다', () => {
+    mockArticles.push(makeArticle({ id: 'mine', clubId: 'my-club' }));
+    renderTab();
+
+    expect(screen.queryByText('삭제')).not.toBeInTheDocument();
+
+    fireEvent.click(
+      screen.getByRole('button', { name: '제목 mine 관리 메뉴' }),
+    );
+    expect(screen.getByText('수정하기')).toBeInTheDocument();
+    expect(screen.getByText('삭제')).toBeInTheDocument();
+  });
+
+  it('메뉴 바깥을 누르면 닫힌다', () => {
+    mockArticles.push(makeArticle({ id: 'mine', clubId: 'my-club' }));
+    renderTab();
+
+    fireEvent.click(
+      screen.getByRole('button', { name: '제목 mine 관리 메뉴' }),
+    );
+    expect(screen.getByText('삭제')).toBeInTheDocument();
+
+    fireEvent.mouseDown(document.body);
+    expect(screen.queryByText('삭제')).not.toBeInTheDocument();
+  });
+
   it('삭제는 확인창을 거친 뒤에만 요청한다', () => {
     mockArticles.push(makeArticle({ id: 'mine', clubId: 'my-club' }));
     const confirmSpy = jest.spyOn(window, 'confirm');
     renderTab();
 
+    fireEvent.click(
+      screen.getByRole('button', { name: '제목 mine 관리 메뉴' }),
+    );
+
+    // 취소하면 요청도 안 가고 메뉴도 그대로 열려 있다
     confirmSpy.mockReturnValueOnce(false);
-    fireEvent.click(screen.getByRole('button', { name: '삭제' }));
+    fireEvent.click(screen.getByText('삭제'));
     expect(mockDelete).not.toHaveBeenCalled();
+    expect(screen.getByText('삭제')).toBeInTheDocument();
 
     confirmSpy.mockReturnValueOnce(true);
-    fireEvent.click(screen.getByRole('button', { name: '삭제' }));
+    fireEvent.click(screen.getByText('삭제'));
     expect(mockDelete).toHaveBeenCalledWith('mine', expect.any(Object));
 
     confirmSpy.mockRestore();
