@@ -42,8 +42,9 @@ const kstDayKey = (dateStr: string) =>
  */
 export const formatKSTDateRange = (startStr: string, endStr: string) => {
   if (!startStr) return '';
-  if (!endStr || kstDayKey(startStr) === kstDayKey(endStr))
-    return formatKSTDate(startStr);
+  // 종료일이 비었거나 파싱되지 않으면 하루짜리로 본다. 안 그러면 "11월 29일 ~ "로 끝난다
+  const endKey = kstDayKey(endStr);
+  if (!endKey || endKey === kstDayKey(startStr)) return formatKSTDate(startStr);
 
   const short = (dateStr: string) =>
     formatKSTDateTime(dateStr, { month: 'long', day: 'numeric' });

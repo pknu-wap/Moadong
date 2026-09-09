@@ -45,7 +45,9 @@ describe('BUILDING_OPTIONS', () => {
     expect(BUILDING_OPTIONS.length).toBe(uniqueCoordinates.size);
     expect(
       new Set(
-        BUILDING_OPTIONS.map((o) => `${o.coordinates.lat},${o.coordinates.lng}`),
+        BUILDING_OPTIONS.map(
+          (o) => `${o.coordinates.lat},${o.coordinates.lng}`,
+        ),
       ),
     ).toEqual(uniqueCoordinates);
   });

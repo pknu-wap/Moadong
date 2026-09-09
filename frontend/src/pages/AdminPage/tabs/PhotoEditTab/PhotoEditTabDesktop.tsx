@@ -5,9 +5,9 @@ import { MAX_FILE_COUNT } from '@/constants/uploadLimit';
 import useMixpanelTrack from '@/hooks/Mixpanel/useMixpanelTrack';
 import { ContentSection } from '@/pages/AdminPage/components/ContentSection/ContentSection';
 import { ImageSortGrid } from '@/pages/AdminPage/components/ImageSortGrid/ImageSortGrid';
+import { ImageItem } from '@/pages/AdminPage/components/ImageSortGrid/types';
 import { useDragSort } from '@/pages/AdminPage/components/ImageSortGrid/useDragSort';
 import * as Styled from './PhotoEditTab.styles';
-import { ImageItem } from '@/pages/AdminPage/components/ImageSortGrid/types';
 
 interface PhotoEditTabDesktopProps {
   feedItems: ImageItem[];

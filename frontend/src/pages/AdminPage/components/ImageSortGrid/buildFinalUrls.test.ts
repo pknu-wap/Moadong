@@ -34,9 +34,6 @@ describe('buildFinalUrls', () => {
 
   it('local 아이템이 없으면 uploaded URL을 순서대로 반환한다', () => {
     const items: ImageItem[] = [makeUploaded('b'), makeUploaded('a')];
-    expect(buildFinalUrls(items, new Map<File, string>())).toEqual([
-      'b',
-      'a',
-    ]);
+    expect(buildFinalUrls(items, new Map<File, string>())).toEqual(['b', 'a']);
   });
 });

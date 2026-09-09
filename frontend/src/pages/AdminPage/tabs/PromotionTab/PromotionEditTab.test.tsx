@@ -82,7 +82,8 @@ afterEach(() => {
 
 describe('PromotionEditTab 넘겨받은 토스트', () => {
   it('작성 중 이미지 업로드가 일부 실패해 넘어온 문구를 띄운다', () => {
-    const message = '글은 저장됐지만 이미지 2장 업로드에 실패했어요. 다시 올려주세요.';
+    const message =
+      '글은 저장됐지만 이미지 2장 업로드에 실패했어요. 다시 올려주세요.';
 
     renderEditTab({ toastMessage: message });
 

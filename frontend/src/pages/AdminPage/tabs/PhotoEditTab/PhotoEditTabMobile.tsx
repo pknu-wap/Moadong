@@ -6,10 +6,10 @@ import { ADMIN_EVENT } from '@/constants/eventName';
 import { MAX_FILE_COUNT } from '@/constants/uploadLimit';
 import useMixpanelTrack from '@/hooks/Mixpanel/useMixpanelTrack';
 import { ImageSortGrid } from '@/pages/AdminPage/components/ImageSortGrid/ImageSortGrid';
-import PhotoUploadCard from './components/mobile/PhotoUploadCard/PhotoUploadCard';
-import { useDragSort } from '@/pages/AdminPage/components/ImageSortGrid/useDragSort';
-import * as Styled from './PhotoEditTabMobile.styles';
 import { ImageItem } from '@/pages/AdminPage/components/ImageSortGrid/types';
+import { useDragSort } from '@/pages/AdminPage/components/ImageSortGrid/useDragSort';
+import PhotoUploadCard from './components/mobile/PhotoUploadCard/PhotoUploadCard';
+import * as Styled from './PhotoEditTabMobile.styles';
 
 interface PhotoEditTabMobileProps {
   feedItems: ImageItem[];

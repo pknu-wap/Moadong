@@ -44,4 +44,3 @@ export const MoreButton = styled.button`
     background-color: ${colors.base.white};
   }
 `;
-
