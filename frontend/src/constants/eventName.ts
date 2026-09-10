@@ -92,6 +92,8 @@ export const USER_EVENT = {
   PROMOTION_BUTTON_CLICKED: 'Promotion Button Clicked',
   PROMOTION_CARD_CLICKED: 'Promotion Card Clicked',
   PROMOTION_CLUB_CTA_CLICKED: 'Promotion Club CTA Clicked',
+  PROMOTION_MAP_CLICKED: 'Promotion Map Clicked',
+  PROMOTION_IMAGE_MORE_CLICKED: 'Promotion Image More Clicked',
 
   WEBVIEW_SUBSCRIBE_TOGGLED: 'Webview Subscribe Toggled',
 } as const;
