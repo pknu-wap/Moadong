@@ -1,6 +1,19 @@
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
+import { ImageItem } from '@/pages/AdminPage/components/ImageSortGrid/types';
 import PromotionImageField from './PromotionImageField';
+
+const renderWithImages = (images: ImageItem[]) =>
+  render(
+    <PromotionImageField
+      images={images}
+      columns={4}
+      onAddFiles={jest.fn()}
+      onRemove={jest.fn()}
+      onReorder={jest.fn()}
+      onReject={jest.fn()}
+    />,
+  );
 
 const renderField = () => {
   const onAddFiles = jest.fn();
@@ -63,4 +76,28 @@ describe('PromotionImageField 파일 선택 검증', () => {
 it('현재 장수와 상한을 보여준다', () => {
   renderField();
   expect(screen.getByText('0/15')).toBeInTheDocument();
+});
+
+describe('업로드 실패 표시', () => {
+  const failedItem: ImageItem = {
+    type: 'local',
+    file: new File(['x'], 'bad.png', { type: 'image/png' }),
+    previewUrl: 'blob:bad.png',
+    status: 'failed',
+  };
+
+  it('실패한 이미지는 실패로 표시하고 업로드 예정으로 보여주지 않는다', () => {
+    renderWithImages([failedItem]);
+
+    expect(screen.getByText('실패')).toBeInTheDocument();
+    expect(screen.queryByText('업로드 예정')).not.toBeInTheDocument();
+  });
+
+  it('재전송 버튼은 두지 않는다 - 홍보는 다시 저장이 곧 재시도다', () => {
+    renderWithImages([failedItem]);
+
+    expect(
+      screen.queryByRole('button', { name: '재전송' }),
+    ).not.toBeInTheDocument();
+  });
 });

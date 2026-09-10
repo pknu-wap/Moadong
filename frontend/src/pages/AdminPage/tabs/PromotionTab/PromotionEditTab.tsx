@@ -133,7 +133,7 @@ const PromotionEditTab = () => {
       return;
     }
     if (result.status === 'partial') {
-      const message = `글은 저장됐지만 이미지 ${result.failedCount}장 업로드에 실패했어요. 다시 올려주세요.`;
+      const message = `글은 저장됐지만 이미지 ${result.failedCount}장 업로드에 실패했어요. 실패한 이미지는 그대로 있으니 다시 저장해주세요.`;
       if (isEdit) {
         setToastMessage(message);
       } else {

@@ -116,12 +116,14 @@ export const usePromotionForm = ({
     const urlByFile = new Map(uploaded.map(({ file, url }) => [file, url]));
 
     // 올라간 파일만 제자리에서 uploaded로 바꾼다. 일부 실패로 화면에 남았을 때 다시 저장해도 중복 업로드되지 않는다.
+    // 실패한 파일은 failed로 표시해 어느 장이 안 올라갔는지 화면에서 알 수 있게 한다.
+    // previewUrl은 계속 보여줘야 하므로 revoke하지 않는다.
     setValues((prev) => ({
       ...prev,
       images: prev.images.map((item) => {
         if (item.type !== 'local') return item;
         const url = urlByFile.get(item.file);
-        if (!url) return item;
+        if (!url) return { ...item, status: 'failed' };
         URL.revokeObjectURL(item.previewUrl);
         return { type: 'uploaded', url };
       }),
