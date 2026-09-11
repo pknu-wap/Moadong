@@ -1,13 +1,12 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '@/components/common/Footer/Footer';
 import Header from '@/components/common/Header/Header';
 import Spinner from '@/components/common/Spinner/Spinner';
-import { PAGE_NAME, PAGE_VIEW } from '@/constants/eventName';
-import useScrollTracking from '@/hooks/Mixpanel/useScrollTracking';
-import useTrackPageView from '@/hooks/Mixpanel/useTrackPageView';
+import { PAGE_NAME } from '@/constants/eventName';
 import { useGetCardList } from '@/hooks/Queries/useClub';
 import useWebviewSubscribe from '@/hooks/useWebviewSubscribe';
+import Banner from '@/pages/MainPage/components/Banner/Banner';
 import CategoryButtonList from '@/pages/MainPage/components/CategoryButtonList/CategoryButtonList';
 import ClubCard from '@/pages/MainPage/components/ClubCard/ClubCard';
 import SubscribeButton from '@/pages/MainPage/components/SubscribeButton/SubscribeButton';
@@ -15,17 +14,18 @@ import { useSelectedCategory } from '@/store/useCategoryStore';
 import { useSearchIsSearching, useSearchKeyword } from '@/store/useSearchStore';
 import { Club } from '@/types/club';
 import isInAppWebView from '@/utils/isInAppWebView';
-import * as Styled from './ClubListPage.styles';
+import * as Styled from './MainContent.styles';
 
-const ClubListPage = () => {
+/** 메인(`/`)의 본문. 홈이 곧 동아리 전체 목록이다. */
+const MainContent = () => {
   const inWebview = isInAppWebView();
-  useTrackPageView(PAGE_VIEW.CLUB_LIST_PAGE);
-  useScrollTracking(PAGE_NAME.CLUB_LIST);
-
   const { selectedCategory } = useSelectedCategory();
   const { keyword } = useSearchKeyword();
   const { isSearching } = useSearchIsSearching();
   const searchCategory = isSearching ? 'all' : selectedCategory;
+  const tabs = ['부경대학교 중앙동아리'] as const;
+  const [active, setActive] =
+    useState<(typeof tabs)[number]>('부경대학교 중앙동아리');
 
   const { data, error, isLoading, refetch } = useGetCardList({
     keyword,
@@ -36,7 +36,7 @@ const ClubListPage = () => {
   const navigate = useNavigate();
   const { subscribedClubIds, toggleSubscribe } = useWebviewSubscribe();
 
-  const clubs = data?.clubs || [];
+  const clubs = useMemo(() => data?.clubs ?? [], [data]);
   const totalCount = data?.totalCount ?? clubs.length;
 
   const isEmpty = !isLoading && clubs.length === 0;
@@ -49,7 +49,7 @@ const ClubListPage = () => {
         key={club.id}
         club={club}
         index={i}
-        page={PAGE_NAME.CLUB_LIST}
+        page={inWebview ? PAGE_NAME.WEBVIEW_MAIN : PAGE_NAME.MAIN}
         onCardClick={
           inWebview
             ? (c) =>
@@ -66,7 +66,7 @@ const ClubListPage = () => {
               toggleSubscribe(
                 club.id,
                 subscribedClubIds.has(club.id),
-                PAGE_NAME.CLUB_LIST,
+                PAGE_NAME.WEBVIEW_MAIN,
               )
             }
           />
@@ -78,11 +78,23 @@ const ClubListPage = () => {
   return (
     <>
       <Header />
+      <Styled.HeaderSpacer />
+      <Banner isWebview={inWebview} />
       <Styled.PageContainer>
         <CategoryButtonList />
 
         <Styled.SectionBar>
-          <Styled.SectionTitle>부경대학교 중앙동아리</Styled.SectionTitle>
+          <Styled.SectionTabs>
+            {tabs.map((tab) => (
+              <Styled.Tab
+                key={tab}
+                $active={active === tab}
+                onClick={() => setActive(tab)}
+              >
+                {tab}
+              </Styled.Tab>
+            ))}
+          </Styled.SectionTabs>
           <Styled.TotalCountResult role='status'>
             {`전체 ${isLoading ? 0 : totalCount}개의 동아리`}
           </Styled.TotalCountResult>
@@ -114,4 +126,4 @@ const ClubListPage = () => {
   );
 };
 
-export default ClubListPage;
+export default MainContent;

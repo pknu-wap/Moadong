@@ -74,8 +74,6 @@ export const USER_EVENT = {
   // 하단 네비게이션
   BOTTOM_TAB_CLICKED: 'BottomTab Clicked',
 
-  HOME_SECTION_MORE_CLICKED: 'Home Section More Clicked',
-  HOME_SEARCH_CLICKED: 'Home Search Clicked',
   HOME_SUBSCRIPTION_CLICKED: 'Home Subscription Clicked',
 
   // 동소한 (동아리 소개 한마당)
@@ -180,7 +178,6 @@ export const PAGE_VIEW = {
   APPLICATION_FORM_PAGE: 'ApplicationFormPage',
   CLUB_DETAIL_PAGE: 'ClubDetailPage',
   MAIN_PAGE: 'MainPage',
-  CLUB_LIST_PAGE: 'ClubListPage',
   SUBSCRIPTIONS_PAGE: 'SubscriptionsPage',
   MENU_PAGE: 'MenuPage',
   INTRODUCE_PAGE: 'IntroducePage',
@@ -214,7 +211,6 @@ export const PAGE_VIEW = {
 
 export const PAGE_NAME = {
   MAIN: 'main',
-  CLUB_LIST: 'club-list',
   WEBVIEW_MAIN: 'webview-main',
   INTRODUCE: 'introduce',
   SUBSCRIPTIONS: 'subscriptions',
