@@ -90,10 +90,7 @@ const IntroSection = () => {
           <Styled.IntroSubtitle variants={fadeIn}>
             부경대학교의 모든 동아리를 한눈에
           </Styled.IntroSubtitle>
-          <Styled.IntroButton
-            variants={fadeIn}
-            onClick={() => navigate('/')}
-          >
+          <Styled.IntroButton variants={fadeIn} onClick={() => navigate('/')}>
             동아리 모아보기
             <img
               src={search_button_icon}
