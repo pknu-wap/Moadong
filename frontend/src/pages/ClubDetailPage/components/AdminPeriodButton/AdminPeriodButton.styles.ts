@@ -43,12 +43,11 @@ export const StatusInfo = styled.div`
   color: ${colors.gray[500]};
 `;
 
-export const StatusDot = styled.span<{ $isAlways: boolean }>`
+export const StatusDot = styled.span`
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: ${({ $isAlways }) =>
-    $isAlways ? colors.secondary[3].main : colors.primary[800]};
+  background: ${colors.primary[800]};
 `;
 
 export const StatusText = styled.span`

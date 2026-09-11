@@ -42,7 +42,7 @@ const AdminPeriodButton = ({ clubDetail }: AdminPeriodButtonProps) => {
     <>
       <Styled.ButtonArea>
         <Styled.StatusInfo>
-          <Styled.StatusDot $isAlways={isAlwaysRecruiting} />
+          <Styled.StatusDot />
           <Styled.StatusText>{statusText}</Styled.StatusText>
           {dateRangeText && (
             <Styled.StatusDate>{dateRangeText}</Styled.StatusDate>
@@ -52,7 +52,7 @@ const AdminPeriodButton = ({ clubDetail }: AdminPeriodButtonProps) => {
           type='button'
           onClick={() => setIsPeriodModalOpen(true)}
         >
-          지원 기간 변경
+          모집 기간 변경
         </Styled.ChangePeriodButton>
       </Styled.ButtonArea>
 

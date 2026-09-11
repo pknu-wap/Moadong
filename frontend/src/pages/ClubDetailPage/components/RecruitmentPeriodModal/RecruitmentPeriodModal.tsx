@@ -145,10 +145,10 @@ const RecruitmentPeriodModal = ({
       <Styled.Dialog
         role='dialog'
         aria-modal='true'
-        aria-label='지원 기간 변경'
+        aria-label='모집 기간 변경'
       >
         <Styled.Body>
-          <Styled.Title>지원 기간 변경</Styled.Title>
+          <Styled.Title>모집 기간 변경</Styled.Title>
           <Styled.PeriodDescription>
             현재 모집 기간: {currentPeriodText}
           </Styled.PeriodDescription>
