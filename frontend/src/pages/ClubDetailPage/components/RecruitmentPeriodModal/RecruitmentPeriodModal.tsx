@@ -1,12 +1,10 @@
 import { useState } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
 import { addDays, format, setYear } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import InputField from '@/components/common/InputField/InputField';
 import Modal from '@/components/common/Modal/Modal';
 import ToggleButton from '@/components/common/ToggleButton/ToggleButton';
 import { FAR_FUTURE_YEAR } from '@/constants/adminFieldLimits';
-import { queryKeys } from '@/constants/queryKeys';
 import { useUpdateClubDescription } from '@/hooks/Queries/useClub';
 import { ClubDetail } from '@/types/club';
 import { recruitmentDateParser } from '@/utils/recruitmentDateParser';
@@ -34,7 +32,6 @@ const RecruitmentPeriodModal = ({
   const [extendDays, setExtendDays] = useState('');
   const [switchToAlways, setSwitchToAlways] = useState(false);
 
-  const queryClient = useQueryClient();
   const { mutate: updateClubDescription, isPending } =
     useUpdateClubDescription();
 
@@ -130,11 +127,6 @@ const RecruitmentPeriodModal = ({
       },
       {
         onSuccess: () => {
-          // 훅 내부 invalidate는 clubDetail.id 기반이라 clubName slug로 캐싱된
-          // ClubDetailPage 쿼리를 갱신하지 못한다. prefix로 전체 무효화한다.
-          void queryClient.invalidateQueries({
-            queryKey: queryKeys.club.allDetails,
-          });
           handleClose();
           onSuccess();
         },
