@@ -20,7 +20,7 @@ import * as Styled from './ClubIntroEditTabMobile.styles';
 import AwardEditPage from './components/mobile/AwardEditPage/AwardEditPage';
 import AwardSection from './components/mobile/AwardSection/AwardSection';
 import FAQSection from './components/mobile/FAQSection/FAQSection';
-import InfoSection from './components/mobile/InfoSection/InfoSection';
+import InfoSection from '@/pages/AdminPage/components/InfoSection/InfoSection';
 
 interface ClubIntroEditTabMobileProps {
   introDescription: string;
