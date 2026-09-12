@@ -54,7 +54,9 @@ const RecruitEditTabMobile = ({
 
         <Styled.FormSection>
           <Styled.PageTitle>모집 정보를 입력해주세요</Styled.PageTitle>
-          <Styled.PageSubtitle>해당 기간 동안 모집중 상태가 돼요</Styled.PageSubtitle>
+          <Styled.PageSubtitle>
+            해당 기간 동안 모집중 상태가 돼요
+          </Styled.PageSubtitle>
 
           <Styled.FieldList>
             <Styled.PeriodSection>

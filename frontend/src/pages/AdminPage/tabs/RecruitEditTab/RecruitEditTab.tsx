@@ -13,8 +13,8 @@ import { ContentSection } from '@/pages/AdminPage/components/ContentSection/Cont
 import { ClubDetail } from '@/types/club';
 import { recruitmentDateParser } from '@/utils/recruitmentDateParser';
 import DateTimeRangePicker from './components/DateTimeRangePicker/DateTimeRangePicker';
-import RecruitEditTabMobile from './RecruitEditTabMobile';
 import * as Styled from './RecruitEditTab.styles';
+import RecruitEditTabMobile from './RecruitEditTabMobile';
 
 const FAR_FUTURE_YEAR = 2999;
 
